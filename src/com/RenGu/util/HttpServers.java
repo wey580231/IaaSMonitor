@@ -22,7 +22,6 @@ public class HttpServers {
             int statusCode = response.code();
             if (statusCode == 200){
                 loginJsonString = response.body().string();
-                JSONParse.loginJsonParse(loginJsonString);
             }
             return loginJsonString;
         } catch (IOException e) {
