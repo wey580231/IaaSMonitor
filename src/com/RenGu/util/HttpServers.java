@@ -6,6 +6,7 @@ import java.io.IOException;
 
 public class HttpServers {
     public static String doLogin(String userName, String passWord, String url) {
+        String loginJsonString = "";
         OkHttpClient client = new OkHttpClient();
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\r\n \"auth\": {\r\n        \"tenantName\": \"admin\",\r\n        \"passwordCredentials\": {\r\n            \"username\": \"" + userName + "\",\r\n            \"password\": \"" + passWord + "\"\r\n        }\r\n    }\r\n}");
@@ -16,14 +17,17 @@ public class HttpServers {
                 .build();
         try {
             Response response = client.newCall(request).execute();
-            return response.body().string();
+            loginJsonString = response.body().string();
+            JSONParse.loginJsonParse(loginJsonString);
+            return loginJsonString;
         } catch (IOException e) {
             e.printStackTrace();
-            return "";
+            return loginJsonString;
         }
     }
 
     public static String doGet(String url, String token) {
+        String jsonString = "";
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(url)
@@ -32,10 +36,11 @@ public class HttpServers {
                 .build();
         try {
             Response response = client.newCall(request).execute();
-            return response.body().string();
+            jsonString = response.body().string();
+            return jsonString;
         } catch (IOException e) {
             e.printStackTrace();
-            return "";
+            return jsonString;
         }
     }
 }
