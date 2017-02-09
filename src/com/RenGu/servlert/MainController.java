@@ -27,12 +27,11 @@ public class MainController extends HttpServlet {
 
         if (name != null && passWord != null && name.length() > 0
                 && passWord.length() > 0) {
-            String token = HttpServers.doLogin(name, passWord,requestUrl);
+            String token = HttpServers.doLogin(name, passWord, requestUrl);
             System.out.println(token);
 
-            if(token.length() > 0)
-            {
-				resp.getWriter().write(token);
+            if (token.length() > 0) {
+                resp.getWriter().write(token);
             }
         }
 
