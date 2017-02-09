@@ -6,3 +6,4 @@ IaaSMonitor project
 * 2017-02-09:实现了登陆获取Token的功能。
 * 2017-02-09:增加了ErrorResponseCodes类用于显示http的错误信息。
 * 2017-02-09:增加bootstrap和jquery，调整登录和主页面的布局。
+* 2017-02-09:增加了LoginJson的解析功能，将对应节点的EndpointUrl和Token相关信息保存在内存中。
