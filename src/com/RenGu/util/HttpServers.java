@@ -4,14 +4,11 @@ import okhttp3.*;
 
 import java.io.IOException;
 
-/**
- * Created by hanch on 2017/2/9.
- */
 public class HttpServers {
     public static String doLogin(String userName, String passWord, String url) {
         OkHttpClient client = new OkHttpClient();
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\r\n    \"auth\": {\r\n        \"tenantName\": \"admin\",\r\n        \"passwordCredentials\": {\r\n            \"username\": \"" + userName + "\",\r\n            \"password\": \"" + passWord + "\"\r\n        }\r\n    }\r\n}");
+        RequestBody body = RequestBody.create(mediaType, "{\r\n \"auth\": {\r\n        \"tenantName\": \"admin\",\r\n        \"passwordCredentials\": {\r\n            \"username\": \"" + userName + "\",\r\n            \"password\": \"" + passWord + "\"\r\n        }\r\n    }\r\n}");
         Request request = new Request.Builder()
                 .url(url)
                 .post(body)
@@ -22,7 +19,7 @@ public class HttpServers {
             return response.body().string();
         } catch (IOException e) {
             e.printStackTrace();
-            return "ERROR";
+            return "";
         }
     }
 
@@ -38,7 +35,7 @@ public class HttpServers {
             return response.body().string();
         } catch (IOException e) {
             e.printStackTrace();
-            return "ERROR";
+            return "";
         }
     }
 }
