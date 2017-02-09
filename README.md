@@ -9,3 +9,4 @@ IaaSMonitor project
 * 2017-02-09:增加了LoginJson的解析功能，将对应节点的EndpointUrl和Token相关信息保存在内存中。
 * 2017-02-09:增加后台显示HTTP请求结果状态及对HTTP请求结果是否正确的检查。
 * 2017-02-09:删除ErrorResponseCodes、OpenStackInfo、Token类及相关方法。
+* 2017-02-09:增加了doPost()方法HttpPostBodyMaker类用于构造HTTPPost请求的body。

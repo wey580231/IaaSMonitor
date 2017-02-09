@@ -20,7 +20,7 @@ public class HttpServers {
             //后台显示HTTP请求结果状态
             System.out.println("请求地址：" + response.request().url() + "--->请求状态：" + response.message());
             int statusCode = response.code();
-            if (statusCode == 200){
+            if (statusCode == 200) {
                 loginJsonString = response.body().string();
             }
             return loginJsonString;
@@ -43,7 +43,35 @@ public class HttpServers {
             //后台显示HTTP请求结果状态
             System.out.println("请求地址：" + response.request().url() + "--->请求状态：" + response.message());
             int statusCode = response.code();
-            jsonString = response.body().string();
+            if (statusCode == 200) {
+                jsonString = response.body().string();
+            }
+            return jsonString;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return jsonString;
+        }
+    }
+
+    public static String doPost(String url, String token, String requestJsonString) {
+        String jsonString = "";
+        OkHttpClient client = new OkHttpClient();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, requestJsonString);
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .addHeader("x-auth-token", token)
+                .addHeader("content-type", "application/json")
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            //后台显示HTTP请求结果状态
+            System.out.println("请求地址：" + response.request().url() + "--->请求状态：" + response.message());
+            int statusCode = response.code();
+            if (statusCode == 200) {
+                jsonString = response.body().string();
+            }
             return jsonString;
         } catch (IOException e) {
             e.printStackTrace();
