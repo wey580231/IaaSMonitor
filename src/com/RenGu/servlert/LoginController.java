@@ -1,10 +1,6 @@
 package com.RenGu.servlert;
 
 import com.RenGu.util.HttpServers;
-import com.RenGu.util.OpenStackInfo;
-import com.RenGu.util.Token;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -30,9 +26,6 @@ public class LoginController extends HttpServlet {
 
         if (name != null && passWord != null && name.length() > 0 && passWord.length() > 0) {
             HttpServers.doLogin(name, passWord, requestUrl);
-            resp.getWriter().write(OpenStackInfo.printAll());
-            resp.getWriter().write("-------------------------------------------- ---------------------------------------------------------------------------------\n");
-            resp.getWriter().write(Token.printAll());
         }
 
     }
