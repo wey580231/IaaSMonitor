@@ -7,6 +7,6 @@ package com.RenGu.util;
  * Created by hanch on 2017/2/9.
  */
 public class ErrorResponseCodes {
-//    public static Map<String, String> errorResponseCodes = new HashMap<>();
+    public static Map<String, String> errorResponseCodes = new HashMap<>();
 //    errorResponseCodes
 }
