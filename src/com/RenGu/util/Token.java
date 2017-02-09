@@ -4,6 +4,9 @@ package com.RenGu.util;
  * Created by hanch on 2017/2/9.
  */
 public class Token {
+
+    public static final String TokenName = "Token";
+
     private static String token;
     private static String expires;
     private static String projectID;
