@@ -9,6 +9,7 @@
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="okhttp-3.6.0" />
+          <element id="library" level="project" name="json" />
         </element>
       </element>
     </root>
