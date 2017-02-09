@@ -35,6 +35,7 @@ public class Token {
     public static String printAll(){
         String result = "";
         result = "token:" + token + "\n" + "expires:" + expires +"\n" + "projectID:" + projectID + "\n";
+//        System.out.println(result);
         return  result;
     }
 }

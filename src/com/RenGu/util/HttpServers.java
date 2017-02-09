@@ -17,8 +17,13 @@ public class HttpServers {
                 .build();
         try {
             Response response = client.newCall(request).execute();
-            loginJsonString = response.body().string();
-            JSONParse.loginJsonParse(loginJsonString);
+            //后台显示HTTP请求结果状态
+            System.out.println("请求地址：" + response.request().url() + "--->请求状态：" + response.message());
+            int statusCode = response.code();
+            if (statusCode == 200){
+                loginJsonString = response.body().string();
+                JSONParse.loginJsonParse(loginJsonString);
+            }
             return loginJsonString;
         } catch (IOException e) {
             e.printStackTrace();
@@ -36,6 +41,9 @@ public class HttpServers {
                 .build();
         try {
             Response response = client.newCall(request).execute();
+            //后台显示HTTP请求结果状态
+            System.out.println("请求地址：" + response.request().url() + "--->请求状态：" + response.message());
+            int statusCode = response.code();
             jsonString = response.body().string();
             return jsonString;
         } catch (IOException e) {
