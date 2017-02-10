@@ -7,5 +7,7 @@ IaaSMonitor project
 * 2017-02-09:增加了ErrorResponseCodes类用于显示http的错误信息。
 * 2017-02-09:增加bootstrap和jquery，调整登录和主页面的布局。
 * 2017-02-09:增加了LoginJson的解析功能，将对应节点的EndpointUrl和Token相关信息保存在内存中。
-* 2017-02-09:增加AngularJs，实现登录和主页面的连接，并实现了显示详情页面
-  
+* 2017-02-09:增加AngularJs，实现登录和主页面的连接，并实现了显示详情页面。
+* 2017-02-09:删除ErrorResponseCodes、OpenStackInfo、Token类及相关方法。
+* 2017-02-09:增加了doPost()方法HttpPostBodyMaker类用于构造HTTPPost请求的body。
+* 2017-02-09:增加AngularJs，实现登录和主页面的连接，并实现了显示详情页面。
