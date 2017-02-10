@@ -11,3 +11,4 @@ IaaSMonitor project
 * 2017-02-09:删除ErrorResponseCodes、OpenStackInfo、Token类及相关方法。
 * 2017-02-09:增加了doPost()方法HttpPostBodyMaker类用于构造HTTPPost请求的body。
 * 2017-02-09:增加AngularJs，实现登录和主页面的连接，并实现了显示详情页面。
+* 2017-02-10:增加createMultipleServers()、createServer()、doDelete()的Body构造方法。
