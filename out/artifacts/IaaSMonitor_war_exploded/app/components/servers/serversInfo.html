@@ -1,0 +1,25 @@
+<div ng-controller="serversInfo">
+    <h2>服务器列表清单</h2>
+
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>ID值</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="server in list">
+                        <td>{{server.name}}</td>
+                        <td>{{server.id}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
