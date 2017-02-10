@@ -7,8 +7,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html ng-app="app">
 <head>
-    <base href="<%=basePath%>">
-
     <title>使用概况</title>
 
     <meta http-equiv="pragma" content="no-cache">
@@ -73,10 +71,10 @@
                     <div id="accordion-element-754634" class="accordion-body collapse">
                         <div class="accordion-inner">
                             <ul style="height:auto">
-                                <li><a href="#"><i class="glyphicon glyphicon-user"></i>概况</a></li>
-                                <li><a href="#"><i class="glyphicon glyphicon-th-list"></i>实例</a></li>
-                                <li><a href="#"><i class="glyphicon glyphicon-asterisk"></i>镜像</a></li>
-                                <li><a href="#"><i class="glyphicon glyphicon-edit"></i>访问安全</a></li>
+                                <li><a href="#showSurvery"><i class="glyphicon glyphicon-user"></i>概况</a></li>
+                                <li><a href="#showInstances"><i class="glyphicon glyphicon-th-list"></i>实例</a></li>
+                                <li><a href="#showImages"><i class="glyphicon glyphicon-asterisk"></i>镜像</a></li>
+                                <li><a href="#showSafety"><i class="glyphicon glyphicon-edit"></i>访问安全</a></li>
                             </ul>
                         </div>
                     </div>
@@ -89,8 +87,8 @@
                     <div id="accordion-element-754636" class="accordion-body collapse">
                         <div class="accordion-inner">
                             <ul style="height:auto">
-                                <li><a href="#"><i class="glyphicon glyphicon-user"></i>网络</a></li>
-                                <li><a href="#"><i class="glyphicon glyphicon-th-list"></i>路由</a></li>
+                                <li><a href="#showNetwork"><i class="glyphicon glyphicon-user"></i>网络</a></li>
+                                <li><a href="#showRoute"><i class="glyphicon glyphicon-th-list"></i>路由</a></li>
                             </ul>
                         </div>
                     </div>
@@ -103,8 +101,8 @@
                     <div id="accordion-element-654636" class="accordion-body collapse">
                         <div class="accordion-inner">
                             <ul style="height:auto">
-                                <li><a href="#"><i class="glyphicon glyphicon-user"></i>项目</a></li>
-                                <li><a href="#"><i class="glyphicon glyphicon-th-list"></i>用户</a></li>
+                                <li><a href="#showProgram"><i class="glyphicon glyphicon-user"></i>项目</a></li>
+                                <li><a href="#showUser"><i class="glyphicon glyphicon-th-list"></i>用户</a></li>
                             </ul>
                         </div>
                     </div>
@@ -129,7 +127,17 @@
 <script src="javascript/angular-route.js"></script>
 <script src="javascript/angular-animate.js"></script>
 <script src="app.js"></script>
+
 <script src="app/components/servers/serversInfo.js"></script>
+<script src="app/components/servers/images.js"></script>
+<script src="app/components/servers/instances.js"></script>
+<script src="app/components/servers/safety.js"></script>
+
+<script src="app/components/network/network.js"></script>
+<script src="app/components/network/route.js"></script>
+
+<script src="app/components/user/program.js"></script>
+<script src="app/components/user/user.js"></script>
 
 <script>
 //    $(document).ready(function(){
