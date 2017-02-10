@@ -78,4 +78,28 @@ public class HttpServers {
             return jsonString;
         }
     }
+
+    public static boolean doDelete(String url, String token) {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(url)
+                .delete(null)
+                .addHeader("x-auth-token", token)
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            //后台显示HTTP请求结果状态
+            System.out.println("请求地址：" + response.request().url() + "--->请求状态：" + response.message());
+            int statusCode = response.code();
+            if (statusCode == 204) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
