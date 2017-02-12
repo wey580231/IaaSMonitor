@@ -5,5 +5,10 @@ angular.module("app.program", ['ngRoute'])
             controller: 'programController'
         })
     }])
-    .controller("programController", function ($scope, $http, $location) {
+    .controller("programController", function ($scope, $http, $location, endPointCollection, $rootScope, myHttpService, serviceListService){
+        myHttpService.get('/mainController', endPointCollection.adminURL('identity').substring(0,27)+ serviceListService.ListProjects)
+            .then(function (response) {
+                $scope.list = response.data.projects;
+            }, function (response) {
+            });
     });
