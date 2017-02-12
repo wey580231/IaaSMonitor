@@ -156,8 +156,7 @@ angular.module("app", [
 
         service.serviceDetail = "/servers/detail";
         service.ListUsers="/users";
-
-
+        service.ListProjects="/v3/projects";
         return service;
     })
 

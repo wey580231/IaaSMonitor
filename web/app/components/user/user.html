@@ -8,13 +8,17 @@
                     <thead>
                     <tr>
                         <th>名称</th>
+                        <th>邮箱</th>
                         <th>ID值</th>
+                        <th>激活</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr ng-repeat="server in list">
                         <td>{{server.name}}</td>
+                        <td>{{server.email}}</td>
                         <td>{{server.id}}</td>
+                        <td>{{server.enabled}}</td>
                     </tr>
                     </tbody>
                 </table>
