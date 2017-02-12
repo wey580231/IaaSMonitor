@@ -35,7 +35,15 @@ public class LoginController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String token = (String) req.getSession().getAttribute(SaveLogin);
-        resp.getWriter().write(token);
+        String url = req.getHeader("url");
+        if (url != null && url.equals("getEndPoint")) {
+            String token = (String) req.getSession().getAttribute(SaveLogin);
+            resp.getWriter().write(token);
+        } else if (url != null && url.equals("reload")) {
+            req.getSession().setAttribute(SaveLogin, "");
+            resp.sendRedirect("/index.jsp");
+        } else {
+            resp.getWriter().write("Error!!!");
+        }
     }
 }

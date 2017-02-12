@@ -4,5 +4,10 @@ angular.module('app.login', ['ngRoute']).config(['$routeProvider', function ($ro
         controller: 'loginController'
     })
 }])
-    .controller("loginController", function ($scope, $http, $location) {
+    .controller("loginController", function ($scope, endPointCollection, myHttpService, serviceListService) {
+        myHttpService.get('/login', "reload")
+            .then(function (response) {
+
+            }, function (response) {
+            });
     });
