@@ -17,7 +17,6 @@ public class MainController extends HttpServlet {
 
         if (token != null && url != null) {
             String result = HttpServers.doGet(url, token);
-            System.out.println(result);
             resp.getWriter().write(result);
         }
     }

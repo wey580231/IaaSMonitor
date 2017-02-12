@@ -38,7 +38,6 @@ public class HttpServers {
                 .get()
                 .addHeader("x-auth-token", token)
                 .build();
-        System.out.println("=========doGetdoGetdoGet===========");
         try {
             Response response = client.newCall(request).execute();
             //后台显示HTTP请求结果状态

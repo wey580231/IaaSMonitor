@@ -20,6 +20,7 @@ public class LoginController extends HttpServlet {
         String passWord = req.getParameter("passWord");
         String requestUrl = req.getParameter("requestUrl");
 
+        // TODO(待对登录失败进行处理??)
         if (name != null && passWord != null && name.length() > 0 && passWord.length() > 0) {
             String result = HttpServers.doLogin(name, passWord, requestUrl);
             req.getSession().setAttribute(SaveLogin, result);
