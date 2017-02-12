@@ -215,69 +215,71 @@ angular.module("app", [
             }
         }
 
+        service.flushPoint = _flushEndPoint;
 
+        return service;
+    }])
     //创建请求拦截器
     .factory("authService", ['$q', '$location', '$rootScope', 'endPointCollection', function ($q, $location, $rootScope, endPointCollection) {
-
         var authInterceptorServiceFactory = {};
 
-        //对请求头进行拦截
-        var _request = function (config) {
+                //对请求头进行拦截
+                var _request = function (config) {
 
-            config.headers = config.headers || {};
+                    config.headers = config.headers || {};
 
-            var lastTime = localStorage.getItem('lastTime');
+                    var lastTime = localStorage.getItem('lastTime');
 
-            // 待对token过期时间的验证)若过期则向服务器端请求重定向
-            if (lastTime != null) {
-                var timeOut = Date.now() - lastTime;
-                localStorage.setItem('lastTime', Date.now());
+                    // 待对token过期时间的验证)若过期则向服务器端请求重定向
+                    if (lastTime != null) {
+                        var timeOut = Date.now() - lastTime;
+                        localStorage.setItem('lastTime', Date.now());
 
-                //超时，需要重新登录获取token
-                if (timeOut > 60 * 1000) {
-                    $rootScope.isLog = undefined;
-                    endPointCollection.isLog = false;
-                    localStorage.removeItem("token");
-                    localStorage.removeItem("currTime");
-                    localStorage.removeItem("lastTime");
-                    localStorage.removeItem("userName");
+                        //超时，需要重新登录获取token
+                        if (timeOut > 60 * 1000) {
+                            $rootScope.isLog = undefined;
+                            endPointCollection.isLog = false;
+                            localStorage.removeItem("token");
+                            localStorage.removeItem("currTime");
+                            localStorage.removeItem("lastTime");
+                            localStorage.removeItem("userName");
 
-                    $location.path('/loginError');
-                }
-                else {
-                    var accessToken = localStorage.getItem('token');
-                    var userName = localStorage.getItem('userName');
+                            $location.path('/loginError');
+                        }
+                        else {
+                            var accessToken = localStorage.getItem('token');
+                            var userName = localStorage.getItem('userName');
 
-                    if (accessToken != null && userName != null) {
-                        config.headers['X-Auth-Token'] = accessToken;
+                            if (accessToken != null && userName != null) {
+                                config.headers['X-Auth-Token'] = accessToken;
+                            }
+                        }
                     }
+                    else {
+                        $location.path('/loginError');
+                    }
+                    return config;
+                };
+
+                //对响应头进行拦截；
+                var _response = function (response) {
+                    if (response.data.error) {
+                        alert(response.data.error.message);
+                    }
+                    return response;
                 }
-            }
-            else {
-                $location.path('/loginError');
-            }
-            return config;
-        };
 
-        //对响应头进行拦截
-        var _response = function (response) {
-            if (response.data.error) {
-                alert(response.data.error.message);
-            }
-            return response;
-        }
+                var _responseError = function (rejection) {
+                    alert("Code:" + rejection.status);
+                    return $q.reject(rejection);
+                }
 
-        var _responseError = function (rejection) {
-            alert("Code:" + rejection.status);
-            return $q.reject(rejection);
-        }
+                authInterceptorServiceFactory.request = _request;
+                authInterceptorServiceFactory.response = _response;
+                authInterceptorServiceFactory.responseError = _responseError;
 
-        authInterceptorServiceFactory.request = _request;
-        authInterceptorServiceFactory.response = _response;
-        authInterceptorServiceFactory.responseError = _responseError;
-
-        return authInterceptorServiceFactory;
-    }])
-    .config(['$httpProvider', function ($httpProvider) {
-        $httpProvider.interceptors.push('authService');
-    }]);
+                return authInterceptorServiceFactory;
+            }])
+            .config(['$httpProvider', function ($httpProvider) {
+                $httpProvider.interceptors.push('authService');
+            }]);
