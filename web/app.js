@@ -59,7 +59,35 @@ angular.module("app", [
             : data;
     }];
 })
-//保存所有endpoints的集合
+    .factory("myHttpService", ['$http', function ($http) {
+        var service = {};
+
+        //servletUrl请求提交的servlet;requestUrl为restful api
+        var _get = function (servletUrl, requestUrl) {
+            return $http({
+                'method': 'get',
+                'url': servletUrl,
+                'headers': {
+                    'url': requestUrl
+                }
+            });
+        }
+
+        //servletUrl请求提交的servlet;requestUrl为restful api;body为请求的数据体
+        var _post = function (servletUrl, requestUrl, body) {
+            return $http({
+                'method': 'post',
+                'url': servletUrl,
+                'data': body
+            });
+        }
+
+        service.get = _get;
+        service.post = _post;
+
+        return service;
+    }])
+    //保存所有endpoints的集合
     .factory("endPointCollection", function () {
         var service = {};
         service.elements = new Array();
@@ -76,11 +104,36 @@ angular.module("app", [
             return (this.elements.length < 1);
         }
 
-        service.url = function (name) {
+        //根据type返回对应的adminURL
+        service.adminURL = function (type) {
             if (!service.isEmpty()) {
                 for (var i = 0; i < this.elements.length; i++) {
-                    if (this.elements[i].name == name) {
+                    if (this.elements[i].type == type) {
                         return this.elements[i].adminURL;
+                    }
+                }
+            }
+            return null;
+        }
+
+        //根据type返回对应的internalURL
+        service.internalURL = function (type) {
+            if (!service.isEmpty()) {
+                for (var i = 0; i < this.elements.length; i++) {
+                    if (this.elements[i].type == type) {
+                        return this.elements[i].internalURL;
+                    }
+                }
+            }
+            return null;
+        }
+
+        //根据type返回对应的publicURL
+        service.publicURL = function (type) {
+            if (!service.isEmpty()) {
+                for (var i = 0; i < this.elements.length; i++) {
+                    if (this.elements[i].type == type) {
+                        return this.elements[i].publicURL;
                     }
                 }
             }
@@ -97,6 +150,15 @@ angular.module("app", [
 
         return service;
     })
+    //保存所有请求的url，需要时直接在service添加对应的变量
+    .factory("serviceListService", function () {
+        var service = {};
+
+        service.serviceDetail = "/servers/detail";
+
+        return service;
+    })
+
     //创建请求拦截器
     .factory("authService", ['$q', '$location', '$rootScope', function ($q, $location, $rootScope) {
         var authInterceptorServiceFactory = {};
@@ -113,12 +175,11 @@ angular.module("app", [
 
             var lastTime = localStorage.getItem('lastTime');
 
-            var timeOut = Date.now() - lastTime;
-
-            if (timeOut < 1800000) {
+            // TODO(待对token过期时间的验证)若过期则向服务器端请求重定向
+            if (lastTime != null) {
+                var timeOut = Date.now() - lastTime;
                 localStorage.setItem('lastTime', Date.now());
             }
-
             return config;
         };
 
@@ -126,6 +187,6 @@ angular.module("app", [
 
         return authInterceptorServiceFactory;
     }])
-    .config(['$httpProvider',function ($httpProvider) {
+    .config(['$httpProvider', function ($httpProvider) {
         $httpProvider.interceptors.push('authService');
     }]);

@@ -6,4 +6,7 @@ angular.module("app.images", ['ngRoute'])
         })
     }])
     .controller("imageController", function ($scope, $http, $location) {
+
+
+
     });
