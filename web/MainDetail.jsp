@@ -89,6 +89,10 @@
                             <ul style="height:auto">
                                 <li><a href="#showNetwork"><i class="glyphicon glyphicon-user"></i>网络</a></li>
                                 <li><a href="#showRoute"><i class="glyphicon glyphicon-th-list"></i>路由</a></li>
+                                <li><a href="#showPort"><i class="glyphicon glyphicon-th-list"></i>端口</a></li>
+                                <li><a href="#showSecurityGroups"><i class="glyphicon glyphicon-th-list"></i>安全组</a></li>
+                                <li><a href="#showListSubnets"><i class="glyphicon glyphicon-th-list"></i>子网</a></li>
+                                <li><a href="#showListFloatingIPs"><i class="glyphicon glyphicon-th-list"></i>IP地址</a></li>
                             </ul>
                         </div>
                     </div>
@@ -135,6 +139,10 @@
 
 <script src="app/components/network/network.js"></script>
 <script src="app/components/network/route.js"></script>
+<script src="app/components/network/ListPorts.js"></script>
+<script src="app/components/network/ListSecurityGroups.js"></script>
+<script src="app/components/network/ListSubnets.js"></script>
+<script src="app/components/network/ListFloatingIPs.js"></script>
 
 <script src="app/components/user/program.js"></script>
 <script src="app/components/user/user.js"></script>

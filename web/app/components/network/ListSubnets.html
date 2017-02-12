@@ -1,5 +1,5 @@
-<div ng-controller="routeController">
-    <h2>路由列表清单</h2>
+<div ng-controller="listSubnetsController">
+    <h2>子网列表清单</h2>
 
     <div class="container-fluid">
         <div class="row-fluid">
@@ -8,14 +8,14 @@
                     <thead>
                     <tr>
                         <th>名称</th>
-                        <th>状态</th>
+                        <th>Gateway IP</th>
                         <th>ID值</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr ng-repeat="server in list">
                         <td>{{server.name}}</td>
-                        <td>{{server.status}}</td>
+                        <td>{{server.gateway_ip}}</td>
                         <td>{{server.id}}</td>
                     </tr>
                     </tbody>

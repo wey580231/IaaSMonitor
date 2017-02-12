@@ -38,8 +38,6 @@ angular.module("app.serversInfo", ['ngRoute'])
                 });
         }
 
-        alert(endPointCollection.adminURL('compute') + "___" + serviceListService.serviceDetail);
-
         myHttpService.get('/mainController', endPointCollection.adminURL('compute') + serviceListService.serviceDetail)
             .then(function (response) {
                 $scope.list = response.data.servers;
