@@ -9,6 +9,10 @@ angular.module("app", [
 
     'app.network',
     'app.route',
+    'app.port',
+    'app.securityGroups',
+    'app.listSubnets',
+    'app.listFloatingIPs',
 
     'app.program',
     'app.user'
@@ -155,6 +159,12 @@ angular.module("app", [
         var service = {};
 
         service.serviceDetail = "/servers/detail";
+        service.Listnetworks = "/v2.0/networks";
+        service.Listrouters = "/v2.0/routers";
+        service.Listports = "/v2.0/ports";
+        service.ListSecurityGroups = "/v2.0/security-groups";
+        service.ListSubnets = "/v2.0/subnets";
+        service.ListFloatingIPs = "/v2.0/floatingips";
 
         return service;
     })
