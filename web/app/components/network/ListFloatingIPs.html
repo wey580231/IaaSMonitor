@@ -1,5 +1,5 @@
-<div >
-    <h2>服务器列表清单</h2>
+<div ng-controller="listFloatingIPsController">
+    <h2>端口列表清单</h2>
 
     <div class="container-fluid">
         <div class="row-fluid">
@@ -7,13 +7,15 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th>名称</th>
+                        <th>状态</th>
+                        <th>IP地址</th>
                         <th>ID值</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr ng-repeat="server in list">
-                        <td>{{server.name}}</td>
+                        <td>{{server.status}}</td>
+                        <td>{{server.fixed_ip_address}}</td>
                         <td>{{server.id}}</td>
                     </tr>
                     </tbody>

@@ -5,6 +5,7 @@ angular.module("app.serversInfo", ['ngRoute'])
             controller: 'serversInfo'
         })
     }])
+
     .controller("serversInfo", function ($scope, $http, $location, endPointCollection, $rootScope, myHttpService, serviceListService) {
         if ($rootScope.isLog == undefined) {
             myHttpService.get('/login', null)
@@ -36,6 +37,7 @@ angular.module("app.serversInfo", ['ngRoute'])
                     alert("error");
                 });
         }
+
 
         myHttpService.get('/mainController', endPointCollection.adminURL('compute') + serviceListService.serviceDetail)
             .then(function (response) {

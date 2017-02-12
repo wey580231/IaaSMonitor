@@ -19,10 +19,7 @@ public class HttpServers {
             Response response = client.newCall(request).execute();
             //后台显示HTTP请求结果状态
             System.out.println("请求地址：" + response.request().url() + "--->请求状态：" + response.message());
-            int statusCode = response.code();
-            if (statusCode == 200) {
-                loginJsonString = response.body().string();
-            }
+            loginJsonString = response.body().string();
             return loginJsonString;
         } catch (IOException e) {
             e.printStackTrace();
@@ -42,10 +39,7 @@ public class HttpServers {
             Response response = client.newCall(request).execute();
             //后台显示HTTP请求结果状态
             System.out.println("请求地址：" + response.request().url() + "--->请求状态：" + response.message());
-            int statusCode = response.code();
-            if (statusCode == 200) {
-                jsonString = response.body().string();
-            }
+            jsonString = response.body().string();
             return jsonString;
         } catch (IOException e) {
             e.printStackTrace();
@@ -68,10 +62,7 @@ public class HttpServers {
             Response response = client.newCall(request).execute();
             //后台显示HTTP请求结果状态
             System.out.println("请求地址：" + response.request().url() + "--->请求状态：" + response.message());
-            int statusCode = response.code();
-            if (statusCode == 200) {
-                jsonString = response.body().string();
-            }
+            jsonString = response.body().string();
             return jsonString;
         } catch (IOException e) {
             e.printStackTrace();
