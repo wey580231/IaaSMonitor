@@ -14,7 +14,6 @@
     <script src="javascript/jquery-3.1.1.min.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>
 </head>
-
 <body>
 <div class="container-fluid">
     <div class="row-fluid">
