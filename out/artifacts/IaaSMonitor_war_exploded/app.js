@@ -168,6 +168,10 @@ angular.module("app", [
         var service = {};
 
         service.serviceDetail = "/servers/detail";
+<
+        service.ListUsers="/users";
+        service.ListProjects="/v3/projects";
+
         service.Listnetworks = "/v2.0/networks";
         service.Listrouters = "/v2.0/routers";
         service.Listports = "/v2.0/ports";
@@ -211,12 +215,10 @@ angular.module("app", [
             }
         }
 
-        service.flushPoint = _flushEndPoint;
 
-        return service;
-    }])
     //创建请求拦截器
     .factory("authService", ['$q', '$location', '$rootScope', 'endPointCollection', function ($q, $location, $rootScope, endPointCollection) {
+>>
         var authInterceptorServiceFactory = {};
 
         //对请求头进行拦截

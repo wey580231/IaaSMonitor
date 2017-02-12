@@ -12,7 +12,9 @@ IaaSMonitor project
 * 2017-02-09:增加了doPost()方法HttpPostBodyMaker类用于构造HTTPPost请求的body。
 * 2017-02-09:增加AngularJs，实现登录和主页面的连接，并实现了显示详情页面。
 * 2017-02-10:增加createMultipleServers()、createServer()、doDelete()的Body构造方法。
-* 2017-02-12:增加请求列表服务serviceListService，用于统一管理所有请求的url。
+* 2017-02-12:增加请求列表服务serviceListService，用于统一管理所有请求的url
+* 2017-02-12:增加请求user清单，用于统一管理所有请求的user
+* 2017-02-12:增加请求program清单，用于统一管理所有请求的program
 * 2017-02-12:增加获取网络信息、路由信息、端口信息、子网列表、端口列表页面。
 * 2017-02-12:更新了网络单元下页面的显示信息。
 * 2017-02-12:修复登录失败后依然可以跳转问题;修复请求发送两次问题;
