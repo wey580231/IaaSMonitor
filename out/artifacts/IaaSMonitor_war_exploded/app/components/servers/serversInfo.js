@@ -31,14 +31,11 @@ angular.module("app.serversInfo", ['ngRoute'])
                         }
                         endPointCollection.isLog = true;
                     }
-
                     $rootScope.isLog = true;
                 }, function (response) {
                     alert("error");
                 });
         }
-
-        alert(endPointCollection.adminURL('compute') + "___" + serviceListService.serviceDetail);
 
         myHttpService.get('/mainController', endPointCollection.adminURL('compute') + serviceListService.serviceDetail)
             .then(function (response) {

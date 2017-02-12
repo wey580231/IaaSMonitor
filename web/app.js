@@ -155,11 +155,13 @@ angular.module("app", [
         var service = {};
 
         service.serviceDetail = "/servers/detail";
+        service.ListUsers="/users";
+
 
         return service;
     })
 
-    //创建请求拦截器
+    //创建请求拦截器'
     .factory("authService", ['$q', '$location', '$rootScope', function ($q, $location, $rootScope) {
         var authInterceptorServiceFactory = {};
         var _request = function (config) {

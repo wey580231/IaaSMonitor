@@ -31,7 +31,6 @@ angular.module("app.serversInfo", ['ngRoute'])
                         }
                         endPointCollection.isLog = true;
                     }
-
                     $rootScope.isLog = true;
                 }, function (response) {
                     alert("error");
