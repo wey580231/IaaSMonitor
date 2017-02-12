@@ -71,7 +71,7 @@
                     <div id="accordion-element-754634" class="accordion-body collapse">
                         <div class="accordion-inner">
                             <ul style="height:auto">
-                                <li><a href="#showSurvery"><i class="glyphicon glyphicon-user"></i>概况</a></li>
+                                <li><a href="#showServersInfo"><i class="glyphicon glyphicon-user"></i>概况</a></li>
                                 <li><a href="#showInstances"><i class="glyphicon glyphicon-th-list"></i>实例</a></li>
                                 <li><a href="#showImages"><i class="glyphicon glyphicon-asterisk"></i>镜像</a></li>
                                 <li><a href="#showSafety"><i class="glyphicon glyphicon-edit"></i>访问安全</a></li>
@@ -146,6 +146,7 @@
 
 <script src="app/components/user/program.js"></script>
 <script src="app/components/user/user.js"></script>
+<script src="app/components/user/login.js"></script>
 
 <script>
 //    $(document).ready(function(){

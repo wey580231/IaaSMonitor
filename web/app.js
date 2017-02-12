@@ -15,10 +15,15 @@ angular.module("app", [
     'app.listFloatingIPs',
 
     'app.program',
-    'app.user'
+    'app.user',
+    'app.login'
 ])
+//2017-02-12：初始化获取endpoints
+    .run(function ($http, getEndPointService) {
+        getEndPointService.flushPoint();
+    })
     .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.otherwise({redirectTo: '/showServersInfo'});
+        // $routeProvider.otherwise({redirectTo: '/showServersInfo'});
     }]).config(function ($httpProvider) {
     $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -152,6 +157,10 @@ angular.module("app", [
             return arr;
         }
 
+        service.clear = function () {
+            this.elements = [];
+        }
+
         return service;
     })
     //保存所有请求的url，需要时直接在service添加对应的变量
@@ -168,32 +177,102 @@ angular.module("app", [
 
         return service;
     })
+    .factory("getEndPointService", ['$http', 'endPointCollection', '$rootScope', 'serviceListService', 'myHttpService', function ($http, endPointCollection, $rootScope, serviceListService, myHttpService) {
+        var service = {};
 
+        var _flushEndPoint = function () {
+            if ($rootScope.isLog == undefined) {
+                myHttpService.get('/login', null)
+                    .then(function (response) {
+                        //保存token和获得token的时间，在每次请求的时候，检测token是否过期；如果过期则自动跳转至登录页面；否则需要将token加入当前的header中一并发送
+                        localStorage.setItem("token", response.data.access.token.id);
+                        localStorage.setItem("currTime", Date.now());
+                        localStorage.setItem("lastTime", Date.now());
+                        localStorage.setItem("userName", response.data.access.token.tenant.name);
+                        if (!endPointCollection.isLog) {
+                            //获取所有的endpoints，保存至对象中
+                            var catalog = response.data.access.serviceCatalog;
+                            for (var i = 0; i < catalog.length; i++) {
+                                var obj = new Object;
+                                obj.name = catalog[i].name;
+                                obj.type = catalog[i].type;
+                                obj.adminURL = catalog[i].endpoints[0].adminURL;
+                                obj.region = catalog[i].endpoints[0].region;
+                                obj.internalURL = catalog[i].endpoints[0].internalURL;
+                                obj.id = catalog[i].endpoints[0].id;
+                                obj.publicURL = catalog[i].endpoints[0].publicURL;
+                                endPointCollection.add(obj);
+                            }
+                            endPointCollection.isLog = true;
+                        }
+                        $rootScope.isLog = true;
+                    }, function (response) {
+                    });
+            }
+        }
+
+        service.flushPoint = _flushEndPoint;
+
+        return service;
+    }])
     //创建请求拦截器
-    .factory("authService", ['$q', '$location', '$rootScope', function ($q, $location, $rootScope) {
+    .factory("authService", ['$q', '$location', '$rootScope', 'endPointCollection', function ($q, $location, $rootScope, endPointCollection) {
         var authInterceptorServiceFactory = {};
+
+        //对请求头进行拦截
         var _request = function (config) {
 
             config.headers = config.headers || {};
 
-            var accessToken = localStorage.getItem('token');
-            var userName = localStorage.getItem('userName');
-
-            if (accessToken != null && userName != null) {
-                config.headers['X-Auth-Token'] = accessToken;
-            }
-
             var lastTime = localStorage.getItem('lastTime');
 
-            // TODO(待对token过期时间的验证)若过期则向服务器端请求重定向
+            // 待对token过期时间的验证)若过期则向服务器端请求重定向
             if (lastTime != null) {
                 var timeOut = Date.now() - lastTime;
                 localStorage.setItem('lastTime', Date.now());
+
+                //超时，需要重新登录获取token
+                if (timeOut > 60 * 1000) {
+                    $rootScope.isLog = undefined;
+                    endPointCollection.isLog = false;
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("currTime");
+                    localStorage.removeItem("lastTime");
+                    localStorage.removeItem("userName");
+
+                    $location.path('/loginError');
+                }
+                else {
+                    var accessToken = localStorage.getItem('token');
+                    var userName = localStorage.getItem('userName');
+
+                    if (accessToken != null && userName != null) {
+                        config.headers['X-Auth-Token'] = accessToken;
+                    }
+                }
+            }
+            else {
+                $location.path('/loginError');
             }
             return config;
         };
 
+        //对响应头进行拦截
+        var _response = function (response) {
+            if (response.data.error) {
+                alert(response.data.error.message);
+            }
+            return response;
+        }
+
+        var _responseError = function (rejection) {
+            alert("Code:" + rejection.status);
+            return $q.reject(rejection);
+        }
+
         authInterceptorServiceFactory.request = _request;
+        authInterceptorServiceFactory.response = _response;
+        authInterceptorServiceFactory.responseError = _responseError;
 
         return authInterceptorServiceFactory;
     }])
