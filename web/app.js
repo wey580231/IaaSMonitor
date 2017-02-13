@@ -19,14 +19,16 @@ angular.module("app", [
     'app.login'
 ])
 //2017-02-12：初始化获取endpoints
-    .run(function ($http, getEndPointService) {
+    .run(function ($rootScope, $http, getEndPointService) {
+        $rootScope.MaxTokenExpireTime = 60 * 60 * 1000;
         getEndPointService.flushPoint();
     })
     .config(['$routeProvider', function ($routeProvider) {
         // $routeProvider.otherwise({redirectTo: '/showServersInfo'});
-    }]).config(function ($httpProvider) {
-    $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';
-    $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+    }])
+    .config(function ($httpProvider) {
+        $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';
+        $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
     //解决AngularJS post请求后台无法接收参数问题
     $httpProvider.defaults.transformRequest = [function (data) {
@@ -186,7 +188,7 @@ angular.module("app", [
 
         var _flushEndPoint = function () {
             if ($rootScope.isLog == undefined) {
-                myHttpService.get('/login', null)
+                myHttpService.get('/login', "getEndPoint")
                     .then(function (response) {
                         //保存token和获得token的时间，在每次请求的时候，检测token是否过期；如果过期则自动跳转至登录页面；否则需要将token加入当前的header中一并发送
                         localStorage.setItem("token", response.data.access.token.id);
@@ -223,63 +225,63 @@ angular.module("app", [
     .factory("authService", ['$q', '$location', '$rootScope', 'endPointCollection', function ($q, $location, $rootScope, endPointCollection) {
         var authInterceptorServiceFactory = {};
 
-                //对请求头进行拦截
-                var _request = function (config) {
+        //对请求头进行拦截
+        var _request = function (config) {
 
-                    config.headers = config.headers || {};
+            config.headers = config.headers || {};
 
-                    var lastTime = localStorage.getItem('lastTime');
+            var lastTime = localStorage.getItem('lastTime');
 
-                    // 待对token过期时间的验证)若过期则向服务器端请求重定向
-                    if (lastTime != null) {
-                        var timeOut = Date.now() - lastTime;
-                        localStorage.setItem('lastTime', Date.now());
+            // 待对token过期时间的验证)若过期则向服务器端请求重定向
+            if (lastTime != null) {
+                var timeOut = Date.now() - lastTime;
+                localStorage.setItem('lastTime', Date.now());
 
-                        //超时，需要重新登录获取token
-                        if (timeOut > 60 * 1000) {
-                            $rootScope.isLog = undefined;
-                            endPointCollection.isLog = false;
-                            localStorage.removeItem("token");
-                            localStorage.removeItem("currTime");
-                            localStorage.removeItem("lastTime");
-                            localStorage.removeItem("userName");
+                //超时，需要重新登录获取token
+                if (timeOut > $rootScope.MaxTokenExpireTime) {
+                    $rootScope.isLog = undefined;
+                    endPointCollection.isLog = false;
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("currTime");
+                    localStorage.removeItem("lastTime");
+                    localStorage.removeItem("userName");
 
-                            $location.path('/loginError');
-                        }
-                        else {
-                            var accessToken = localStorage.getItem('token');
-                            var userName = localStorage.getItem('userName');
-
-                            if (accessToken != null && userName != null) {
-                                config.headers['X-Auth-Token'] = accessToken;
-                            }
-                        }
-                    }
-                    else {
-                        $location.path('/loginError');
-                    }
-                    return config;
-                };
-
-                //对响应头进行拦截；
-                var _response = function (response) {
-                    if (response.data.error) {
-                        alert(response.data.error.message);
-                    }
-                    return response;
+                    $location.path('/loginError');
                 }
+                else {
+                    var accessToken = localStorage.getItem('token');
+                    var userName = localStorage.getItem('userName');
 
-                var _responseError = function (rejection) {
-                    alert("Code:" + rejection.status);
-                    return $q.reject(rejection);
+                    if (accessToken != null && userName != null) {
+                        config.headers['X-Auth-Token'] = accessToken;
+                    }
                 }
+            }
+            else {
+                // $location.path('/loginError');
+            }
+            return config;
+        };
 
-                authInterceptorServiceFactory.request = _request;
-                authInterceptorServiceFactory.response = _response;
-                authInterceptorServiceFactory.responseError = _responseError;
+        //对响应头进行拦截
+        var _response = function (response) {
+            if (response.data.error) {
+                alert(response.data.error.message);
+            }
+            return response;
+        }
 
-                return authInterceptorServiceFactory;
-            }])
-            .config(['$httpProvider', function ($httpProvider) {
-                $httpProvider.interceptors.push('authService');
-            }]);
+        var _responseError = function (rejection) {
+            alert("Code:" + rejection.status);
+            return $q.reject(rejection);
+        }
+
+        authInterceptorServiceFactory.request = _request;
+        authInterceptorServiceFactory.response = _response;
+        authInterceptorServiceFactory.responseError = _responseError;
+
+        return authInterceptorServiceFactory;
+    }])
+    .config(['$httpProvider', function ($httpProvider) {
+        $httpProvider.interceptors.push('authService');
+    }]);
