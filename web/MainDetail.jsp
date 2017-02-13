@@ -114,6 +114,19 @@
                 <div class="accordion-group">
                     <div class="accordion-heading">
                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-536559"
+                           href="#accordion-element-754639">对象存储</a>
+                    </div>
+                    <div id="accordion-element-754639" class="accordion-body collapse">
+                        <div class="accordion-inner">
+                            <ul style="height:auto">
+                                <li><a href="#showListContainers"><i class="glyphicon glyphicon-user"></i>容器</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-536559"
                            href="#accordion-element-654638">系统信息</a>
                     </div>
                 </div>
@@ -143,6 +156,9 @@
 <script src="app/components/network/ListSecurityGroups.js"></script>
 <script src="app/components/network/ListSubnets.js"></script>
 <script src="app/components/network/ListFloatingIPs.js"></script>
+
+<%--对象存储-Object Storage 脚本--%>
+<script src="app/components/ObjectStorage/ListContainers.js"></script>
 
 <script src="app/components/user/program.js"></script>
 <script src="app/components/user/user.js"></script>

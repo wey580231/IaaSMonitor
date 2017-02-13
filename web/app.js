@@ -14,6 +14,9 @@ angular.module("app", [
     'app.listSubnets',
     'app.listFloatingIPs',
 
+    // 对象存储-Object Storage
+    'app.ListContainers',
+
     'app.program',
     'app.user',
     'app.login'
@@ -30,46 +33,46 @@ angular.module("app", [
         $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';
         $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
-    //解决AngularJS post请求后台无法接收参数问题
-    $httpProvider.defaults.transformRequest = [function (data) {
+        //解决AngularJS post请求后台无法接收参数问题
+        $httpProvider.defaults.transformRequest = [function (data) {
 
-        var param = function (obj) {
-            var query = '';
-            var name, value, fullSubName, subName, subValue, innerObj, i;
+            var param = function (obj) {
+                var query = '';
+                var name, value, fullSubName, subName, subValue, innerObj, i;
 
-            for (name in obj) {
-                value = obj[name];
+                for (name in obj) {
+                    value = obj[name];
 
-                if (value instanceof Array) {
-                    for (i = 0; i < value.length; ++i) {
-                        subValue = value[i];
-                        fullSubName = name + '[' + i + ']';
-                        innerObj = {};
-                        innerObj[fullSubName] = subValue;
-                        query += param(innerObj) + '&';
+                    if (value instanceof Array) {
+                        for (i = 0; i < value.length; ++i) {
+                            subValue = value[i];
+                            fullSubName = name + '[' + i + ']';
+                            innerObj = {};
+                            innerObj[fullSubName] = subValue;
+                            query += param(innerObj) + '&';
+                        }
+                    } else if (value instanceof Object) {
+                        for (subName in value) {
+                            subValue = value[subName];
+                            fullSubName = name + '[' + subName + ']';
+                            innerObj = {};
+                            innerObj[fullSubName] = subValue;
+                            query += param(innerObj) + '&';
+                        }
+                    } else if (value !== undefined && value !== null) {
+                        query += encodeURIComponent(name) + '='
+                            + encodeURIComponent(value) + '&';
                     }
-                } else if (value instanceof Object) {
-                    for (subName in value) {
-                        subValue = value[subName];
-                        fullSubName = name + '[' + subName + ']';
-                        innerObj = {};
-                        innerObj[fullSubName] = subValue;
-                        query += param(innerObj) + '&';
-                    }
-                } else if (value !== undefined && value !== null) {
-                    query += encodeURIComponent(name) + '='
-                        + encodeURIComponent(value) + '&';
                 }
-            }
 
-            return query.length ? query.substr(0, query.length - 1) : query;
-        };
+                return query.length ? query.substr(0, query.length - 1) : query;
+            };
 
-        return angular.isObject(data) && String(data) !== '[object File]'
-            ? param(data)
-            : data;
-    }];
-})
+            return angular.isObject(data) && String(data) !== '[object File]'
+                ? param(data)
+                : data;
+        }];
+    })
     .factory("myHttpService", ['$http', function ($http) {
         var service = {};
 
@@ -171,8 +174,8 @@ angular.module("app", [
 
         service.serviceDetail = "/servers/detail";
 
-        service.ListUsers="/users";
-        service.ListProjects="/v3/projects";
+        service.ListUsers = "/users";
+        service.ListProjects = "/v3/projects";
 
         service.Listnetworks = "/v2.0/networks";
         service.Listrouters = "/v2.0/routers";
@@ -180,6 +183,9 @@ angular.module("app", [
         service.ListSecurityGroups = "/v2.0/security-groups";
         service.ListSubnets = "/v2.0/subnets";
         service.ListFloatingIPs = "/v2.0/floatingips";
+
+        // 对象存储API-Object Storage API
+        service.ListContainers = "?format=json";
 
         return service;
     })
