@@ -19,14 +19,16 @@ angular.module("app", [
     'app.login'
 ])
 //2017-02-12：初始化获取endpoints
-    .run(function ($http, getEndPointService) {
+    .run(function ($rootScope, $http, getEndPointService) {
+        $rootScope.MaxTokenExpireTime = 60 * 60 * 1000;
         getEndPointService.flushPoint();
     })
     .config(['$routeProvider', function ($routeProvider) {
         // $routeProvider.otherwise({redirectTo: '/showServersInfo'});
-    }]).config(function ($httpProvider) {
-    $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';
-    $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+    }])
+    .config(function ($httpProvider) {
+        $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';
+        $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
     //解决AngularJS post请求后台无法接收参数问题
     $httpProvider.defaults.transformRequest = [function (data) {
@@ -168,7 +170,7 @@ angular.module("app", [
         var service = {};
 
         service.serviceDetail = "/servers/detail";
-<
+
         service.ListUsers="/users";
         service.ListProjects="/v3/projects";
 
@@ -186,7 +188,7 @@ angular.module("app", [
 
         var _flushEndPoint = function () {
             if ($rootScope.isLog == undefined) {
-                myHttpService.get('/login', null)
+                myHttpService.get('/login', "getEndPoint")
                     .then(function (response) {
                         //保存token和获得token的时间，在每次请求的时候，检测token是否过期；如果过期则自动跳转至登录页面；否则需要将token加入当前的header中一并发送
                         localStorage.setItem("token", response.data.access.token.id);
@@ -215,10 +217,12 @@ angular.module("app", [
             }
         }
 
+        service.flushPoint = _flushEndPoint;
 
+        return service;
+    }])
     //创建请求拦截器
     .factory("authService", ['$q', '$location', '$rootScope', 'endPointCollection', function ($q, $location, $rootScope, endPointCollection) {
->>
         var authInterceptorServiceFactory = {};
 
         //对请求头进行拦截
@@ -234,7 +238,7 @@ angular.module("app", [
                 localStorage.setItem('lastTime', Date.now());
 
                 //超时，需要重新登录获取token
-                if (timeOut > 60 * 1000) {
+                if (timeOut > $rootScope.MaxTokenExpireTime) {
                     $rootScope.isLog = undefined;
                     endPointCollection.isLog = false;
                     localStorage.removeItem("token");
@@ -254,7 +258,7 @@ angular.module("app", [
                 }
             }
             else {
-                $location.path('/loginError');
+                // $location.path('/loginError');
             }
             return config;
         };

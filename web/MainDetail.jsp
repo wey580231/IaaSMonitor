@@ -87,7 +87,7 @@
                     <div id="accordion-element-754636" class="accordion-body collapse">
                         <div class="accordion-inner">
                             <ul style="height:auto">
-                                <li><a href="#showNetwork"><i class="glyphicon glyphicon-user"></i>网络</a></li>
+                                <li><a href="#showNetwork"><i class="glyphicon glyphicon-network"></i>网络</a></li>
                                 <li><a href="#showRoute"><i class="glyphicon glyphicon-th-list"></i>路由</a></li>
                                 <li><a href="#showPort"><i class="glyphicon glyphicon-th-list"></i>端口</a></li>
                                 <li><a href="#showSecurityGroups"><i class="glyphicon glyphicon-th-list"></i>安全组</a></li>
