@@ -23,11 +23,11 @@
                     <input type="hidden" name="requestUrl" value="http://172.17.203.101:5000/v2.0/tokens">
                     <legend>登录</legend>
                     <label>项目名</label>
-                    <input type="text" name="tenantName"/>
+                    <input type="text" name="tenantName" value="swiftproj"/>
                     <label>用户名</label>
-                    <input type="text" name="userName"/>
+                    <input type="text" name="userName" value="testsw"/>
                     <label>密码</label>
-                    <input type="password" name="passWord"/><br>
+                    <input type="password" name="passWord" value="testsw"/><br>
                     <c:if test="${sessionScope.errorInfo.length()>0}" var="condition" scope="session">
                         <h4><span class="label label-danger">${sessionScope.errorInfo}</span></h4>
                     </c:if>
