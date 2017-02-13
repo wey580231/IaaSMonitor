@@ -23,6 +23,7 @@ angular.module("app", [
 ])
 //2017-02-12：初始化获取endpoints
     .run(function ($rootScope, $http, getEndPointService) {
+        $rootScope.requestUrl = "http://172.17.203.101:5000/v2.0/tokens";
         $rootScope.MaxTokenExpireTime = 60 * 60 * 1000;
         getEndPointService.flushPoint();
     })
@@ -64,7 +65,6 @@ angular.module("app", [
                             + encodeURIComponent(value) + '&';
                     }
                 }
-
                 return query.length ? query.substr(0, query.length - 1) : query;
             };
 
@@ -189,10 +189,10 @@ angular.module("app", [
 
         return service;
     })
-    .factory("getEndPointService", ['$http', 'endPointCollection', '$rootScope', 'serviceListService', 'myHttpService', function ($http, endPointCollection, $rootScope, serviceListService, myHttpService) {
+    .factory("getEndPointService", ['$http', 'endPointCollection', '$rootScope', 'serviceListService', 'myHttpService', '$location', function ($http, endPointCollection, $rootScope, serviceListService, myHttpService, $location) {
         var service = {};
 
-        var _flushEndPoint = function () {
+        var _flushEndPoint = function (directUrl) {
             if ($rootScope.isLog == undefined) {
                 myHttpService.get('/login', "getEndPoint")
                     .then(function (response) {
@@ -218,6 +218,9 @@ angular.module("app", [
                             endPointCollection.isLog = true;
                         }
                         $rootScope.isLog = true;
+                        if (directUrl != undefined && directUrl.length > 0) {
+                            $location.url(directUrl);
+                        }
                     }, function (response) {
                     });
             }
@@ -231,6 +234,17 @@ angular.module("app", [
     .factory("authService", ['$q', '$location', '$rootScope', 'endPointCollection', function ($q, $location, $rootScope, endPointCollection) {
         var authInterceptorServiceFactory = {};
 
+        var _logOut = function () {
+            $rootScope.isLog = undefined;
+            endPointCollection.isLog = false;
+            endPointCollection.clear();
+
+            localStorage.removeItem("token");
+            localStorage.removeItem("currTime");
+            localStorage.removeItem("lastTime");
+            localStorage.removeItem("userName");
+        }
+
         //对请求头进行拦截
         var _request = function (config) {
 
@@ -242,17 +256,9 @@ angular.module("app", [
             if (lastTime != null) {
                 var timeOut = Date.now() - lastTime;
                 localStorage.setItem('lastTime', Date.now());
-
                 //超时，需要重新登录获取token
                 if (timeOut > $rootScope.MaxTokenExpireTime) {
-                    $rootScope.isLog = undefined;
-                    endPointCollection.isLog = false;
-                    localStorage.removeItem("token");
-                    localStorage.removeItem("currTime");
-                    localStorage.removeItem("lastTime");
-                    localStorage.removeItem("userName");
-
-                    $location.path('/loginError');
+                    _logOut();
                 }
                 else {
                     var accessToken = localStorage.getItem('token');
@@ -264,7 +270,7 @@ angular.module("app", [
                 }
             }
             else {
-                // $location.path('/loginError');
+                $location.path('/loginError');
             }
             return config;
         };
