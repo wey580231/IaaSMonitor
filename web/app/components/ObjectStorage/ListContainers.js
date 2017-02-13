@@ -11,4 +11,14 @@ angular.module("app.ListContainers", ['ngRoute'])
                 $scope.list = response.data;
             }, function (response) {
             });
+        $scope.doPressed = function (event) {
+            var buttonLable = event.target.outerText;
+            $scope.dialogTitie = buttonLable;
+
+            myHttpService.get('/mainController', endPointCollection.adminURL('object-store') + "/" + buttonLable + serviceListService.ListContainers)
+                .then(function (response) {
+                    $scope.fileList = response.data;
+                }, function (response) {
+                });
+        }
     });

@@ -24,7 +24,7 @@ angular.module("app", [
 //2017-02-12：初始化获取endpoints
     .run(function ($rootScope, $http, getEndPointService) {
         $rootScope.requestUrl = "http://172.17.203.101:5000/v2.0/tokens";
-        $rootScope.MaxTokenExpireTime = 5 * 1000;
+        $rootScope.MaxTokenExpireTime = 60 * 60 * 1000;
         getEndPointService.flushPoint();
     })
     .config(['$routeProvider', function ($routeProvider) {
@@ -65,7 +65,6 @@ angular.module("app", [
                             + encodeURIComponent(value) + '&';
                     }
                 }
-
                 return query.length ? query.substr(0, query.length - 1) : query;
             };
 
@@ -255,7 +254,7 @@ angular.module("app", [
 
             // 待对token过期时间的验证)若过期则向服务器端请求重定向
             if (lastTime != null) {
-                var timeOut = Date.now() - lastTime;
+                var timeOut = Date.nohttp://172.17.201.101:8080/v1/AUTH_6155bd0b64ed4ea6928920cc4f7c8693/testc?format=jsonw() - lastTime;
                 localStorage.setItem('lastTime', Date.now());
                 //超时，需要重新登录获取token
                 if (timeOut > $rootScope.MaxTokenExpireTime) {

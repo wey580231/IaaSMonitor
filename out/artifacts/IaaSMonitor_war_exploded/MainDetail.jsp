@@ -29,7 +29,7 @@
             display: block;
             height: 30px;
             margin-bottom: 1px;
-            padding:2px;
+            padding: 2px;
             line-height: 30px;
         }
 
@@ -90,9 +90,11 @@
                                 <li><a href="#showNetwork"><i class="glyphicon glyphicon-network"></i>网络</a></li>
                                 <li><a href="#showRoute"><i class="glyphicon glyphicon-th-list"></i>路由</a></li>
                                 <li><a href="#showPort"><i class="glyphicon glyphicon-th-list"></i>端口</a></li>
-                                <li><a href="#showSecurityGroups"><i class="glyphicon glyphicon-th-list"></i>安全组</a></li>
+                                <li><a href="#showSecurityGroups"><i class="glyphicon glyphicon-th-list"></i>安全组</a>
+                                </li>
                                 <li><a href="#showListSubnets"><i class="glyphicon glyphicon-th-list"></i>子网</a></li>
-                                <li><a href="#showListFloatingIPs"><i class="glyphicon glyphicon-th-list"></i>IP地址</a></li>
+                                <li><a href="#showListFloatingIPs"><i class="glyphicon glyphicon-th-list"></i>IP地址</a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -165,28 +167,28 @@
 <script src="app/components/user/login.js"></script>
 
 <script>
-//    $(document).ready(function(){
-//
-//        loadData();
-//
-//        function loadData() {
-//            var returnvalue;
-//            var options = {
-//                type: 'GET',
-//                url: "/mainController",
-//                async:false,
-//                success: function (data) {
-//                    alert("success");
-//                },
-//                dataType: "json",
-//                error: function (data) {
-//                    alert("error");
-//                }
-//            };
-//            $.ajax(options);
-//            return returnvalue;
-//        }
-//    });
+    //    $(document).ready(function(){
+    //
+    //        loadData();
+    //
+    //        function loadData() {
+    //            var returnvalue;
+    //            var options = {
+    //                type: 'GET',
+    //                url: "/mainController",
+    //                async:false,
+    //                success: function (data) {
+    //                    alert("success");
+    //                },
+    //                dataType: "json",
+    //                error: function (data) {
+    //                    alert("error");
+    //                }
+    //            };
+    //            $.ajax(options);
+    //            return returnvalue;
+    //        }
+    //    });
 
 </script>
 </html>
