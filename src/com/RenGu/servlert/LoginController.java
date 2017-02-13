@@ -18,10 +18,11 @@ public class LoginController extends HttpServlet {
 
         String name = req.getParameter("userName");
         String passWord = req.getParameter("passWord");
+        String tenantName = req.getParameter("tenantName");
         String requestUrl = req.getParameter("requestUrl");
 
         if (name != null && passWord != null && name.length() > 0 && passWord.length() > 0) {
-            String result = HttpServers.doLogin(name, passWord, requestUrl);
+            String result = HttpServers.doLogin(name, passWord, tenantName, requestUrl);
 
             if (result.contains("access")) {
                 req.getSession().setAttribute(SaveLogin, result);

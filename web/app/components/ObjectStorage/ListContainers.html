@@ -1,0 +1,27 @@
+<div>
+    <h2>容器列表清单</h2>
+
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>对象计数</th>
+                        <th>大小(MB)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="server in list">
+                        <td>{{server.name}}</td>
+                        <td>{{server.count}}</td>
+                        <td>{{server.bytes /1024/1024}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
