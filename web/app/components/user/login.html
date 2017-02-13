@@ -1,3 +1,19 @@
 <div>
-    <h1>需要重新登录</h1>
+    <h1>身份验证已过期，请重新登录</h1>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <fieldset>
+                    <legend>登录</legend>
+                    <label>项目名</label>
+                    <input type="text" ng-model="tenantName"/>
+                    <label>用户名</label>
+                    <input type="text" ng-model="userName"/>
+                    <label>密码</label>
+                    <input type="password" ng-model="passWord"/><br>
+                    <button class="btn" ng-click="reload()">提交</button>
+                </fieldset>
+            </div>
+        </div>
+    </div>
 </div>
