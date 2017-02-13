@@ -5,11 +5,11 @@ import okhttp3.*;
 import java.io.IOException;
 
 public class HttpServers {
-    public static String doLogin(String userName, String passWord, String url) {
+    public static String doLogin(String userName, String passWord, String tenantName, String url) {
         String loginJsonString = "";
         OkHttpClient client = new OkHttpClient();
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\r\n \"auth\": {\r\n        \"tenantName\": \"admin\",\r\n        \"passwordCredentials\": {\r\n            \"username\": \"" + userName + "\",\r\n            \"password\": \"" + passWord + "\"\r\n        }\r\n    }\r\n}");
+        RequestBody body = RequestBody.create(mediaType, "{\r\n \"auth\": {\r\n        \"tenantName\": \"" + tenantName + "\",\r\n        \"passwordCredentials\": {\r\n            \"username\": \"" + userName + "\",\r\n            \"password\": \"" + passWord + "\"\r\n        }\r\n    }\r\n}");
         Request request = new Request.Builder()
                 .url(url)
                 .post(body)

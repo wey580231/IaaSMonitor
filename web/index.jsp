@@ -22,6 +22,8 @@
                 <fieldset>
                     <input type="hidden" name="requestUrl" value="http://172.17.203.101:5000/v2.0/tokens">
                     <legend>登录</legend>
+                    <label>项目名</label>
+                    <input type="text" name="tenantName"/>
                     <label>用户名</label>
                     <input type="text" name="userName"/>
                     <label>密码</label>
