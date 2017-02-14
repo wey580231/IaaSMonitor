@@ -18,22 +18,24 @@
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="span12">
-            <form action="/login" method="post">
-                <fieldset>
-                    <input type="hidden" name="requestUrl" value="http://172.17.203.101:5000/v2.0/tokens">
-                    <legend>登录</legend>
-                    <label>项目名</label>
-                    <input type="text" name="tenantName" value="admin"/>
-                    <label>用户名</label>
-                    <input type="text" name="userName" value="admin"/>
-                    <label>密码</label>
-                    <input type="password" name="passWord" value="admin"/><br>
-                    <c:if test="${sessionScope.errorInfo.length()>0}" var="condition" scope="session">
-                        <h4><span class="label label-warning">${sessionScope.errorInfo}</span></h4>
-                    </c:if>
-                    <button class="btn" type="submit">提交</button>
-                </fieldset>
-            </form>
+            <div class="center-block">
+                <form action="/login" method="post">
+                    <fieldset>
+                        <input type="hidden" name="requestUrl" value="http://172.17.203.101:5000/v2.0/tokens">
+                        <legend>登录</legend>
+                        <label>项目名</label>
+                        <input type="text" name="tenantName" value="admin"/>
+                        <label>用户名</label>
+                        <input type="text" name="userName" value="admin"/>
+                        <label>密码</label>
+                        <input type="password" name="passWord" value="admin"/><br>
+                        <c:if test="${sessionScope.errorInfo.length()>0}" var="condition" scope="session">
+                            <h4><span class="label label-warning">${sessionScope.errorInfo}</span></h4>
+                        </c:if>
+                        <button class="btn" type="submit">提交</button>
+                    </fieldset>
+                </form>
+            </div>
         </div>
     </div>
 </div>
