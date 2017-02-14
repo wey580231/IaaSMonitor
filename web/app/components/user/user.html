@@ -1,24 +1,39 @@
-<div ng-controller="userController">
-    <h2>用户列表</h2>
-
+<div>
+    <h3>用户列表</h3>
     <div class="container-fluid">
         <div class="row-fluid">
             <div class="span12">
-                <table class="table">
+                <button type="button" class="btn btn-info btn-lg" ng-click="addUser()" data-target="#addUser"
+                        data-target="#modal-container-553362" role="button" data-toggle="modal">添加用户
+                </button>
+                <button type="button" class="btn btn-danger btn-lg" ng-click="deleteUser()">删除用户</button>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <table class="table table-striped">
                     <thead>
-                    <tr>
+                    <tr class="success">
+                        <th><input type="checkbox" id="selectAll"></th>
                         <th>名称</th>
                         <th>邮箱</th>
-                        <th>ID值</th>
+                        <th>用户ID</th>
                         <th>激活</th>
+                        <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr ng-repeat="server in list">
-                        <td>{{server.name}}</td>
+                        <td><input type="checkbox"></td>
+                        <td><a href="#viewUser?id={{server.id}}">{{server.name}}</a></td>
                         <td>{{server.email}}</td>
                         <td>{{server.id}}</td>
                         <td>{{server.enabled}}</td>
+                        <td>
+                            <button type="button" class="btn btn-primary btn-sm cellBtn">编 辑</button>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -26,4 +41,44 @@
         </div>
     </div>
 
+    <div id="addUser" class="modal hide fade createUser" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true" style="width:35%;height:65%">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">
+                创建用户
+            </h3>
+        </div>
+        <div class="modal-body">
+            <label>用户名*</label>
+            <input type="text" placeholder="Name" ng-model="userName">
+
+            <label>邮箱*</label>
+            <input type="text" placeholder="Email" ng-model="email">
+
+            <label>密码*</label>
+            <input type="password" placeholder="Password" ng-model="password">
+
+            <label>确认密码*</label>
+            <input type="password" placeholder="Confirm Password" ng-model="confimPassword">
+
+            <label>主项目*</label>
+            <input type="text" placeholder="" ng-model="mainProgram">
+
+            <label>角色*</label>
+            <input type="text" placeholder="Role" ng-model="role">
+
+            <label class="checkbox">
+                <input type="checkbox" ng-model="active"> 激活
+            </label>
+            <label ng-if="showWarning" ng-init="showWarning=false"
+                   class="label label-warning">{{errorMessage}}</label><br>
+            <label ng-if="showSuccess" ng-init="showSuccess=false"
+                   class="label label-success">{{successMessage}}</label><br>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true" ng-click="cancelForm()">取消</button>
+            <button class="btn btn-primary" ng-click="submitForm()">创建用户</button>
+        </div>
+    </div>
 </div>

@@ -5,7 +5,17 @@ angular.module('app.login', ['ngRoute']).config(['$routeProvider', function ($ro
     })
 }])
     .controller("loginController", function ($scope, $rootScope, $location, endPointCollection, myHttpService, serviceListService, getEndPointService) {
+
+        $scope.showWarning = false;
+
         $scope.reload = function () {
+
+            if ($scope.userName == undefined || $scope.passWord == undefined || $scope.tenantName == undefined) {
+                $scope.showWarning = true;
+                $scope.warnInfo = "Empty Parameters!";
+                return;
+            }
+
             if ($scope.userName != null && $scope.passWord != null) {
                 var data = {
                     "userName": $scope.userName,
@@ -14,16 +24,18 @@ angular.module('app.login', ['ngRoute']).config(['$routeProvider', function ($ro
                     "tenantName": $scope.tenantName,
                     "method": "Reload"
                 };
-                myHttpService.post('/login', $rootScope.idendityURL, data)
+                myHttpService.post('/login', data)
                     .then(function (response) {
                         if (response.data.result == "success") {
-                            getEndPointService.flushPoint("/showServersInfo");
+                            getEndPointService.flushPoint();
                         }
                         else {
-                            alert("重新输入");
+                            $scope.showWarning = true;
+                            $scope.warnInfo = response.data.result;
                         }
                     }, function (response) {
-                        alert("登录失败");
+                        $scope.showWarning = true;
+                        $scope.warnInfo = response.data.result;
                     })
             }
         }
