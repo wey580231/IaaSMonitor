@@ -15,7 +15,8 @@
                     <tbody>
                     <tr ng-repeat="server in list">
                         <td>
-                            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-container-45187" , ng-click="doPressed($event)">{{server.name}}
+                            <button class="btn btn-primary btn-lg" data-toggle="modal"
+                                    data-target="#modal-container-45187" , ng-click="doPressed($event)">{{server.name}}
                             </button>
                         </td>
                         <td>{{server.count}}</td>
@@ -25,7 +26,8 @@
                 </table>
 
                 <!--遮罩窗口样式-->
-                <div id="modal-container-45187" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div id="modal-container-45187" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel"
+                     aria-hidden="true">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                         <h3 id="myModalLabel" ng-module="dialogTitie">

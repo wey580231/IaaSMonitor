@@ -23,8 +23,8 @@ public class HttpPostBodyMaker {
         return httpPostBody;
     }
 
-    public static String createUser(String userName , String passWord , String enabled , String domain_id) {
-        String httpPostBody = "{\"user\":{\""+domain_id+"\":\"1789d1\",\"enabled\":"+enabled+",\"name\":\""+userName+"\",\"password\":\""+passWord+"\"}}";
-        return  httpPostBody;
+    public static String createUser(String userName, String passWord, String enabled, String domain_id) {
+        String httpPostBody = "{\"user\": {\"domain_id\": \"" + domain_id + "\",\"enabled\": " + enabled + ",\"name\": \"" + userName + "\",\"password\": \"" + passWord + "\"}}";
+        return httpPostBody;
     }
 }
