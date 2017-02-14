@@ -20,7 +20,8 @@ angular.module("app", [
     'app.program',
     'app.user',
     'app.login',
-    'app.userDetail'
+    'app.userDetail',
+    'app.loginOut'
 ])
 //2017-02-12：初始化获取endpoints
     .run(function ($rootScope, $http, getEndPointService) {
@@ -258,10 +259,8 @@ angular.module("app", [
 
         return service;
     }])
-    //创建请求拦截器
-    .factory("authService", ['$q', '$location', '$rootScope', 'endPointCollection', function ($q, $location, $rootScope, endPointCollection) {
-        var authInterceptorServiceFactory = {};
-
+    .factory("logService", ['$rootScope', 'endPointCollection', function ($rootScope, endPointCollection) {
+        var service = {};
         var _logOut = function () {
             $rootScope.isLog = undefined;
             endPointCollection.isLog = false;
@@ -272,6 +271,14 @@ angular.module("app", [
             localStorage.removeItem("lastTime");
             localStorage.removeItem("userName");
         };
+
+        service.logOut = _logOut;
+
+        return service;
+    }])
+    //创建请求拦截器
+    .factory("authService", ['$q', '$location', '$rootScope', 'endPointCollection','logService', function ($q, $location, $rootScope, endPointCollection,logService) {
+        var authInterceptorServiceFactory = {};
 
         //对请求头进行拦截
         var _request = function (config) {
@@ -291,7 +298,7 @@ angular.module("app", [
                 localStorage.setItem('lastTime', Date.now());
                 //超时，需要重新登录获取token
                 if (timeOut > $rootScope.MaxTokenExpireTime) {
-                    _logOut();
+                    logService.logOut();
                 }
                 else {
                     var accessToken = localStorage.getItem('token');

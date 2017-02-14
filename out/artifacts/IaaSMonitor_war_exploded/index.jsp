@@ -18,7 +18,7 @@
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="span12">
-            <div class="center-block">
+            <div class="center-block" style="width:50%; margin-left:auto; margin-right:auto">
                 <form action="/login" method="post">
                     <fieldset>
                         <input type="hidden" name="requestUrl" value="http://172.17.203.101:5000/v2.0/tokens">
