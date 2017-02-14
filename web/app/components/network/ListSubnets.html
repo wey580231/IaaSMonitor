@@ -8,15 +8,17 @@
                     <thead>
                     <tr>
                         <th>名称</th>
-                        <th>Gateway IP</th>
-                        <th>ID值</th>
+                        <th>网络地址</th>
+                        <th>IP版本</th>
+                        <th>网关IP</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr ng-repeat="server in list">
                         <td>{{server.name}}</td>
+                        <td>{{server.cidr}}</td>
+                        <td>{{server.ip_version}}</td>
                         <td>{{server.gateway_ip}}</td>
-                        <td>{{server.id}}</td>
                     </tr>
                     </tbody>
                 </table>

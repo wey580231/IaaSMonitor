@@ -5,8 +5,10 @@ angular.module("app.images", ['ngRoute'])
             controller: 'imageController'
         })
     }])
-    .controller("imageController", function ($scope, $http, $location) {
-
-
-
+    .controller("imageController", function ($scope, $http, $location, endPointCollection, $rootScope, myHttpService, serviceListService){
+        myHttpService.get('/mainController', endPointCollection.adminURL('image')+ serviceListService.ShowImages)
+            .then(function (response) {
+                $scope.list = response.data.images;
+            }, function (response) {
+            });
     });

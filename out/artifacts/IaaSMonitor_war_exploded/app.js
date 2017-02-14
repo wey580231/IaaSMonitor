@@ -181,11 +181,14 @@ angular.module("app", [
     .factory("serviceListService", function () {
         var service = {};
 
+        service.ListFloatingIpAddresses="/os-floating-ips";
+        service.ListFloatingIps="/v2.0/floatingips";
+        service.ListKeypairs="/os-keypairs";
+        service. ListsecurityGroups="/os-security-groups";
+        service.ShowImages="/v2/images";
         service.serviceDetail = "/servers/detail";
-
-        service.ListUsers = "/users";
-        service.ListProjects = "/v3/projects";
-
+        service.ListUsers="/users";
+        service.ListProjects="/v3/projects";
         service.Listnetworks = "/v2.0/networks";
         service.Listrouters = "/v2.0/routers";
         service.Listports = "/v2.0/ports";

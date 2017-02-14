@@ -1,1 +1,36 @@
-<h2>实例</h2>
+<div ng-controller="instanceController">
+    <h2>实例</h2>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>云主机名称</th>
+                        <th>IP地址</th>
+                        <th>值对</th>
+                        <th>状态</th>
+                        <th>可用域</th>
+                        <th>任务</th>
+                        <th>电源状态</th>
+                        <th>从创建以来</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="server in list">
+                        <td>{{server.name}}</td>
+                        <td>{{server.addresses.admin_internal_net[0].addr}}</td>
+                        <td>{{server.key_name}}</td>
+                        <td>{{server["OS-EXT-STS:vm_state"]}}</td>
+                        <td>{{server["OS-EXT-AZ:availability_zone"]}}</td>
+                        <td>{{server["OS-EXT-STS:task_state"]}}</td>
+                        <td>{{server["OS-EXT-STS:power_state"]}}</td>
+                        <td>{{server.created}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
