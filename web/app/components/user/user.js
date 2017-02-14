@@ -105,7 +105,6 @@ angular.module("app.user", ['ngRoute'])
             var adminUrl = endPointCollection.adminURL("identity");
             if (adminUrl != undefined) {
                 adminUrl = adminUrl.substr(0, adminUrl.length - 5) + serviceListService.DeleteUser + "/" + operateId;
-                console.log(adminUrl + "___deletUser");
                 myHttpService.delete('/mainController', adminUrl)
                     .then(function (response) {
                         $('#deleteUser').modal('hide');
