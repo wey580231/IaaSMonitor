@@ -2,40 +2,57 @@
     <h3>用户列表</h3>
     <div class="container-fluid">
         <div class="row-fluid">
-            <div class="span12">
-                <button type="button" class="btn btn-info btn-lg" ng-click="addUser()" data-target="#addUser"
-                        data-target="#modal-container-553362" role="button" data-toggle="modal">添加用户
+            <div class="span12" style="text-align:right">
+                <button type="button" class="btn btn-info btn-lg" data-target="#addUser"
+                        role="button" data-toggle="modal">添加用户
                 </button>
-                <button type="button" class="btn btn-danger btn-lg" ng-click="deleteUser()">删除用户</button>
+                <button type="button" class="btn btn-danger btn-lg" data-target="#deleteSelectedUser" role="button"
+                        data-toggle="modal" ng-disabled="deleteEnabled">删除用户
+                </button>
             </div>
         </div>
     </div>
-    <div class="container-fluid">
+    <div class="container-fluid" >
         <div class="row-fluid">
             <div class="span12">
-                <table class="table table-striped">
+                <table class="table table-striped table-bordered table-hover">
                     <thead>
                     <tr class="success">
-                        <th><input type="checkbox" id="selectAll"></th>
+                        <th style="text-align:center"><input type="checkbox" id="selectAll" ng-checked="isSelectedAll()"
+                                   ng-click="selectAll($event)"></th>
                         <th>名称</th>
                         <th>邮箱</th>
                         <th>用户ID</th>
                         <th>激活</th>
-                        <th>操作</th>
+                        <th style="text-align:center">操作</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr ng-repeat="server in list">
-                        <td><input type="checkbox"></td>
+                        <td style="text-align:center"><input type="checkbox" ng-checked="isSelected(server.id)"
+                                   ng-click="updateSelection($event,server.id)"></td>
                         <td><a href="#viewUser?id={{server.id}}">{{server.name}}</a></td>
                         <td>{{server.email}}</td>
                         <td>{{server.id}}</td>
                         <td>{{server.enabled}}</td>
-                        <td>
-                            <button type="button" class="btn btn-primary btn-sm cellBtn">编 辑</button>
+                        <td style="text-align:center">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default btn-sm cellBtn" id="{{server.id}}">编 辑
+                                </button>
+                                <button type="button" class="btn btn-default btn-sm cellBtn"
+                                        data-target="#forbiddenUser" data-toggle="modal" id="{{server.id}}"
+                                        ng-click="getForbbidenId(server.name,server.id)">禁 用
+                                </button>
+                                <button type="button" class="btn btn-danger btn-sm cellBtn" data-target="#deleteUser"
+                                        data-toggle="modal" ng-click="getDeleteId(server.name,server.id)">删除
+                                </button>
+                            </div>
                         </td>
                     </tr>
                     </tbody>
+                    <tfoot>
+                    <td colspan="6">共{{list.length}}项</td>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -79,6 +96,64 @@
         <div class="modal-footer">
             <button class="btn" data-dismiss="modal" aria-hidden="true" ng-click="cancelForm()">取消</button>
             <button class="btn btn-primary" ng-click="submitForm()">创建用户</button>
+        </div>
+    </div>
+
+
+    <div id="forbiddenUser" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel222"
+         aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel222">
+                提示
+            </h3>
+        </div>
+        <div class="modal-body">
+            <p>
+                是否禁用{{forbiddenUser}}?
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+            <button class="btn btn-primary" ng-click="confirmForbiddenUser()">确定</button>
+        </div>
+    </div>
+
+    <div id="deleteUser" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel333"
+         aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel333">
+                警告
+            </h3>
+        </div>
+        <div class="modal-body">
+            <p>
+                是否删除当前{{deleteUser}}?
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+            <button class="btn btn-primary" ng-click="confirmDeleteUser()">确定</button>
+        </div>
+    </div>
+
+    <div id="deleteSelectedUser" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel444"
+         aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel444">
+                警告
+            </h3>
+        </div>
+        <div class="modal-body">
+            <p>
+                是否选中的用户?
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+            <button class="btn btn-primary" ng-click="confirmDeleteSelectedUser()">确定</button>
         </div>
     </div>
 </div>

@@ -37,6 +37,10 @@
             display: block;
         }
 
+        .accordion-inner li a:active {
+            background-color: lightgray;
+        }
+
         .accordion-inner li a:hover {
             background-color: rgba(238, 238, 238, 0.36);
         }
@@ -52,6 +56,11 @@
             padding-right: 5px;
         }
 
+        /*.container-fluid {*/
+        /*margin: 0px;*/
+        /*padding: 4px;*/
+        /*}*/
+
         td {
             font-size: 13px;
         }
@@ -61,12 +70,35 @@
 
 <body>
 
-<div class="container-fluid">
-    <div class="row-fluid">
-        <div class="span12" style="height:auto;">
-        </div>
-    </div>
-</div>
+<%--<div class="container-fluid">--%>
+<%--<div class="row-fluid">--%>
+<%--<div class="span12" style="height:auto;background-color:rgb(249,249,249)">--%>
+<%--<div class="span2" style="text-align:center">--%>
+<%--<h4>IaaS监控平台</h4>--%>
+<%--</div>--%>
+<%--<div class="span10" style="text-align:right">--%>
+<%--<a type="button" class="btn btn-default">注 销</a>--%>
+<%--</div>--%>
+<%--</div>--%>
+<%--</div>--%>
+<%--</div>--%>
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href=" "><img src="img/logo.png" alt="IaaS Monitor"/></a>
+            <div class="nav-collapse collapse">
+                <ul class="nav" style="float:right">
+                    <li><a href="#loginOut">注 销</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div><!-- Container -->
+    </div><!-- Nav Bar - Inner -->
+</div><!-- Nav Bar -->
 
 <div class="container-fluid">
     <div class="row-fluid">
@@ -185,6 +217,7 @@
 <script src="app/components/user/user.js"></script>
 <script src="app/components/user/login.js"></script>
 <script src="app/components/user/userDetail.js"></script>
+<script src="app/components/user/loginOut.js"></script>
 
 <script>
     //    $(document).ready(function(){
