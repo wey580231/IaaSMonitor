@@ -9,6 +9,7 @@
                     <tr>
                         <th>名称</th>
                         <th>状态</th>
+                        <th>管理员状态</th>
                         <th>ID值</th>
                     </tr>
                     </thead>
@@ -16,6 +17,7 @@
                     <tr ng-repeat="server in list">
                         <td>{{server.name}}</td>
                         <td>{{server.status}}</td>
+                        <td>{{server.admin_state_up}}</td>
                         <td>{{server.id}}</td>
                     </tr>
                     </tbody>

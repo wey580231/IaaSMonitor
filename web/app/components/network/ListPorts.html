@@ -7,16 +7,20 @@
                 <table class="table">
                     <thead>
                     <tr>
+                        <th>名称</th>
+                        <th>固定IP</th>
+                        <th>连接设备</th>
                         <th>状态</th>
-                        <th>MAC地址</th>
-                        <th>ID值</th>
+                        <th>管理员状态</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr ng-repeat="server in list">
-                        <td>{{server.status}}</td>
-                        <td>{{server.mac_address}}</td>
                         <td>{{server.id}}</td>
+                        <td>{{server.fixed_ips[0].ip_address}}</td>
+                        <td>{{server.device_owner}}</td>
+                        <td>{{server.status}}</td>
+                        <td>{{server.admin_state_up}}</td>
                     </tr>
                     </tbody>
                 </table>
