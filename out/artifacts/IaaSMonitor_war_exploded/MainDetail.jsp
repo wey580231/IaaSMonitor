@@ -41,6 +41,21 @@
             background-color: rgba(238, 238, 238, 0.36);
         }
 
+        table {
+            margin: 2px;
+        }
+
+        .cellBtn {
+            font-size: 13px;
+            padding: 2px;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+
+        td {
+            font-size: 13px;
+        }
+
     </style>
 </head>
 
@@ -60,40 +75,43 @@
                 <div class="accordion-group">
                     <div class="accordion-heading">
                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-536559"
-                           href="#accordion-element-36460">概况</a>
+                           force-Href="#showSummary">概况</a>
                     </div>
                 </div>
                 <div class="accordion-group">
                     <div class="accordion-heading">
                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-536559"
-                           href="#accordion-element-754634">虚拟机</a>
+                           href="#showVMSummary">虚拟机</a>
                     </div>
-                    <div id="accordion-element-754634" class="accordion-body collapse">
+                    <div id="showVMSummary" class="accordion-body collapse">
                         <div class="accordion-inner">
                             <ul style="height:auto">
-                                <li><a href="#showServersInfo"><i class="glyphicon glyphicon-user"></i>概况</a></li>
-                                <li><a href="#showInstances"><i class="glyphicon glyphicon-th-list"></i>实例</a></li>
-                                <li><a href="#showImages"><i class="glyphicon glyphicon-asterisk"></i>镜像</a></li>
-                                <li><a href="#showSafety"><i class="glyphicon glyphicon-edit"></i>访问安全</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-536559"
-                           href="#accordion-element-754636">网络</a>
-                    </div>
-                    <div id="accordion-element-754636" class="accordion-body collapse">
-                        <div class="accordion-inner">
-                            <ul style="height:auto">
-                                <li><a href="#showNetwork"><i class="glyphicon glyphicon-network"></i>网络</a></li>
-                                <li><a href="#showRoute"><i class="glyphicon glyphicon-th-list"></i>路由</a></li>
-                                <li><a href="#showPort"><i class="glyphicon glyphicon-th-list"></i>端口</a></li>
-                                <li><a href="#showSecurityGroups"><i class="glyphicon glyphicon-th-list"></i>安全组</a>
+                                <li><a force-Href="#showServersInfo"><i class="glyphicon glyphicon-user"></i>概况</a></li>
+                                <li><a force-Href="#showInstances"><i class="glyphicon glyphicon-th-list"></i>实例</a>
                                 </li>
-                                <li><a href="#showListSubnets"><i class="glyphicon glyphicon-th-list"></i>子网</a></li>
-                                <li><a href="#showListFloatingIPs"><i class="glyphicon glyphicon-th-list"></i>IP地址</a>
+                                <li><a force-Href="#showImages"><i class="glyphicon glyphicon-asterisk"></i>镜像</a></li>
+                                <li><a force-Href="#showSafety"><i class="glyphicon glyphicon-edit"></i>访问安全</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-536559"
+                           href="#showNetSummary">网络</a>
+                    </div>
+                    <div id="showNetSummary" class="accordion-body collapse">
+                        <div class="accordion-inner">
+                            <ul style="height:auto">
+                                <li><a force-Href="#showNetwork"><i class="glyphicon glyphicon-network"></i>网络</a></li>
+                                <li><a force-Href="#showRoute"><i class="glyphicon glyphicon-th-list"></i>路由</a></li>
+                                <li><a force-Href="#showPort"><i class="glyphicon glyphicon-th-list"></i>端口</a></li>
+                                <li><a force-Href="#showSecurityGroups"><i
+                                        class="glyphicon glyphicon-th-list"></i>安全组</a>
+                                </li>
+                                <li><a force-Href="#showListSubnets"><i class="glyphicon glyphicon-th-list"></i>子网</a>
+                                </li>
+                                <li><a force-Href="#showListFloatingIPs"><i class="glyphicon glyphicon-th-list"></i>IP地址</a>
                                 </li>
                             </ul>
                         </div>
@@ -102,13 +120,13 @@
                 <div class="accordion-group">
                     <div class="accordion-heading">
                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-536559"
-                           href="#accordion-element-654636">身份管理</a>
+                           href="#showLSSummary">对象存储</a>
                     </div>
-                    <div id="accordion-element-654636" class="accordion-body collapse">
+                    <div id="showLSSummary" class="accordion-body collapse">
                         <div class="accordion-inner">
                             <ul style="height:auto">
-                                <li><a href="#showProgram"><i class="glyphicon glyphicon-user"></i>项目</a></li>
-                                <li><a href="#showUser"><i class="glyphicon glyphicon-th-list"></i>用户</a></li>
+                                <li><a force-Href="#showListContainers"><i class="glyphicon glyphicon-user"></i>容器</a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -116,12 +134,13 @@
                 <div class="accordion-group">
                     <div class="accordion-heading">
                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-536559"
-                           href="#accordion-element-754639">对象存储</a>
+                           force-Href="#showIdentitySummary">身份管理</a>
                     </div>
-                    <div id="accordion-element-754639" class="accordion-body collapse">
+                    <div id="showIdentitySummary" class="accordion-body collapse">
                         <div class="accordion-inner">
                             <ul style="height:auto">
-                                <li><a href="#showListContainers"><i class="glyphicon glyphicon-user"></i>容器</a></li>
+                                <li><a force-Href="#showProgram"><i class="glyphicon glyphicon-user"></i>项目</a></li>
+                                <li><a force-Href="#showUser"><i class="glyphicon glyphicon-th-list"></i>用户</a></li>
                             </ul>
                         </div>
                     </div>
@@ -129,7 +148,7 @@
                 <div class="accordion-group">
                     <div class="accordion-heading">
                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-536559"
-                           href="#accordion-element-654638">系统信息</a>
+                           force-Href="#showSystemSummary">系统信息</a>
                     </div>
                 </div>
             </div>
@@ -165,6 +184,7 @@
 <script src="app/components/user/program.js"></script>
 <script src="app/components/user/user.js"></script>
 <script src="app/components/user/login.js"></script>
+<script src="app/components/user/userDetail.js"></script>
 
 <script>
     //    $(document).ready(function(){

@@ -19,10 +19,12 @@ angular.module("app", [
 
     'app.program',
     'app.user',
-    'app.login'
+    'app.login',
+    'app.userDetail'
 ])
 //2017-02-12：初始化获取endpoints
     .run(function ($rootScope, $http, getEndPointService) {
+        $rootScope.orginUrl = "";           //保存上一次点击的链接，当再次登录后，进行页面自动的跳转
         $rootScope.requestUrl = "http://172.17.203.101:5000/v2.0/tokens";
         $rootScope.MaxTokenExpireTime = 60 * 60 * 1000;
         getEndPointService.flushPoint();
@@ -73,6 +75,13 @@ angular.module("app", [
                 : data;
         }];
     })
+    // .config(function ($stateProvider, $urlRouteProvider) {
+    //     $stateProvider.state('viewUser', {
+    //         url: '/viewUser?id',
+    //         controller: 'userController',
+    //         templateUrl: 'app/components/user/userDetail.html'
+    //     });
+    // })
     .factory("myHttpService", ['$http', function ($http) {
         var service = {};
 
@@ -85,16 +94,16 @@ angular.module("app", [
                     'url': requestUrl
                 }
             });
-        }
+        };
 
         //servletUrl请求提交的servlet;requestUrl为restful api;body为请求的数据体
-        var _post = function (servletUrl, requestUrl, body) {
+        var _post = function (servletUrl, body) {
             return $http({
                 'method': 'post',
                 'url': servletUrl,
                 'data': body
             });
-        }
+        };
 
         service.get = _get;
         service.post = _post;
@@ -104,19 +113,19 @@ angular.module("app", [
     //保存所有endpoints的集合
     .factory("endPointCollection", function () {
         var service = {};
-        service.elements = new Array();
+        service.elements = [];
         service.isLog = false;
         service.add = function (obj) {
             this.elements.push(obj);
-        }
+        };
 
         service.size = function () {
             return this.elements.length;
-        }
+        };
 
         service.isEmpty = function () {
             return (this.elements.length < 1);
-        }
+        };
 
         //根据type返回对应的adminURL
         service.adminURL = function (type) {
@@ -128,7 +137,7 @@ angular.module("app", [
                 }
             }
             return null;
-        }
+        };
 
         //根据type返回对应的internalURL
         service.internalURL = function (type) {
@@ -140,7 +149,7 @@ angular.module("app", [
                 }
             }
             return null;
-        }
+        };
 
         //根据type返回对应的publicURL
         service.publicURL = function (type) {
@@ -152,19 +161,19 @@ angular.module("app", [
                 }
             }
             return null;
-        }
+        };
 
         service.values = function () {
-            var arr = new Array();
+            var arr = [];
             for (var i = 0; i < this.elements.length; i++) {
                 arr.push(this.elements[i]);
             }
             return arr;
-        }
+        };
 
         service.clear = function () {
             this.elements = [];
-        }
+        };
 
         return service;
     })
@@ -187,12 +196,16 @@ angular.module("app", [
         // 对象存储API-Object Storage API
         service.ListContainers = "?format=json";
 
+        //user
+        service.CreateUserV3 = "/v3/users";
+        service.UserDetail = "/v3/users/";
+
         return service;
     })
     .factory("getEndPointService", ['$http', 'endPointCollection', '$rootScope', 'serviceListService', 'myHttpService', '$location', function ($http, endPointCollection, $rootScope, serviceListService, myHttpService, $location) {
         var service = {};
 
-        var _flushEndPoint = function (directUrl) {
+        var _flushEndPoint = function () {
             if ($rootScope.isLog == undefined) {
                 myHttpService.get('/login', "getEndPoint")
                     .then(function (response) {
@@ -205,7 +218,7 @@ angular.module("app", [
                             //获取所有的endpoints，保存至对象中
                             var catalog = response.data.access.serviceCatalog;
                             for (var i = 0; i < catalog.length; i++) {
-                                var obj = new Object;
+                                var obj = {};
                                 obj.name = catalog[i].name;
                                 obj.type = catalog[i].type;
                                 obj.adminURL = catalog[i].endpoints[0].adminURL;
@@ -218,13 +231,13 @@ angular.module("app", [
                             endPointCollection.isLog = true;
                         }
                         $rootScope.isLog = true;
-                        if (directUrl != undefined && directUrl.length > 0) {
-                            $location.url(directUrl);
+                        if ($rootScope.orginUrl.length > 0) {
+                            $location.url($rootScope.orginUrl);
                         }
                     }, function (response) {
                     });
             }
-        }
+        };
 
         service.flushPoint = _flushEndPoint;
 
@@ -243,7 +256,7 @@ angular.module("app", [
             localStorage.removeItem("currTime");
             localStorage.removeItem("lastTime");
             localStorage.removeItem("userName");
-        }
+        };
 
         //对请求头进行拦截
         var _request = function (config) {
@@ -251,6 +264,11 @@ angular.module("app", [
             config.headers = config.headers || {};
 
             var lastTime = localStorage.getItem('lastTime');
+
+            //对非错误链接的记录
+            if ($location.url() != "/loginError") {
+                $rootScope.orginUrl = $location.url();
+            }
 
             // 待对token过期时间的验证)若过期则向服务器端请求重定向
             if (lastTime != null) {
@@ -263,7 +281,6 @@ angular.module("app", [
                 else {
                     var accessToken = localStorage.getItem('token');
                     var userName = localStorage.getItem('userName');
-
                     if (accessToken != null && userName != null) {
                         config.headers['X-Auth-Token'] = accessToken;
                     }
@@ -281,12 +298,12 @@ angular.module("app", [
                 alert(response.data.error.message);
             }
             return response;
-        }
+        };
 
         var _responseError = function (rejection) {
             alert("Code:" + rejection.status);
             return $q.reject(rejection);
-        }
+        };
 
         authInterceptorServiceFactory.request = _request;
         authInterceptorServiceFactory.response = _response;
@@ -296,4 +313,22 @@ angular.module("app", [
     }])
     .config(['$httpProvider', function ($httpProvider) {
         $httpProvider.interceptors.push('authService');
-    }]);
+    }])
+    //自定义指令，添加强制刷新当前页面
+    .directive('forceHref', ['$location', '$route',
+        function ($location, $route) {
+            return function (scope, element, attrs) {
+                scope.$watch('forceHref', function () {
+                    if (attrs.forceHref) {
+                        element.attr('href', attrs.forceHref);
+                        element.bind('click', function (event) {
+                            scope.$apply(function () {
+                                if ($location.path().substr(1, $location.path().length - 1) == attrs.forceHref.substr(1, attrs.forceHref.length - 1)) {
+                                    $route.reload();
+                                }
+                            });
+                        });
+                    }
+                });
+            }
+        }]);

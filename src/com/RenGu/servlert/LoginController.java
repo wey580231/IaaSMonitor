@@ -23,7 +23,7 @@ public class LoginController extends HttpServlet {
         String requestUrl = req.getParameter("requestUrl");
         String requestMethod = req.getParameter("method");
 
-        if (name != null && passWord != null && name.length() > 0 && passWord.length() > 0) {
+        if (name != null && passWord != null && tenantName != null && name.length() > 0 && passWord.length() > 0 && tenantName.length() > 0) {
             String result = HttpServers.doLogin(name, passWord, tenantName, requestUrl);
 
             if (result.contains("access")) {
@@ -36,12 +36,20 @@ public class LoginController extends HttpServlet {
                 }
             } else if (result.contains("error")) {
                 if (requestMethod == null) {
-                    req.getSession().setAttribute("errorInfo", "登录失败，请重新输入!");
+                    req.getSession().setAttribute("errorInfo", "Login Error!");
                     resp.sendRedirect("/index.jsp");
                 } else {
-                    String res = "{'result':'fail'}";
+                    String res = "{\"result\":\"Login Error!\"}";
                     resp.getWriter().write(res);
                 }
+            }
+        } else {
+            if (requestMethod == null) {
+                req.getSession().setAttribute("errorInfo", "Empty Parameters!");
+                resp.sendRedirect("/index.jsp");
+            } else if (requestMethod.equals(Reload)) {
+                String res = "{\"result\":\"Empty Parameters!\"}";
+                resp.getWriter().write(res);
             }
         }
     }

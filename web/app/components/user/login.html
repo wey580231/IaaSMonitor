@@ -11,6 +11,9 @@
                     <input type="text" ng-model="userName"/>
                     <label>密码</label>
                     <input type="password" ng-model="passWord"/><br>
+                    <div ng-if="showWarning" ng-init="showWarning=false">
+                        <h4><span class="label label-warning">{{warnInfo}}</span></h4>
+                    </div>
                     <button class="btn" ng-click="reload()">提交</button>
                 </fieldset>
             </div>
