@@ -11,6 +11,7 @@ import java.io.IOException;
 public class LoginController extends HttpServlet {
 
     private final String SaveLogin = "LoginToken";
+    private final String Reload = "Reload";
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -18,17 +19,37 @@ public class LoginController extends HttpServlet {
 
         String name = req.getParameter("userName");
         String passWord = req.getParameter("passWord");
+        String tenantName = req.getParameter("tenantName");
         String requestUrl = req.getParameter("requestUrl");
+        String requestMethod = req.getParameter("method");
 
-        if (name != null && passWord != null && name.length() > 0 && passWord.length() > 0) {
-            String result = HttpServers.doLogin(name, passWord, requestUrl);
+        if (name != null && passWord != null && tenantName != null && name.length() > 0 && passWord.length() > 0 && tenantName.length() > 0) {
+            String result = HttpServers.doLogin(name, passWord, tenantName, requestUrl);
 
             if (result.contains("access")) {
                 req.getSession().setAttribute(SaveLogin, result);
-                resp.sendRedirect("/MainDetail.jsp");
+                if (requestMethod == null) {
+                    resp.sendRedirect("/MainDetail.jsp");
+                } else if (requestMethod != null && requestMethod.equals(Reload)) {
+                    String res = "{\"result\":\"success\"}";
+                    resp.getWriter().write(res);
+                }
             } else if (result.contains("error")) {
-                req.getSession().setAttribute("errorInfo", "登录失败，请重新输入!");
+                if (requestMethod == null) {
+                    req.getSession().setAttribute("errorInfo", "Login Error!");
+                    resp.sendRedirect("/index.jsp");
+                } else {
+                    String res = "{\"result\":\"Login Error!\"}";
+                    resp.getWriter().write(res);
+                }
+            }
+        } else {
+            if (requestMethod == null) {
+                req.getSession().setAttribute("errorInfo", "Empty Parameters!");
                 resp.sendRedirect("/index.jsp");
+            } else if (requestMethod.equals(Reload)) {
+                String res = "{\"result\":\"Empty Parameters!\"}";
+                resp.getWriter().write(res);
             }
         }
     }

@@ -14,12 +14,18 @@ angular.module("app", [
     'app.listSubnets',
     'app.listFloatingIPs',
 
+    // 对象存储-Object Storage
+    'app.ListContainers',
+
     'app.program',
     'app.user',
-    'app.login'
+    'app.login',
+    'app.userDetail'
 ])
 //2017-02-12：初始化获取endpoints
     .run(function ($rootScope, $http, getEndPointService) {
+        $rootScope.orginUrl = "";           //保存上一次点击的链接，当再次登录后，进行页面自动的跳转
+        $rootScope.requestUrl = "http://172.17.203.101:5000/v2.0/tokens";
         $rootScope.MaxTokenExpireTime = 60 * 60 * 1000;
         getEndPointService.flushPoint();
     })
@@ -30,46 +36,52 @@ angular.module("app", [
         $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';
         $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
-    //解决AngularJS post请求后台无法接收参数问题
-    $httpProvider.defaults.transformRequest = [function (data) {
+        //解决AngularJS post请求后台无法接收参数问题
+        $httpProvider.defaults.transformRequest = [function (data) {
 
-        var param = function (obj) {
-            var query = '';
-            var name, value, fullSubName, subName, subValue, innerObj, i;
+            var param = function (obj) {
+                var query = '';
+                var name, value, fullSubName, subName, subValue, innerObj, i;
 
-            for (name in obj) {
-                value = obj[name];
+                for (name in obj) {
+                    value = obj[name];
 
-                if (value instanceof Array) {
-                    for (i = 0; i < value.length; ++i) {
-                        subValue = value[i];
-                        fullSubName = name + '[' + i + ']';
-                        innerObj = {};
-                        innerObj[fullSubName] = subValue;
-                        query += param(innerObj) + '&';
+                    if (value instanceof Array) {
+                        for (i = 0; i < value.length; ++i) {
+                            subValue = value[i];
+                            fullSubName = name + '[' + i + ']';
+                            innerObj = {};
+                            innerObj[fullSubName] = subValue;
+                            query += param(innerObj) + '&';
+                        }
+                    } else if (value instanceof Object) {
+                        for (subName in value) {
+                            subValue = value[subName];
+                            fullSubName = name + '[' + subName + ']';
+                            innerObj = {};
+                            innerObj[fullSubName] = subValue;
+                            query += param(innerObj) + '&';
+                        }
+                    } else if (value !== undefined && value !== null) {
+                        query += encodeURIComponent(name) + '='
+                            + encodeURIComponent(value) + '&';
                     }
-                } else if (value instanceof Object) {
-                    for (subName in value) {
-                        subValue = value[subName];
-                        fullSubName = name + '[' + subName + ']';
-                        innerObj = {};
-                        innerObj[fullSubName] = subValue;
-                        query += param(innerObj) + '&';
-                    }
-                } else if (value !== undefined && value !== null) {
-                    query += encodeURIComponent(name) + '='
-                        + encodeURIComponent(value) + '&';
                 }
-            }
+                return query.length ? query.substr(0, query.length - 1) : query;
+            };
 
-            return query.length ? query.substr(0, query.length - 1) : query;
-        };
-
-        return angular.isObject(data) && String(data) !== '[object File]'
-            ? param(data)
-            : data;
-    }];
-})
+            return angular.isObject(data) && String(data) !== '[object File]'
+                ? param(data)
+                : data;
+        }];
+    })
+    // .config(function ($stateProvider, $urlRouteProvider) {
+    //     $stateProvider.state('viewUser', {
+    //         url: '/viewUser?id',
+    //         controller: 'userController',
+    //         templateUrl: 'app/components/user/userDetail.html'
+    //     });
+    // })
     .factory("myHttpService", ['$http', function ($http) {
         var service = {};
 
@@ -82,16 +94,16 @@ angular.module("app", [
                     'url': requestUrl
                 }
             });
-        }
+        };
 
         //servletUrl请求提交的servlet;requestUrl为restful api;body为请求的数据体
-        var _post = function (servletUrl, requestUrl, body) {
+        var _post = function (servletUrl, body) {
             return $http({
                 'method': 'post',
                 'url': servletUrl,
                 'data': body
             });
-        }
+        };
 
         service.get = _get;
         service.post = _post;
@@ -101,19 +113,19 @@ angular.module("app", [
     //保存所有endpoints的集合
     .factory("endPointCollection", function () {
         var service = {};
-        service.elements = new Array();
+        service.elements = [];
         service.isLog = false;
         service.add = function (obj) {
             this.elements.push(obj);
-        }
+        };
 
         service.size = function () {
             return this.elements.length;
-        }
+        };
 
         service.isEmpty = function () {
             return (this.elements.length < 1);
-        }
+        };
 
         //根据type返回对应的adminURL
         service.adminURL = function (type) {
@@ -125,7 +137,7 @@ angular.module("app", [
                 }
             }
             return null;
-        }
+        };
 
         //根据type返回对应的internalURL
         service.internalURL = function (type) {
@@ -137,7 +149,7 @@ angular.module("app", [
                 }
             }
             return null;
-        }
+        };
 
         //根据type返回对应的publicURL
         service.publicURL = function (type) {
@@ -149,19 +161,19 @@ angular.module("app", [
                 }
             }
             return null;
-        }
+        };
 
         service.values = function () {
-            var arr = new Array();
+            var arr = [];
             for (var i = 0; i < this.elements.length; i++) {
                 arr.push(this.elements[i]);
             }
             return arr;
-        }
+        };
 
         service.clear = function () {
             this.elements = [];
-        }
+        };
 
         return service;
     })
@@ -171,8 +183,8 @@ angular.module("app", [
 
         service.serviceDetail = "/servers/detail";
 
-        service.ListUsers="/users";
-        service.ListProjects="/v3/projects";
+        service.ListUsers = "/users";
+        service.ListProjects = "/v3/projects";
 
         service.Listnetworks = "/v2.0/networks";
         service.Listrouters = "/v2.0/routers";
@@ -181,9 +193,16 @@ angular.module("app", [
         service.ListSubnets = "/v2.0/subnets";
         service.ListFloatingIPs = "/v2.0/floatingips";
 
+        // 对象存储API-Object Storage API
+        service.ListContainers = "?format=json";
+
+        //user
+        service.CreateUserV3 = "/v3/users";
+        service.UserDetail = "/v3/users/";
+
         return service;
     })
-    .factory("getEndPointService", ['$http', 'endPointCollection', '$rootScope', 'serviceListService', 'myHttpService', function ($http, endPointCollection, $rootScope, serviceListService, myHttpService) {
+    .factory("getEndPointService", ['$http', 'endPointCollection', '$rootScope', 'serviceListService', 'myHttpService', '$location', function ($http, endPointCollection, $rootScope, serviceListService, myHttpService, $location) {
         var service = {};
 
         var _flushEndPoint = function () {
@@ -199,7 +218,7 @@ angular.module("app", [
                             //获取所有的endpoints，保存至对象中
                             var catalog = response.data.access.serviceCatalog;
                             for (var i = 0; i < catalog.length; i++) {
-                                var obj = new Object;
+                                var obj = {};
                                 obj.name = catalog[i].name;
                                 obj.type = catalog[i].type;
                                 obj.adminURL = catalog[i].endpoints[0].adminURL;
@@ -212,10 +231,13 @@ angular.module("app", [
                             endPointCollection.isLog = true;
                         }
                         $rootScope.isLog = true;
+                        if ($rootScope.orginUrl.length > 0) {
+                            $location.url($rootScope.orginUrl);
+                        }
                     }, function (response) {
                     });
             }
-        }
+        };
 
         service.flushPoint = _flushEndPoint;
 
@@ -225,6 +247,17 @@ angular.module("app", [
     .factory("authService", ['$q', '$location', '$rootScope', 'endPointCollection', function ($q, $location, $rootScope, endPointCollection) {
         var authInterceptorServiceFactory = {};
 
+        var _logOut = function () {
+            $rootScope.isLog = undefined;
+            endPointCollection.isLog = false;
+            endPointCollection.clear();
+
+            localStorage.removeItem("token");
+            localStorage.removeItem("currTime");
+            localStorage.removeItem("lastTime");
+            localStorage.removeItem("userName");
+        };
+
         //对请求头进行拦截
         var _request = function (config) {
 
@@ -232,33 +265,29 @@ angular.module("app", [
 
             var lastTime = localStorage.getItem('lastTime');
 
+            //对非错误链接的记录
+            if ($location.url() != "/loginError") {
+                $rootScope.orginUrl = $location.url();
+            }
+
             // 待对token过期时间的验证)若过期则向服务器端请求重定向
             if (lastTime != null) {
                 var timeOut = Date.now() - lastTime;
                 localStorage.setItem('lastTime', Date.now());
-
                 //超时，需要重新登录获取token
                 if (timeOut > $rootScope.MaxTokenExpireTime) {
-                    $rootScope.isLog = undefined;
-                    endPointCollection.isLog = false;
-                    localStorage.removeItem("token");
-                    localStorage.removeItem("currTime");
-                    localStorage.removeItem("lastTime");
-                    localStorage.removeItem("userName");
-
-                    $location.path('/loginError');
+                    _logOut();
                 }
                 else {
                     var accessToken = localStorage.getItem('token');
                     var userName = localStorage.getItem('userName');
-
                     if (accessToken != null && userName != null) {
                         config.headers['X-Auth-Token'] = accessToken;
                     }
                 }
             }
             else {
-                // $location.path('/loginError');
+                $location.path('/loginError');
             }
             return config;
         };
@@ -269,12 +298,12 @@ angular.module("app", [
                 alert(response.data.error.message);
             }
             return response;
-        }
+        };
 
         var _responseError = function (rejection) {
             alert("Code:" + rejection.status);
             return $q.reject(rejection);
-        }
+        };
 
         authInterceptorServiceFactory.request = _request;
         authInterceptorServiceFactory.response = _response;
@@ -284,4 +313,22 @@ angular.module("app", [
     }])
     .config(['$httpProvider', function ($httpProvider) {
         $httpProvider.interceptors.push('authService');
-    }]);
+    }])
+    //自定义指令，添加强制刷新当前页面
+    .directive('forceHref', ['$location', '$route',
+        function ($location, $route) {
+            return function (scope, element, attrs) {
+                scope.$watch('forceHref', function () {
+                    if (attrs.forceHref) {
+                        element.attr('href', attrs.forceHref);
+                        element.bind('click', function (event) {
+                            scope.$apply(function () {
+                                if ($location.path().substr(1, $location.path().length - 1) == attrs.forceHref.substr(1, attrs.forceHref.length - 1)) {
+                                    $route.reload();
+                                }
+                            });
+                        });
+                    }
+                });
+            }
+        }]);

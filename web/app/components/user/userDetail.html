@@ -1,0 +1,28 @@
+<div>
+    <h3>用户详情:{{user.name}}</h3>
+    <div class="col-sm-12">
+        <h4>基本信息</h4>
+        <div ng-if="hasDetail" ng-init="hasDetail = true">
+            <hr class="header_rule">
+            <dt>用户名</dt>
+            <dd>{{user.name}}</dd>
+            <dt>ID</dt>
+            <dd>{{user.id}}</dd>
+            <dt>邮箱</dt>
+            <dd>{{user.email}}</dd>
+            <dt>激活</dt>
+            <dd>{{user.enabled}}</dd>
+        </div>
+        <div ng-if="hasError" ng-init="hasError=false">
+            <div class="span12">
+                <div class="alert alert-error">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <h4>
+                        提示!
+                    </h4> <strong>警告!</strong> {{errorMessage}}.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
