@@ -1,1 +1,101 @@
-<h2>safety</h2>
+<div ng-controller="safetyController">
+    <h2>安全组</h2>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>安全组名称</th>
+                        <th>描述</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="server in list">
+                        <td>{{server.name}}</td>
+                        <td>{{server.description}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <h2>密钥对</h2>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>密钥对名称</th>
+                        <th>指纹</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="server in list1">
+                        <td>{{server.keypair.name}}</td>
+                        <td>{{server.keypair.fingerprint}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <h2>浮动IP</h2>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>IP地址</th>
+                        <th>已映射固定IP地址</th>
+                        <th>状态</th>
+                        <th>资源池</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="server in list2">
+                        <td>{{server.floating_ip_address}}</td>
+                        <td>{{server.fixed_ip_address}}</td>
+                        <td>{{server.status}}</td>
+                    <tr ng-="servers in list3">
+                        <!--<td>{{server.ip}}</td>-->
+                        <!--<td>{{server.fixed_ip}}</td>-->
+                        <td>{{server.pool}}</td>
+                    </tr>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!--<h2>浮动IP2</h2>-->
+    <!--<div class="container-fluid">-->
+        <!--<div class="row-fluid">-->
+            <!--<div class="span12">-->
+                <!--<table class="table">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<th>IP地址</th>-->
+                        <!--<th>已映射固定IP地址</th>-->
+                        <!--<th>资源池</th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr ng-repeat="server in list3">-->
+                        <!--<td>{{server.ip}}</td>-->
+                        <!--<td>{{server.fixed_ip}}</td>-->
+                        <!--<td>{{server.pool}}</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+</div>
