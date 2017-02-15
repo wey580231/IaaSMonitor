@@ -2,7 +2,6 @@
 angular.module("app", [
     'ngRoute',
 
-    'app.serversInfo',
     'app.images',
     'app.instances',
     'app.safety',
@@ -351,6 +350,78 @@ angular.module("app", [
 
         return authInterceptorServiceFactory;
     }])
+    .factory('pageSwitch', function () {
+        var service = {};
+
+        service.pageList = [20, 30, 50];
+
+        var _reset = function () {
+            service.totalNum = 0;
+            service.totalPage = 0;
+            service.currPage = 0;
+            service.perpage = service.pageList[0];
+            service.arry = [];
+        };
+
+        //初始化信息
+        var _initPage = function (array) {
+            service.reset();
+            if (array.length > 0) {
+                service.arry = array;
+                service.totalNum = service.arry.length;
+                service.totalPage = Math.ceil(service.arry.length / service.perpage);
+                service.currPage = 0;
+                service.showPage(service.currPage);
+            }
+        };
+
+        //切换每页显示的条目
+        var _changePerPage = function (perPageShow) {
+            service.currPage = 0;
+            service.perpage = perPageShow;
+            service.totalPage = Math.ceil(service.arry.length / service.perpage);
+            return service.showPage(service.currPage);
+        };
+
+        var _pageIsCorrect = function (pageId) {
+            if (pageId < 0 || pageId >= service.totalPage) {
+                return false;
+            }
+            return true;
+        };
+
+        //实现某页信息
+        var _showPage = function (pageId) {
+            if (service.pageIsCorrect(pageId)) {
+                service.currPage = pageId;
+                var start = service.currPage * service.perpage;
+                var end = (service.totalNum - start) > service.perpage ? service.perpage : (service.totalNum - start);
+                console.log("start:" + start + "__" + end);
+                return service.arry.slice(start, start + end);
+            }
+            return [];
+        };
+
+        //上一页
+        var _previousPage = function () {
+            service.showPage(service.currPage - 1);
+        };
+
+        //下一页
+        var _nextPage = function () {
+            service.showPage(service.currPage + 1);
+        };
+
+        service.reset = _reset;
+        service.showPage = _showPage;
+        service.previousPage = _previousPage;
+        service.nextPage = _nextPage;
+        service.initPage = _initPage;
+        service.changePerPage = _changePerPage;
+        service.pageIsCorrect = _pageIsCorrect;
+
+        return service;
+    })
     .config(['$httpProvider', function ($httpProvider) {
         $httpProvider.interceptors.push('authService');
     }])
