@@ -20,7 +20,9 @@ angular.module("app", [
     'app.program',
     'app.user',
     'app.login',
-    'app.userDetail'
+    'app.userDetail',
+    'app.programDetail',
+    'app.keypairDetail'
 ])
 //2017-02-12：初始化获取endpoints
     .run(function ($rootScope, $http, getEndPointService) {
@@ -202,6 +204,10 @@ angular.module("app", [
         //user
         service.CreateUserV3 = "/v3/users";
         service.UserDetail = "/v3/users/";
+        //detail
+        service.ProgramDetail="/v3/projects/";
+        service.KeypairDetail="/os-keypairs/";
+
 
         return service;
     })

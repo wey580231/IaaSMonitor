@@ -1,22 +1,22 @@
-
-angular.module('app.userDetail', ['ngRoute']).config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/viewUser', {
-        templateUrl: 'app/components/user/userDetail.html',
-        controller: 'userDetailController'
+angular.module('app.programDetail', ['ngRoute']).config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/viewProgram', {
+        templateUrl: 'app/components/user/programDetail.html',
+        controller: 'programDetailController'
     })
-}]).controller("userDetailController", function ($scope, $rootScope, $routeParams, myHttpService, endPointCollection, serviceListService) {
+}]).controller("programDetailController", function ($scope, $rootScope, $routeParams, myHttpService, endPointCollection, serviceListService) {
+    alert("wo shi fangxuan");
     var id = $routeParams.id;
     if (id != undefined) {
         var adminUrl = endPointCollection.adminURL("identity");
         if (adminUrl != undefined) {
-            adminUrl = adminUrl.substr(0, adminUrl.length - 5) + serviceListService.UserDetail + id;
+            adminUrl = adminUrl.substr(0, adminUrl.length - 5) + serviceListService.ProgramDetail + id;
             console.log(adminUrl);
             myHttpService.get('/mainController', adminUrl)
                 .then(function (response) {
                     $scope.hasDetail = true;
                     $scope.hasError = false;
-                    if (response.data.user) {
-                        $scope.user = response.data.user;
+                    if (response.data.project) {
+                        $scope.project = response.data.project;
                     }
                     else if (response.data.error) {
                         $scope.hasDetail = false;

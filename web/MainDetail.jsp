@@ -185,7 +185,8 @@
 <script src="app/components/user/user.js"></script>
 <script src="app/components/user/login.js"></script>
 <script src="app/components/user/userDetail.js"></script>
-
+<script src="app/components/user/programDetail.js"></script>\
+<script src="app/components/servers/keypairDetail.js"></script>
 <script>
     //    $(document).ready(function(){
     //
