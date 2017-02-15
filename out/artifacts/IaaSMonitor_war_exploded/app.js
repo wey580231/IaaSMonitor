@@ -22,10 +22,15 @@ angular.module("app", [
     'app.user',
     'app.login',
     'app.userDetail',
+
+    'app.programDetail',
+    'app.keypairDetail'
+
     'app.loginOut',
 
     //summary
     'app.totalSummary'
+
 ])
 //2017-02-12：初始化获取endpoints
     .run(function ($rootScope, $http, $location, getEndPointService) {
@@ -217,6 +222,13 @@ angular.module("app", [
         service.CreateUserV3 = "/v3/users";
         service.UserDetail = "/v3/users/";
         service.DeleteUser = "/v3/users/";
+
+        //detail
+        service.ProgramDetail="/v3/projects/";
+        service.KeypairDetail="/os-keypairs/";
+
+      
+
 
         return service;
     })

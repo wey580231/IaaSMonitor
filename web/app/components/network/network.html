@@ -1,12 +1,23 @@
 <div>
     <h2>网络列表清单</h2>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <button type="button" class="btn btn-info btn-lg" ng-click="addUser()" data-target="#addUser"
+                        data-target="#modal-container-553362" role="button" data-toggle="modal">添加网络
+                </button>
+                <button type="button" class="btn btn-danger btn-lg" ng-click="deleteUser()">删除网络</button>
+            </div>
+        </div>
+    </div>
 
     <div class="container-fluid">
         <div class="row-fluid">
             <div class="span12">
-                <table class="table">
+                <table class="table table-striped table-bordered table-hover">
                     <thead>
-                    <tr>
+                    <tr class="success">
+                        <th><input type="checkbox" id="selectAll"></th>
                         <th>名称</th>
                         <th>状态</th>
                         <th>共享的</th>
@@ -16,12 +27,15 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="server in list">
-                        <td>{{server.name}}</td>
+                        <td><input type="checkbox"></td>
+                        <td><a href="#viewUser?id={{server.id}}">{{server.name}}</a></td>
                         <td>{{server.status}}</td>
                         <td>{{server.shared}}</td>
                         <td>{{server.admin_state_up}}</td>
                         <td>{{server.id}}</td>
-
+                        <td>
+                            <button type="button" class="btn btn-primary btn-sm cellBtn">编 辑</button>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

@@ -1,12 +1,23 @@
 <div>
     <h2>子网列表清单</h2>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <button type="button" class="btn btn-info btn-lg" ng-click="addUser()" data-target="#addUser"
+                        data-target="#modal-container-553362" role="button" data-toggle="modal">添加子网
+                </button>
+                <button type="button" class="btn btn-danger btn-lg" ng-click="deleteUser()">删除子网</button>
+            </div>
+        </div>
+    </div>
 
     <div class="container-fluid">
         <div class="row-fluid">
             <div class="span12">
-                <table class="table">
+                <table class="table table-striped table-bordered table-hover">
                     <thead>
-                    <tr>
+                    <tr class="success">
+                        <th><input type="checkbox" id="selectAll"></th>
                         <th>名称</th>
                         <th>网络地址</th>
                         <th>IP版本</th>
@@ -15,10 +26,14 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="server in list">
-                        <td>{{server.name}}</td>
+                        <td><input type="checkbox"></td>
+                        <td><a href="#viewUser?id={{server.id}}">{{server.name}}</a></td>
                         <td>{{server.cidr}}</td>
                         <td>{{server.ip_version}}</td>
                         <td>{{server.gateway_ip}}</td>
+                        <td>
+                            <button type="button" class="btn btn-primary btn-sm cellBtn">编 辑</button>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
