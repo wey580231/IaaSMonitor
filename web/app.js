@@ -17,21 +17,27 @@ angular.module("app", [
     // 对象存储-Object Storage
     'app.ListContainers',
 
+    //user
     'app.program',
     'app.user',
     'app.login',
     'app.userDetail',
-    'app.loginOut'
+    'app.loginOut',
+
+    //summary
+    'app.totalSummary'
 ])
 //2017-02-12：初始化获取endpoints
-    .run(function ($rootScope, $http, getEndPointService) {
+    .run(function ($rootScope, $http, $location, getEndPointService) {
         $rootScope.orginUrl = "";           //保存上一次点击的链接，当再次登录后，进行页面自动的跳转
         $rootScope.requestUrl = "http://172.17.203.101:5000/v2.0/tokens";
         $rootScope.MaxTokenExpireTime = 60 * 60 * 1000;
+        $rootScope.firstRequest = true;    //在第一次请求时，因此时token还未获取，所以不要让拦截器拦截请求，以至于跳转至登录页面
+        $location.replace();               //禁止浏览器返回
         getEndPointService.flushPoint();
     })
     .config(['$routeProvider', function ($routeProvider) {
-        // $routeProvider.otherwise({redirectTo: '/showServersInfo'});
+        $routeProvider.otherwise({redirectTo: '/showSummary'});
     }])
     .config(function ($httpProvider) {
         $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -76,13 +82,6 @@ angular.module("app", [
                 : data;
         }];
     })
-    // .config(function ($stateProvider, $urlRouteProvider) {
-    //     $stateProvider.state('viewUser', {
-    //         url: '/viewUser?id',
-    //         controller: 'userController',
-    //         templateUrl: 'app/components/user/userDetail.html'
-    //     });
-    // })
     .factory("myHttpService", ['$http', function ($http) {
         var service = {};
 
@@ -208,6 +207,9 @@ angular.module("app", [
         service.ListSubnets = "/v2.0/subnets";
         service.ListFloatingIPs = "/v2.0/floatingips";
 
+        //flavor
+        service.FlavorsDetail = "/flavors/detail";
+
         // 对象存储API-Object Storage API
         service.ListContainers = "?format=json";
 
@@ -277,7 +279,7 @@ angular.module("app", [
         return service;
     }])
     //创建请求拦截器
-    .factory("authService", ['$q', '$location', '$rootScope', 'endPointCollection','logService', function ($q, $location, $rootScope, endPointCollection,logService) {
+    .factory("authService", ['$q', '$location', '$rootScope', 'endPointCollection', 'logService', function ($q, $location, $rootScope, endPointCollection, logService) {
         var authInterceptorServiceFactory = {};
 
         //对请求头进行拦截
@@ -290,6 +292,11 @@ angular.module("app", [
             //对非错误链接的记录
             if ($location.url() != "/loginError") {
                 $rootScope.orginUrl = $location.url();
+            }
+
+            if ($rootScope.firstRequest) {
+                $rootScope.firstRequest = false;
+                return config;
             }
 
             // 待对token过期时间的验证)若过期则向服务器端请求重定向
@@ -311,6 +318,7 @@ angular.module("app", [
             else {
                 $location.path('/loginError');
             }
+
             return config;
         };
 
