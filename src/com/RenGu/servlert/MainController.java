@@ -20,4 +20,16 @@ public class MainController extends HttpServlet {
             resp.getWriter().write(result);
         }
     }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String token = req.getHeader("X-Auth-Token");
+        String url = req.getHeader("url");
+
+        if (token != null && url != null) {
+            String result = HttpServers.doDelete(url, token);
+            resp.getWriter().write(result);
+        }
+    }
+
 }

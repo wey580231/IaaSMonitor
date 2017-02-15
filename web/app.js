@@ -17,22 +17,32 @@ angular.module("app", [
     // 对象存储-Object Storage
     'app.ListContainers',
 
+    //user
     'app.program',
     'app.user',
     'app.login',
     'app.userDetail',
+
     'app.programDetail',
     'app.keypairDetail'
+
+    'app.loginOut',
+
+    //summary
+    'app.totalSummary'
+
 ])
 //2017-02-12：初始化获取endpoints
-    .run(function ($rootScope, $http, getEndPointService) {
+    .run(function ($rootScope, $http, $location, getEndPointService) {
         $rootScope.orginUrl = "";           //保存上一次点击的链接，当再次登录后，进行页面自动的跳转
         $rootScope.requestUrl = "http://172.17.203.101:5000/v2.0/tokens";
         $rootScope.MaxTokenExpireTime = 60 * 60 * 1000;
+        $rootScope.firstRequest = true;    //在第一次请求时，因此时token还未获取，所以不要让拦截器拦截请求，以至于跳转至登录页面
+        $location.replace();               //禁止浏览器返回
         getEndPointService.flushPoint();
     })
     .config(['$routeProvider', function ($routeProvider) {
-        // $routeProvider.otherwise({redirectTo: '/showServersInfo'});
+        $routeProvider.otherwise({redirectTo: '/showSummary'});
     }])
     .config(function ($httpProvider) {
         $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -77,13 +87,6 @@ angular.module("app", [
                 : data;
         }];
     })
-    // .config(function ($stateProvider, $urlRouteProvider) {
-    //     $stateProvider.state('viewUser', {
-    //         url: '/viewUser?id',
-    //         controller: 'userController',
-    //         templateUrl: 'app/components/user/userDetail.html'
-    //     });
-    // })
     .factory("myHttpService", ['$http', function ($http) {
         var service = {};
 
@@ -107,8 +110,19 @@ angular.module("app", [
             });
         };
 
+        var _delete = function (servletUrl, requestUrl) {
+            return $http({
+                'method': 'delete',
+                'url': servletUrl,
+                'headers': {
+                    'url': requestUrl
+                }
+            });
+        }
+
         service.get = _get;
         service.post = _post;
+        service.delete = _delete;
 
         return service;
     }])
@@ -183,14 +197,14 @@ angular.module("app", [
     .factory("serviceListService", function () {
         var service = {};
 
-        service.ListFloatingIpAddresses="/os-floating-ips";
-        service.ListFloatingIps="/v2.0/floatingips";
-        service.ListKeypairs="/os-keypairs";
-        service. ListsecurityGroups="/os-security-groups";
-        service.ShowImages="/v2/images";
+        service.ListFloatingIpAddresses = "/os-floating-ips";
+        service.ListFloatingIps = "/v2.0/floatingips";
+        service.ListKeypairs = "/os-keypairs";
+        service.ListsecurityGroups = "/os-security-groups";
+        service.ShowImages = "/v2/images";
         service.serviceDetail = "/servers/detail";
-        service.ListUsers="/users";
-        service.ListProjects="/v3/projects";
+        service.ListUsers = "/users";
+        service.ListProjects = "/v3/projects";
         service.Listnetworks = "/v2.0/networks";
         service.Listrouters = "/v2.0/routers";
         service.Listports = "/v2.0/ports";
@@ -198,15 +212,20 @@ angular.module("app", [
         service.ListSubnets = "/v2.0/subnets";
         service.ListFloatingIPs = "/v2.0/floatingips";
 
+        //flavor
+        service.FlavorsDetail = "/flavors/detail";
+
         // 对象存储API-Object Storage API
         service.ListContainers = "?format=json";
 
         //user
         service.CreateUserV3 = "/v3/users";
         service.UserDetail = "/v3/users/";
+
         //detail
         service.ProgramDetail="/v3/projects/";
         service.KeypairDetail="/os-keypairs/";
+        service.DeleteUser = "/v3/users/";
 
 
         return service;
@@ -252,10 +271,8 @@ angular.module("app", [
 
         return service;
     }])
-    //创建请求拦截器
-    .factory("authService", ['$q', '$location', '$rootScope', 'endPointCollection', function ($q, $location, $rootScope, endPointCollection) {
-        var authInterceptorServiceFactory = {};
-
+    .factory("logService", ['$rootScope', 'endPointCollection', function ($rootScope, endPointCollection) {
+        var service = {};
         var _logOut = function () {
             $rootScope.isLog = undefined;
             endPointCollection.isLog = false;
@@ -266,6 +283,14 @@ angular.module("app", [
             localStorage.removeItem("lastTime");
             localStorage.removeItem("userName");
         };
+
+        service.logOut = _logOut;
+
+        return service;
+    }])
+    //创建请求拦截器
+    .factory("authService", ['$q', '$location', '$rootScope', 'endPointCollection', 'logService', function ($q, $location, $rootScope, endPointCollection, logService) {
+        var authInterceptorServiceFactory = {};
 
         //对请求头进行拦截
         var _request = function (config) {
@@ -279,13 +304,18 @@ angular.module("app", [
                 $rootScope.orginUrl = $location.url();
             }
 
+            if ($rootScope.firstRequest) {
+                $rootScope.firstRequest = false;
+                return config;
+            }
+
             // 待对token过期时间的验证)若过期则向服务器端请求重定向
             if (lastTime != null) {
                 var timeOut = Date.now() - lastTime;
                 localStorage.setItem('lastTime', Date.now());
                 //超时，需要重新登录获取token
                 if (timeOut > $rootScope.MaxTokenExpireTime) {
-                    _logOut();
+                    logService.logOut();
                 }
                 else {
                     var accessToken = localStorage.getItem('token');
@@ -298,6 +328,7 @@ angular.module("app", [
             else {
                 $location.path('/loginError');
             }
+
             return config;
         };
 

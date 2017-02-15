@@ -70,8 +70,9 @@ public class HttpServers {
         }
     }
 
-    public static boolean doDelete(String url, String token) {
+    public static String doDelete(String url, String token) {
         OkHttpClient client = new OkHttpClient();
+        String jsonString = "";
         Request request = new Request.Builder()
                 .url(url)
                 .delete(null)
@@ -82,15 +83,11 @@ public class HttpServers {
             Response response = client.newCall(request).execute();
             //后台显示HTTP请求结果状态
             System.out.println("请求地址：" + response.request().url() + "--->请求状态：" + response.message());
-            int statusCode = response.code();
-            if (statusCode == 204) {
-                return true;
-            } else {
-                return false;
-            }
+            jsonString = response.body().string();
+            return jsonString;
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
+            return jsonString;
         }
     }
 }

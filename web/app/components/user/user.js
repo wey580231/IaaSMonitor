@@ -6,9 +6,16 @@ angular.module("app.user", ['ngRoute'])
         })
     }])
     .controller("userController", function ($scope, $http, $location, $route, $rootScope, endPointCollection, myHttpService, serviceListService) {
+
+        var userList = [];
+        var selectedCheckArray = [];    //选中的checkbox的id值集合
+        var operateId;                  //单条删除的id值
+        $scope.deleteEnabled = true;    //初始设置删除不可用
+
         myHttpService.get('/mainController', endPointCollection.adminURL('identity') + serviceListService.ListUsers)
             .then(function (response) {
                 $scope.list = response.data.users;
+                userList = response.data.users;
             }, function (response) {
             });
 
@@ -52,7 +59,7 @@ angular.module("app.user", ['ngRoute'])
                         $scope.showSuccess = true;
                         $scope.successMessage = "用户创建成功!";
 
-                        // $("#addUser").hide();
+                        $('#addUser').modal('hide');
                         //强制刷新页面
                         $route.reload();
                     }
@@ -69,7 +76,7 @@ angular.module("app.user", ['ngRoute'])
                 $scope.showWarning = true;
                 $scope.errorMessage = "无法解析请求路径，请重新登录!";
             }
-        }
+        };
 
         $scope.cancelForm = function () {
             $scope.userName = "";
@@ -80,5 +87,80 @@ angular.module("app.user", ['ngRoute'])
             $scope.role = "";
             $scope.showWarning = false;
             $scope.showSuccess = true;
-        }
+        };
+
+        //确认删除选中的用户
+        $scope.confirmDeleteSelectedUser = function () {
+            $('#deleteSelectedUser').modal('hide');
+        };
+
+        //禁用当前用户
+        $scope.confirmForbiddenUser = function () {
+            $('#forbiddenUser').modal('hide');
+        };
+
+        //删除当前用户
+        $scope.confirmDeleteUser = function () {
+
+            var adminUrl = endPointCollection.adminURL("identity");
+            if (adminUrl != undefined) {
+                adminUrl = adminUrl.substr(0, adminUrl.length - 5) + serviceListService.DeleteUser + "/" + operateId;
+                myHttpService.delete('/mainController', adminUrl)
+                    .then(function (response) {
+                        $('#deleteUser').modal('hide');
+                        $route.reload();
+                    }, function (response) {
+
+                    });
+            }
+        };
+
+        $scope.getForbbidenId = function (name, id) {
+            $scope.forbiddenUser = name;
+            operateId = id;
+        };
+
+        $scope.getDeleteId = function (name, id) {
+            $scope.deleteUser = name;
+            operateId = id;
+        };
+
+        var updateSelected = function (action, id) {
+            if (action == 'add' & selectedCheckArray.indexOf(id) == -1) {
+                selectedCheckArray.push(id);
+            }
+
+            if (action == 'remove' && selectedCheckArray.indexOf(id) != -1) {
+                selectedCheckArray.splice(selectedCheckArray.indexOf(id), 1);
+            }
+
+            $scope.deleteEnabled = (selectedCheckArray.length == 0);
+        };
+
+        //点击某个checkbox按钮，更新当前的状态
+        $scope.updateSelection = function ($event, id) {
+            var checkbox = $event.target;
+            var action = (checkbox.checked ? 'add' : 'remove');
+            updateSelected(action, id);
+        };
+
+        //checkbox是否选中?
+        $scope.isSelected = function (id) {
+            return selectedCheckArray.indexOf(id) >= 0;
+        };
+
+        //checked状态由全选来设置
+        $scope.isSelectedAll = function () {
+            return (selectedCheckArray.length == userList.length);
+        };
+
+        //全选
+        $scope.selectAll = function ($event) {
+            var checkbox = $event.target;
+            var action = (checkbox.checked ? 'add' : 'remove');
+            for (var i = 0; i < userList.length; i++) {
+                var entity = userList[i];
+                updateSelected(action, entity.id);
+            }
+        };
     });

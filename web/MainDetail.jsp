@@ -37,6 +37,10 @@
             display: block;
         }
 
+        .accordion-inner li a:active {
+            background-color: lightgray;
+        }
+
         .accordion-inner li a:hover {
             background-color: rgba(238, 238, 238, 0.36);
         }
@@ -52,6 +56,11 @@
             padding-right: 5px;
         }
 
+        .container-fluid {
+        margin: 0px;
+        padding: 4px;
+        }
+
         td {
             font-size: 13px;
         }
@@ -61,12 +70,23 @@
 
 <body>
 
-<div class="container-fluid">
-    <div class="row-fluid">
-        <div class="span12" style="height:auto;">
-        </div>
-    </div>
-</div>
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href=" "><img src="img/logo.png" alt="IaaS Monitor"/></a>
+            <div class="nav-collapse collapse">
+                <ul class="nav" style="float:right">
+                    <li><a href="#loginOut">注 销</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div><!-- Container -->
+    </div><!-- Nav Bar - Inner -->
+</div><!-- Nav Bar -->
 
 <div class="container-fluid">
     <div class="row-fluid">
@@ -81,7 +101,7 @@
                 <div class="accordion-group">
                     <div class="accordion-heading">
                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-536559"
-                           href="#showVMSummary">虚拟机</a>
+                           data-target="#showVMSummary">虚拟机</a>
                     </div>
                     <div id="showVMSummary" class="accordion-body collapse">
                         <div class="accordion-inner">
@@ -98,7 +118,7 @@
                 <div class="accordion-group">
                     <div class="accordion-heading">
                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-536559"
-                           href="#showNetSummary">网络</a>
+                           data-target="#showNetSummary">网络</a>
                     </div>
                     <div id="showNetSummary" class="accordion-body collapse">
                         <div class="accordion-inner">
@@ -120,7 +140,7 @@
                 <div class="accordion-group">
                     <div class="accordion-heading">
                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-536559"
-                           href="#showLSSummary">对象存储</a>
+                           data-target="#showLSSummary">对象存储</a>
                     </div>
                     <div id="showLSSummary" class="accordion-body collapse">
                         <div class="accordion-inner">
@@ -134,7 +154,7 @@
                 <div class="accordion-group">
                     <div class="accordion-heading">
                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-536559"
-                           force-Href="#showIdentitySummary">身份管理</a>
+                           data-target="#showIdentitySummary">身份管理</a>
                     </div>
                     <div id="showIdentitySummary" class="accordion-body collapse">
                         <div class="accordion-inner">
@@ -166,11 +186,13 @@
 <script src="javascript/angular-animate.js"></script>
 <script src="app.js"></script>
 
+<%--servers--%>
 <script src="app/components/servers/serversInfo.js"></script>
 <script src="app/components/servers/images.js"></script>
 <script src="app/components/servers/instances.js"></script>
 <script src="app/components/servers/safety.js"></script>
 
+<%--network--%>
 <script src="app/components/network/network.js"></script>
 <script src="app/components/network/route.js"></script>
 <script src="app/components/network/ListPorts.js"></script>
@@ -181,12 +203,20 @@
 <%--对象存储-Object Storage 脚本--%>
 <script src="app/components/ObjectStorage/ListContainers.js"></script>
 
+<%--user--%>
 <script src="app/components/user/program.js"></script>
 <script src="app/components/user/user.js"></script>
 <script src="app/components/user/login.js"></script>
 <script src="app/components/user/userDetail.js"></script>
+
 <script src="app/components/user/programDetail.js"></script>\
 <script src="app/components/servers/keypairDetail.js"></script>
+
+<script src="app/components/user/loginOut.js"></script>
+
+<%--summary--%>
+<script src="app/components/summary/totalSummary.js"></script>
+
 <script>
     //    $(document).ready(function(){
     //
