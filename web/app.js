@@ -24,7 +24,7 @@ angular.module("app", [
     'app.userDetail',
 
     'app.programDetail',
-    'app.keypairDetail'
+    'app.keypairDetail',
 
     'app.loginOut',
 
