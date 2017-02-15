@@ -1,0 +1,30 @@
+<div>
+    <h3>密钥对详细信息:{{keypair.name}}</h3>
+    <div class="col-sm-12">
+        <h4>基本信息</h4>
+        <div ng-if="hasDetail" ng-init="hasDetail = true">
+            <hr class="header_rule">
+            <dt>名称</dt>
+            <dd>{{keypair.name}}</dd>
+            <dt>指纹</dt>
+            <dd>{{keypair.fingerprint}}</dd>
+            <dt>创建时间</dt>
+            <dd>{{keypair.created_at}}</dd>
+            <dt>用户ID</dt>
+            <dd>{{keypair.user_id}}</dd>
+            <dt>公钥</dt>
+            <dd>{{keypair.public_key}}</dd>
+        </div>
+        <div ng-if="hasError" ng-init="hasError=false">
+            <div class="span12">
+                <div class="alert alert-error">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <h4>
+                        提示!
+                    </h4> <strong>警告!</strong> {{errorMessage}}.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
