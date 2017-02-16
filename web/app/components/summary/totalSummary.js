@@ -8,22 +8,17 @@ angular.module('app.totalSummary', ['ngRoute'])
             controller: 'totalSummaryController'
         })
     }])
-    .controller('totalSummaryController', function ($scope, $rootScope, endPointCollection, myHttpService, serviceListService) {
-        $scope.totalPage = 0;
-        $scope.currPage = 0;
-        var count = 0;
-        var serverList = [];
-        $scope.pageList = [20, 30, 50];
-        var perpage = $scope.pageList[0];
+    .controller('totalSummaryController', function ($scope, $rootScope, endPointCollection, myHttpService, serviceListService, pageSwitch) {
+        $scope.pageList = pageSwitch.pageList;
 
         var serverUrl = endPointCollection.adminURL('compute') + serviceListService.serviceDetail;
         myHttpService.get('/mainController', serverUrl).then(function (response) {
             if (response.data.servers) {
                 var servers = response.data.servers;
                 var flavorUrl = endPointCollection.adminURL('compute') + serviceListService.FlavorsDetail;
-                console.log(serverUrl + "___flavorUrl")
                 myHttpService.get('/mainController', flavorUrl).then(function (response) {
                     if (response.data.flavors) {
+                        var serverList = [];
                         var flavors = response.data.flavors;
 
                         for (var i = 0; i < servers.length; i++) {
@@ -56,7 +51,10 @@ angular.module('app.totalSummary', ['ngRoute'])
                             }
                             serverList.push(obj);
                         }
-                        initPage();
+                        pageSwitch.initPage(serverList);
+                        $scope.totalPage = pageSwitch.totalPage;
+                        $scope.currPage = pageSwitch.currPage;
+                        $scope.serverList = pageSwitch.showPage(pageSwitch.currPage);
                     }
                     else if (response.data.error) {
 
@@ -73,44 +71,28 @@ angular.module('app.totalSummary', ['ngRoute'])
 
         });
 
-        //初始化信息
-        var initPage = function () {
-            if (serverList.length > 0) {
-                count = serverList.length;
-                $scope.totalPage = Math.ceil(count / perpage);
-                console.log(count + "_totalPage:" + $scope.totalPage)
-                $scope.currPage = 0;
-                showPage($scope.currPage);
-            }
-        };
-
         //切换每页显示的条目
         $scope.changePerPage = function (perPageShow) {
-
-            perpage = perPageShow;
-            console.log("perpage:" + perpage)
-            initPage();
-        }
-
-        //实现某页信息
-        var showPage = function (pageId) {
-            if (pageId < 0 || pageId >= $scope.totalPage) {
-                return;
-            }
-            $scope.currPage = pageId;
-            var start = $scope.currPage * perpage;
-            var end = (count - start) > perpage ? perpage : (count - start);
-            $scope.serverList = serverList.slice(start, start + end);
+            $scope.serverList = pageSwitch.changePerPage(perPageShow);
+            $scope.totalPage = pageSwitch.totalPage;
+            $scope.currPage = pageSwitch.currPage;
         };
 
         //上一页
         $scope.previousPage = function () {
-            showPage($scope.currPage - 1);
+            if (pageSwitch.pageIsCorrect($scope.currPage - 1)) {
+                $scope.serverList = pageSwitch.showPage($scope.currPage - 1);
+                $scope.totalPage = pageSwitch.totalPage;
+                $scope.currPage = pageSwitch.currPage;
+            }
         };
 
         //下一页
         $scope.nextPage = function () {
-            showPage($scope.currPage + 1);
+            if (pageSwitch.pageIsCorrect($scope.currPage + 1)) {
+                $scope.serverList = pageSwitch.showPage($scope.currPage + 1);
+                $scope.totalPage = pageSwitch.totalPage;
+                $scope.currPage = pageSwitch.currPage;
+            }
         };
-
     });
