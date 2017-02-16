@@ -208,11 +208,15 @@
 <script src="app/components/user/user.js"></script>
 <script src="app/components/user/login.js"></script>
 <script src="app/components/user/userDetail.js"></script>
-<script src="app/components/user/programDetail.js"></script>
+
+<script src="app/components/user/programDetail.js"></script>\
 <script src="app/components/servers/keypairDetail.js"></script>
+
 <script src="app/components/user/loginOut.js"></script>
+
 <%--summary--%>
 <script src="app/components/summary/totalSummary.js"></script>
+
 <script>
     //    $(document).ready(function(){
     //

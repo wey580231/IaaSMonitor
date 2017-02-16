@@ -24,7 +24,7 @@ angular.module("app", [
     'app.userDetail',
 
     'app.programDetail',
-    'app.keypairDetail'
+    'app.keypairDetail',
 
     'app.loginOut',
 
@@ -221,13 +221,11 @@ angular.module("app", [
         //user
         service.CreateUserV3 = "/v3/users";
         service.UserDetail = "/v3/users/";
-        service.DeleteUser = "/v3/users/";
 
         //detail
         service.ProgramDetail="/v3/projects/";
         service.KeypairDetail="/os-keypairs/";
-
-      
+        service.DeleteUser = "/v3/users/";
 
 
         return service;
