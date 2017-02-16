@@ -1,0 +1,61 @@
+<div>
+    <h3>栈详情:{{stack.stack_name}}</h3>
+    <div class="col-sm-12" style="margin-top:20px;">
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="tabbable" id="tabs-829056">
+                        <ul class="nav nav-tabs">
+                            <li class="active" style="width:100px;text-align:center">
+                                <a data-target="#showSummary" data-toggle="tab">概况</a>
+                            </li>
+                            <li style="width:100px;text-align:center">
+                                <a data-target="#showResources" data-toggle="tab">资源</a>
+                            </li>
+                            <li style="width:100px;text-align:center">
+                                <a data-target="#showEvents" data-toggle="tab">事件</a>
+                            </li>
+                            <li style="width:100px;text-align:center">
+                                <a data-target="#showTemplates" data-toggle="tab">模板</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="showSummary">
+                                <p>
+                                    第一部分内容.
+                                </p>
+                            </div>
+                            <div class="tab-pane " id="showResources">
+                                <p>
+                                    第二部分内容.
+                                </p>
+                            </div>
+                            <div class="tab-pane" id="showEvents">
+                                <p>
+                                    第三部分内容.
+                                </p>
+                            </div>
+                            <div class="tab-pane" id="showTemplates">
+                                <p>
+                                    第四部分内容.
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="hasError" ng-init="hasError=false">
+            <div class="span12">
+                <div class="alert alert-error">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <h4>
+                        提示!
+                    </h4> <strong>警告!</strong> {{errorMessage}}.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
