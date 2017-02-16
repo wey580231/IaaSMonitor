@@ -15,6 +15,8 @@
     <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
     <script src="javascript/jquery-3.1.1.min.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="/javascript/circliful.js"></script>
+    <link href="/css/jquery.circliful.css" rel="stylesheet" type="text/css"/>
     <style type="text/css">
 
         a, a:hover {
@@ -57,8 +59,8 @@
         }
 
         .container-fluid {
-        margin: 0px;
-        padding: 4px;
+            margin: 0px;
+            padding: 4px;
         }
 
         td {
@@ -106,11 +108,12 @@
                     <div id="showVMSummary" class="accordion-body collapse">
                         <div class="accordion-inner">
                             <ul style="height:auto">
-                                <li><a force-Href="#showServersInfo"><i class="glyphicon glyphicon-user"></i>概况</a></li>
+                                <%--<li><a force-Href="#showServersInfo"><i class="glyphicon glyphicon-user"></i>概况</a></li>--%>
                                 <li><a force-Href="#showInstances"><i class="glyphicon glyphicon-th-list"></i>实例</a>
                                 </li>
                                 <li><a force-Href="#showImages"><i class="glyphicon glyphicon-asterisk"></i>镜像</a></li>
-                                <li><a force-Href="#showSafety"><i class="glyphicon glyphicon-edit"></i>访问安全</a></li>
+                                <li><a force-Href="#showSafety"><i class="glyphicon glyphicon-edit"></i>访问与安全</a></li>
+                                <li><a force-Href="#showStacks"><i class="glyphicon glyphicon-edit"></i>栈</a></li>
                             </ul>
                         </div>
                     </div>
@@ -187,10 +190,11 @@
 <script src="app.js"></script>
 
 <%--servers--%>
-<script src="app/components/servers/serversInfo.js"></script>
 <script src="app/components/servers/images.js"></script>
 <script src="app/components/servers/instances.js"></script>
 <script src="app/components/servers/safety.js"></script>
+<script src="app/components/servers/stacks.js"></script>
+<script src="app/components/servers/stackDetail.js"></script>
 
 <%--network--%>
 <script src="app/components/network/network.js"></script>
@@ -208,11 +212,17 @@
 <script src="app/components/user/user.js"></script>
 <script src="app/components/user/login.js"></script>
 <script src="app/components/user/userDetail.js"></script>
+
 <script src="app/components/user/programDetail.js"></script>
+
 <script src="app/components/servers/keypairDetail.js"></script>
+
 <script src="app/components/user/loginOut.js"></script>
+
 <%--summary--%>
 <script src="app/components/summary/totalSummary.js"></script>
+
+
 <script>
     //    $(document).ready(function(){
     //

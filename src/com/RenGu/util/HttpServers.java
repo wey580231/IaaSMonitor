@@ -90,4 +90,27 @@ public class HttpServers {
             return jsonString;
         }
     }
+
+    public static String doCreatStacks(String template, String stackName, String token, String url) {
+        String jsonString = "";
+        OkHttpClient client = new OkHttpClient();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\n  \"files\": {},\n  \"disable_rollback\": true,\n  \"stack_name\": \""+stackName+"\",\n  \"template\": "+template+",\n  \"timeout_mins\": 60\n}");
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .addHeader("x-auth-token", token)
+                .addHeader("content-type", "application/json")
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            System.out.println("请求地址：" + response.request().url() + "--->请求状态：" + response.message());
+            jsonString = response.body().string();
+            return jsonString;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return jsonString;
+        }
+    }
 }
