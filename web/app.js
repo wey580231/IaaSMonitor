@@ -23,15 +23,14 @@ angular.module("app", [
     'app.user',
     'app.login',
     'app.userDetail',
-
     'app.programDetail',
     'app.keypairDetail',
-
     'app.loginOut',
 
     //summary
-    'app.totalSummary'
+    'app.totalSummary',
 
+    'app.instanceDetail'
 ])
 //2017-02-12：初始化获取endpoints
     .run(function ($rootScope, $http, $location, getEndPointService) {
@@ -215,6 +214,7 @@ angular.module("app", [
 
         //flavor
         service.FlavorsDetail = "/flavors/detail";
+        service.Flavors="/flavors/";
 
         // 对象存储API-Object Storage API
         service.ListContainers = "?format=json";
@@ -227,6 +227,10 @@ angular.module("app", [
         service.ProgramDetail = "/v3/projects/";
         service.KeypairDetail = "/os-keypairs/";
         service.DeleteUser = "/v3/users/";
+        service.instancDeatail="/servers/";
+        service.securitygroupDetail="/os-security-groups";
+        service.imageDetail="/images/";
+        service.requestDetail="/os-instance-actions";
 
         //stack
         service.ListStack = '/stacks';
