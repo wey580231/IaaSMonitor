@@ -449,7 +449,17 @@ angular.module("app", [
             }
         }])
     .factory('httpService', ['$q', 'myHttpService', function ($q, myHttpService) {
-        var deferred = q.defer();
-
-
+        var service = {};
+        var _get = function (servletUrl, requestUrl) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+            myHttpService.get(servletUrl, requestUrl).then(function (response) {
+                deferred.resolve(response.data);
+            }, function (response) {
+                deferred.reject(response.data);
+            });
+            return promise;
+        }
+        service.get = _get;
+        return service;
     }]);
