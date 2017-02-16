@@ -5,6 +5,8 @@ angular.module("app", [
     'app.images',
     'app.instances',
     'app.safety',
+    'app.stacks',
+    'app.stacksDetail',
 
     'app.network',
     'app.route',
@@ -222,9 +224,12 @@ angular.module("app", [
         service.UserDetail = "/v3/users/";
 
         //detail
-        service.ProgramDetail="/v3/projects/";
-        service.KeypairDetail="/os-keypairs/";
+        service.ProgramDetail = "/v3/projects/";
+        service.KeypairDetail = "/os-keypairs/";
         service.DeleteUser = "/v3/users/";
+
+        //stack
+        service.ListStack = '/stacks';
 
 
         return service;
@@ -442,4 +447,9 @@ angular.module("app", [
                     }
                 });
             }
-        }]);
+        }])
+    .factory('httpService', ['$q', 'myHttpService', function ($q, myHttpService) {
+        var deferred = q.defer();
+
+
+    }]);

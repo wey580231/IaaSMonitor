@@ -1,141 +1,176 @@
 <div ng-controller="safetyController">
-    <h3>安全组</h3>
-    <div class="container-fluid">
-        <div class="row-fluid">
-            <div class="span12" style="text-align:right">
-                <button type="button" class="btn btn-info btn-lg" ng-click="addUser()" data-target="#addUser"
-                        data-target="#modal-container-553362" role="button" data-toggle="modal">添加安全组
-                </button>
-                <button type="button" class="btn btn-danger btn-lg" ng-click="deleteUser()">删除安全组</button>
+    <h3>访问与安全</h3>
+    <div class="col-sm-12" style="margin-top:20px;">
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="tabbable" id="tabs-829056">
+                        <ul class="nav nav-tabs">
+                            <li class="active" style="width:100px;text-align:center">
+                                <a data-target="#showSummary" data-toggle="tab">安全组</a>
+                            </li>
+                            <li style="width:100px;text-align:center">
+                                <a data-target="#showResources" data-toggle="tab">密钥对</a>
+                            </li>
+                            <li style="width:100px;text-align:center">
+                                <a data-target="#showEvents" data-toggle="tab">添加浮动IP</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="showSummary">
+                                <div class="container-fluid">
+                                    <div class="row-fluid">
+                                        <div class="span12" style="text-align:right">
+                                            <button type="button" class="btn btn-info btn-lg" ng-click="addUser()"
+                                                    data-target="#addUser"
+                                                    data-target="#modal-container-553362" role="button"
+                                                    data-toggle="modal">添加安全组
+                                            </button>
+                                            <button type="button" class="btn btn-danger btn-lg" ng-click="deleteUser()">
+                                                删除安全组
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="container-fluid">
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <table class="table table-striped table-bordered table-hover">
+                                                <thead>
+                                                <tr class="success">
+                                                    <th style="text-align:center"><input type="checkbox" id="selectAll">
+                                                    </th>
+                                                    <th>安全组名称</th>
+                                                    <th>描述</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="server in list">
+                                                    <td style="text-align:center"><input type="checkbox"></td>
+                                                    <td><a href="#viewUser?id={{server.id}}">{{server.name}}</a></td>
+                                                    <td>{{server.description}}</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-primary btn-sm cellBtn">编
+                                                            辑
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane " id="showResources">
+                                <div class="container-fluid">
+                                    <div class="row-fluid">
+                                        <div class="span12" style="text-align:right">
+                                            <button type="button" class="btn btn-info btn-lg" ng-click="addUser()"
+                                                    data-target="#addUser"
+                                                    data-target="#modal-container-553362" role="button"
+                                                    data-toggle="modal">添加密钥对
+                                            </button>
+                                            <button type="button" class="btn btn-danger btn-lg" ng-click="deleteUser()">
+                                                删除密钥对
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="container-fluid">
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <table class="table table-striped table-bordered table-hover">
+                                                <thead>
+                                                <tr class="success">
+                                                    <th style="text-align:center"><input type="checkbox"
+                                                                                         id="selectAll1"></th>
+                                                    <th>密钥对名称</th>
+                                                    <th>指纹</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="server in list1">
+                                                    <td style="text-align:center"><input type="checkbox"></td>
+                                                    <td><a href="#viewKeypair?name={{server.keypair.name}}">{{server.keypair.name}}</a>
+                                                    </td>
+                                                    <td>{{server.keypair.fingerprint}}</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-primary btn-sm cellBtn">编
+                                                            辑
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="showEvents">
+                                <div class="container-fluid">
+                                    <div class="row-fluid">
+                                        <div class="span12" style="text-align:right">
+                                            <button type="button" class="btn btn-info btn-lg" ng-click="addUser()"
+                                                    data-target="#addUser"
+                                                    data-target="#modal-container-553362" role="button"
+                                                    data-toggle="modal">添加浮动IP
+                                            </button>
+                                            <button type="button" class="btn btn-danger btn-lg" ng-click="deleteUser()">
+                                                删除浮动IP
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="container-fluid">
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <table class="table table-striped table-bordered table-hover">
+                                                <thead>
+                                                <tr class="success">
+                                                    <th style="text-align:center"><input type="checkbox"
+                                                                                         id="selectAll2"></th>
+                                                    <th>IP地址</th>
+                                                    <th>已映射固定IP地址</th>
+                                                    <th>状态</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="server in list2">
+                                                    <td style="text-align:center"><input type="checkbox"></td>
+                                                    <td><a href="#viewUser?id={{server.id}}">{{server.floating_ip_address}}</a>
+                                                    </td>
+                                                    <td>{{server.fixed_ip_address}}</td>
+                                                    <td>{{server.status}}</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-primary btn-sm cellBtn">编
+                                                            辑
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="container-fluid">
-        <div class="row-fluid">
+        <div ng-if="hasError" ng-init="hasError=false">
             <div class="span12">
-                <table class="table table-striped">
-                    <thead>
-                    <tr class="success">
-                        <th><input type="checkbox" id="selectAll"></th>
-                        <th>安全组名称</th>
-                        <th>描述</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="server in list">
-                        <td><input type="checkbox"></td>
-                        <td><a href="#viewUser?id={{server.id}}">{{server.name}}</a></td>
-                        <td>{{server.description}}</td>
-                        <td>
-                            <button type="button" class="btn btn-primary btn-sm cellBtn">编 辑</button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div class="alert alert-error">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <h4>
+                        提示!
+                    </h4> <strong>警告!</strong> {{errorMessage}}.
+                </div>
             </div>
         </div>
     </div>
-
-    <h3>密钥对</h3>
-    <div class="container-fluid">
-        <div class="row-fluid">
-            <div class="span12" style="text-align:right">
-                <button type="button" class="btn btn-info btn-lg" ng-click="addUser()" data-target="#addUser"
-                        data-target="#modal-container-553362" role="button" data-toggle="modal">添加密钥对
-                </button>
-                <button type="button" class="btn btn-danger btn-lg" ng-click="deleteUser()">删除密钥对</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="container-fluid">
-        <div class="row-fluid">
-            <div class="span12">
-                <table class="table table-striped">
-                    <thead>
-                    <tr class="success">
-                        <th><input type="checkbox" id="selectAll1"></th>
-                        <th>密钥对名称</th>
-                        <th>指纹</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="server in list1">
-                        <td><input type="checkbox"></td>
-                        <td><a href="#viewKeypair?name={{server.keypair.name}}">{{server.keypair.name}}</a></td>
-                        <td>{{server.keypair.fingerprint}}</td>
-                        <td>
-                            <button type="button" class="btn btn-primary btn-sm cellBtn">编 辑</button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <h3>浮动IP</h3>
-    <div class="container-fluid">
-        <div class="row-fluid">
-            <div class="span12" style="text-align:right">
-                <button type="button" class="btn btn-info btn-lg" ng-click="addUser()" data-target="#addUser"
-                        data-target="#modal-container-553362" role="button" data-toggle="modal">添加浮动IP
-                </button>
-                <button type="button" class="btn btn-danger btn-lg" ng-click="deleteUser()">删除浮动IP</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="container-fluid">
-        <div class="row-fluid">
-            <div class="span12">
-                <table class="table table-striped table-bordered table-hover">
-                <thead>
-                    <tr class="success">
-                        <th><input type="checkbox" id="selectAll2"></th>
-                        <th>IP地址</th>
-                        <th>已映射固定IP地址</th>
-                        <th>状态</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="server in list2">
-                        <td><input type="checkbox"></td>
-                        <td><a href="#viewUser?id={{server.id}}">{{server.floating_ip_address}}</a></td>
-                        <td>{{server.fixed_ip_address}}</td>
-                        <td>{{server.status}}</td>
-                        <td>
-                            <button type="button" class="btn btn-primary btn-sm cellBtn">编 辑</button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <!--<h2>浮动IP2</h2>-->
-    <!--<div class="container-fluid">-->
-        <!--<div class="row-fluid">-->
-            <!--<div class="span12">-->
-                <!--<table class="table">-->
-                    <!--<thead>-->
-                    <!--<tr>-->
-                        <!--<th>IP地址</th>-->
-                        <!--<th>已映射固定IP地址</th>-->
-                        <!--<th>资源池</th>-->
-                    <!--</tr>-->
-                    <!--</thead>-->
-                    <!--<tbody>-->
-                    <!--<tr ng-repeat="server in list3">-->
-                        <!--<td>{{server.ip}}</td>-->
-                        <!--<td>{{server.fixed_ip}}</td>-->
-                        <!--<td>{{server.pool}}</td>-->
-                    <!--</tr>-->
-                    <!--</tbody>-->
-                <!--</table>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
 </div>

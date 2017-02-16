@@ -2,8 +2,6 @@ angular.module('app.login', ['ngRoute']).config(['$routeProvider', function ($ro
     $routeProvider.when('/loginError', {
         templateUrl: 'app/components/user/login.html',
         controller: 'loginController'
-    }).when('/loginOut', {
-        controller: 'loginOutContoller'
     })
 }])
     .controller("loginController", function ($scope, $rootScope, $location, endPointCollection, myHttpService, serviceListService, getEndPointService) {

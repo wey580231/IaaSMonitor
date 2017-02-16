@@ -1,0 +1,42 @@
+<div>
+    <h3>栈清单</h3>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr class="success">
+                        <th style="text-align:center"><input type="checkbox" id="selectAll" ng-checked="isSelectedAll()"
+                                                             ng-click="selectAll($event)"></th>
+                        <th>栈名称</th>
+                        <th>创建时间</th>
+                        <th>更新时间</th>
+                        <th>状态</th>
+                        <th>所有者</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="stack in list">
+                        <td style="text-align:center"><input type="checkbox" ng-checked="isSelected(stack.id)"
+                                                             ng-click="updateSelection($event,stack.id)"></td>
+                        <td><a href="#viewStack?id={{stack.id}}&stackName={{stack.stack_name}}">{{stack.stack_name}}</a>
+                        </td>
+                        <td>{{stack.creation_time|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                        <td>{{stack.updated_time}}</td>
+                        <td>{{stack.stack_status}}</td>
+                        <td>{{stack.stack_owner}}</td>
+                        <td>-</td>
+                    </tr>
+                    <tr ng-if="list.length==0">
+                        <td colspan="7" style="text-align:center">没有要显示的条目</td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <td colspan="6">共{{list.length}}项</td>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
