@@ -89,9 +89,20 @@ public class HttpServers {
         String jsonString = "";
         OkHttpClient client = new OkHttpClient();
         MediaType mediaType = MediaType.parse("application/json");
+<<<<<<< HEAD
         RequestBody body = RequestBody.create(mediaType, "{\n  \"files\": {},\n  \"disable_rollback\": true,\n  \"stack_name\": \"" + stackName + "\",\n  \"template\": " + template + ",\n  \"timeout_mins\": 60\n}");
         Request request = (new Builder()).url(url).post(body).addHeader("x-auth-token", token).addHeader("content-type", "application/json").build();
 
+=======
+        RequestBody body = RequestBody.create(mediaType, "{\n  \"files\": {},\n  \"disable_rollback\": true,\n  \"stack_name\": \""+stackName+"\",\n  \"template\": "+template+",\n  \"timeout_mins\": 60\n}");
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .addHeader("x-auth-token", token)
+                .addHeader("content-type", "application/json")
+                .build();
+        System.out.println(body.toString());
+>>>>>>> 4eab57cf6194e868bac5176a017c4b1c884fb84b
         try {
             Response e = client.newCall(request).execute();
             System.out.println("请求地址：" + e.request().url() + "--->请求状态：" + e.message());
