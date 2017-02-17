@@ -96,7 +96,6 @@ public class HttpServers {
                 .addHeader("x-auth-token", token)
                 .addHeader("content-type", "application/json")
                 .build();
-        System.out.println(body.toString());
         try {
             Response e = client.newCall(request).execute();
             System.out.println("请求地址：" + e.request().url() + "--->请求状态：" + e.message());
