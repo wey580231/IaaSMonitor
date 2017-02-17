@@ -59,12 +59,37 @@
         }
 
         .container-fluid {
-        margin: 0px;
-        padding: 4px;
+            margin: 0px;
+            padding: 4px;
         }
 
         td {
             font-size: 13px;
+        }
+
+        dl {
+            clear: left;
+        }
+
+        dt {
+            width: 160px;
+            margin: 2px;
+        }
+
+        dt, dd {
+            float: left;
+        }
+
+        h2, h3, h4, h5 {
+            clear: left;
+            display: block;
+            font-weight: 500;
+        }
+
+        .infoGroup {
+            display: block;
+            padding-top:15px;
+            margin-bottom: 40px;
         }
 
     </style>
@@ -108,7 +133,7 @@
                                 </li>
                                 <li><a force-Href="#showImages"><i class="glyphicon glyphicon-asterisk"></i>镜像</a></li>
                                 <li><a force-Href="#showSafety"><i class="glyphicon glyphicon-edit"></i>访问与安全</a></li>
-                                    <li><a force-Href="#showStacks"><i class="glyphicon glyphicon-edit"></i>栈</a></li>
+                                <li><a force-Href="#showStacks"><i class="glyphicon glyphicon-edit"></i>栈</a></li>
                             </ul>
                         </div>
                     </div>
@@ -210,7 +235,8 @@
 <script src="app/components/user/login.js"></script>
 <script src="app/components/user/userDetail.js"></script>
 
-<script src="app/components/user/programDetail.js"></script>\
+<script src="app/components/user/programDetail.js"></script>
+\
 <script src="app/components/servers/keypairDetail.js"></script>
 
 <script src="app/components/user/loginOut.js"></script>

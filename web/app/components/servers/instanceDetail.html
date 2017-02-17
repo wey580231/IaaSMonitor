@@ -1,108 +1,175 @@
 <div>
-    <h3>实例详情:{{user.name}}</h3>
-    <div class="col-sm-12">
-        <h3>云主机概况</h3>
-        <h4>基本信息</h4>
-        <div ng-if="hasDetail" ng-init="hasDetail = true">
-            <hr class="header_rule">
-            <dt>名称</dt>
-            <dd>{{server.name}}</dd>
-            <dt>ID</dt>
-            <dd>{{server.id}}</dd>
-            <dt>状态</dt>
-            <dd>{{server.status}}</dd>
-            <dt>可用域</dt>
-            <dd>{{server["OS-EXT-AZ:availability_zone"]}}</dd>
-            <dt>已创建</dt>
-            <dd>{{server.created}}</dd>
-            <dt>主机</dt>
-            <dd>{{server["OS-EXT-SRV-ATTR:hypervisor_hostname"]}}</dd>
-        </div>
+    <h3>实例详情:{{server.name}}</h3>
+    <div class="col-sm-12" style="margin-top:20px;">
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="tabbable" id="tabs-829056">
+                        <ul class="nav nav-tabs" style="margin-bottom:5px;">
+                            <li class="active" style="width:100px;text-align:center">
+                                <a data-target="#viewSummary" data-toggle="tab">概況</a>
+                            </li>
+                            <li style="width:100px;text-align:center"
+                            ">
+                            <a data-target="#viewLog" data-toggle="tab" ng-click="showConsoleLog()">日志</a>
+                            </li>
+                            <li style="width:100px;text-align:center">
+                                <a data-target="#viewOperateLog" data-toggle="tab" ng-click="showOperateLog()">操作日志</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="viewSummary">
+                                <div ng-if="hasDetail" ng-init="hasDetail = true" class="infoGroup">
+                                    <h4>基本信息</h4>
+                                    <hr class="header_rule">
+                                    <dl>
+                                        <dt>名称</dt>
+                                        <dd>{{server.name}}</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>ID</dt>
+                                        <dd>{{server.id}}</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>状态</dt>
+                                        <dd>{{server.status}}</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>可用域</dt>
+                                        <dd>{{server["OS-EXT-AZ:availability_zone"]}}</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>创建时间</dt>
+                                        <dd>{{server.created | date:"yyyy-MM-dd hh:mm:ss"}}</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>主机</dt>
+                                        <dd>{{server["OS-EXT-SRV-ATTR:hypervisor_hostname"]}}</dd>
+                                    </dl>
+                                </div>
 
-        <h4>规格</h4>
-        <div ng-if="hasSpecifications" ng-init="hasSpecifications = true">
-            <hr class="header_rule">
-            <dt>云主机类型</dt>
-            <dd>{{flavor.name}}</dd>
-            <dt>实例类型ID</dt>
-            <dd>{{flavor.id}}</dd>
-            <dt>内存</dt>
-            <dd>{{flavor.ram}}</dd>
-            <dt>虚拟内核</dt>
-            <dd>{{flavor.vcpus}} VCPU</dd>
-            <dt>磁盘</dt>
-            <dd>{{flavor.disk}}</dd>
-        </div>
+                                <div ng-if="hasFlavors" ng-init="hasFlavors = true" class="infoGroup">
+                                    <h4>规格</h4>
+                                    <hr class="header_rule">
+                                    <dl>
+                                        <dt>云主机类型</dt>
+                                        <dd>{{flavor.name}}</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>实例类型ID</dt>
+                                        <dd>{{flavor.id}}</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>内存</dt>
+                                        <dd>{{flavor.ram}} GB</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>虚拟内核</dt>
+                                        <dd>{{flavor.vcpus}} VCPU</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>磁盘</dt>
+                                        <dd>{{flavor.disk}}GB</dd>
+                                    </dl>
+                                </div>
 
-        <h4>IP地址</h4>
-        <div ng-if="hasIP" ng-init="hasIP = true">
-            <hr class="header_rule">
-            <dt>Admin_Internal_Net</dt>
-            <dd>{{server.addresses.admin_internal_net[0].addr}}</dd>
-        </div>
+                                <div ng-if="hasIP" ng-init="hasIP = true" class="infoGroup">
+                                    <h4>IP地址</h4>
+                                    <hr class="header_rule">
+                                    <dl>
+                                        <dt>Admin_Internal_Net</dt>
+                                        <dd>{{server.addresses.admin_internal_net[0].addr}}</dd>
+                                    </dl>
+                                </div>
 
-        <h4>安全组</h4>
-        <hr class="header_rule">
-        <dt>default</dt>
-        <div ng-if="hasSafegroup" ng-init="hasSafegroup = true" ng-repeat="service in list">
-            <dd>ALLOW  {{service.from_port}}/tcp  from  {{service.ip_range.cidr}}</dd>
-        </div>
+                                <div class="infoGroup">
+                                    <h4>安全组</h4>
+                                    <hr class="header_rule">
+                                    <dl>
+                                        <dt>default</dt>
+                                        <dd>
+                                            <ul ng-if="hasSafegroup" ng-init="hasSafegroup = true"
+                                                ng-repeat="service in safeGroup">
+                                                <li>ALLOW {{service.from_port}}/tcp from {{service.ip_range.cidr}}</li>
+                                            </ul>
+                                        </dd>
+                                    </dl>
+                                </div>
 
-        <h4>元数据</h4>
-        <div ng-if="hasdata" ng-init="hasdata = true">
-            <hr class="header_rule">
-            <dt>键名称</dt>
-            <dd>{{server.key_name}}</dd>
-            <dt>镜像名称</dt>
-            <dd>{{image.name}}</dd>
-        </div>
+                                <div ng-if="hasImage" ng-init="hasImage = true" class="infoGroup">
+                                    <h4>元数据</h4>
+                                    <hr class="header_rule">
+                                    <dl>
+                                        <dt>键名称</dt>
+                                        <dd>{{server.key_name}}</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>镜像名称</dt>
+                                        <dd>{{image.name}}</dd>
+                                    </dl>
+                                </div>
 
-        <h4>云硬盘已连接</h4>
-        <div ng-if="haslink" ng-init="haslink = true">
-            <hr class="header_rule">
-            <dt>连接到</dt>
-            <dd>{{server["os-extended-volumes:volumes_attached"]}}</dd>
-        </div>
+                                <div ng-if="haslink" ng-init="haslink = true" class="infoGroup">
+                                    <h4>云硬盘已连接</h4>
+                                    <hr class="header_rule">
+                                    <dl>
+                                        <dt>连接到</dt>
+                                        <dd>{{server["os-extended-volumes:volumes_attached"]}}</dd>
+                                    </dl>
+                                </div>
 
-        <div ng-if="hasError" ng-init="hasError=false">
-            <div class="span12">
-                <div class="alert alert-error">
-                    <button type="button" class="close" data-dismiss="alert">×</button>
-                    <h4>
-                        提示!
-                    </h4> <strong>警告!</strong> {{errorMessage}}.
+                                <div ng-if="hasError" ng-init="hasError=false">
+                                    <div class="span12">
+                                        <div class="alert alert-error">
+                                            <button type="button" class="close" data-dismiss="alert">×</button>
+                                            <h4>
+                                                提示!
+                                            </h4> <strong>警告!</strong> {{errorMessage}}.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="viewLog">
+                                <div>
+                                    <div class="col-sm-12">
+                                        <h4>控制台信息</h4>
+                                        <p>
+                                            {{consoleData}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="viewOperateLog">
+                                <div class="col-sm-12">
+                                    <table class="table table-striped table-bordered table-hover" style="margin:0px;">
+                                        <thead>
+                                        <tr class="success">
+                                            <th>请求ID</th>
+                                            <th>动作</th>
+                                            <th>开始时间</th>
+                                            <th>用户ID</th>
+                                            <th>消息</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="req in request">
+                                            <td>{{req.request_id}}</td>
+                                            <td>{{req.action}}</td>
+                                            <td>{{req.start_time}}</td>
+                                            <td>{{req.user_id}}</td>
+                                            <td>-</td>
+                                        </tr>
+                                        </tbody>
+                                        <tfoot>
+                                        <td colspan="5">共{{request.length}}项</td>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-</div>
-
-
-<div>
-    <h2>日志:{{server.name}}</h2>
-    <div class="col-sm-12">
-        <h3>云控制台日志</h3>
-        <div ng-if="hasDetail" ng-init="hasDetail = true">
-            <hr class="header_rule">
-            <h4>{{server.name}}</h4>
-        </div>
-</div>
-</div>
-
-<div>
-    <h2>操作日志:{{server.name}}</h2>
-    <div class="col-sm-12">
-        <div ng-if="hasRequest" ng-init="hasRequest = true">
-            <hr class="header_rule">
-            <dt>请求ID</dt>
-            <dd>{{request[0].request_id}}</dd>
-            <dt>动作</dt>
-            <dd>{{request[0].action}}</dd>
-            <dt>开始时间</dt>
-            <dd>{{request[0].start_time}}</dd>
-            <dt>用户ID</dt>
-            <dd>{{request[0].user_id}}</dd>
         </div>
     </div>
 </div>

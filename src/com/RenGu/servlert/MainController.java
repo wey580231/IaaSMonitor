@@ -31,5 +31,4 @@ public class MainController extends HttpServlet {
             resp.getWriter().write(result);
         }
     }
-
 }
