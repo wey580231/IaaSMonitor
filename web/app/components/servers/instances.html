@@ -32,7 +32,7 @@
                     <tbody>
                     <tr ng-repeat="server in list">
                         <td><input type="checkbox"></td>
-                        <td><a href="#viewUser?id={{server.id}}">{{server.name}}</a></td>
+                        <td><a href="#viewInstance?id={{server.id}}">{{server.name}}</a></td>
                         <td>{{server.addresses.admin_internal_net[0].addr}}</td>
                         <td>{{server.key_name}}</td>
                         <td>{{server["OS-EXT-STS:vm_state"]}}</td>

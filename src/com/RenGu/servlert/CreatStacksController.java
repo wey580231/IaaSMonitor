@@ -15,10 +15,16 @@ public class CreatStacksController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doPost(req, resp);
-        String template = "{\"heat_template_version\":\"2015-10-15\",\"description\":\"Simple template to deploy a single compute instance\",\"resources\":{\"my_instance_1\":{\"type\":\"OS::Nova::Server\",\"properties\":{\"admin_pass\":\"ubuntu\",\"key_name\":\"bosh\",\"image\":\"ubuntu-new01\",\"flavor\":\"ubuntu\",\"networks\":[{\"network\":\"020750ef-14c7-4a40-902b-5fef3099e933\"}]}},\"my_instance_2\":{\"type\":\"OS::Nova::Server\",\"properties\":{\"admin_pass\":\"ubuntu\",\"key_name\":\"bosh\",\"image\":\"ubuntu-new01\",\"flavor\":\"ubuntu\",\"networks\":[{\"network\":\"020750ef-14c7-4a40-902b-5fef3099e933\"}]}},\"my_instance_3\":{\"type\":\"OS::Nova::Server\",\"properties\":{\"admin_pass\":\"ubuntu\",\"key_name\":\"bosh\",\"image\":\"ubuntu-new01\",\"flavor\":\"ubuntu\",\"networks\":[{\"network\":\"020750ef-14c7-4a40-902b-5fef3099e933\"}]}}}}";
+        int masterNum = 1;
+        int slaveNum = 3;
+        String masterImage = "Fedora 25 Cloud Base";
+        String slaveImage = "Fedora 25 Cloud Base";
+        String masterFlavor = "ubuntu";
+        String slaveFlavor = "ubuntu";
         String stackName = "test";
-        String token = "gAAAAABYpVTX1DUBv245AV27LE_Vuw-faKjjAAxlXfejbdYCFn0If0gAZoF17NeMkTQ4NM1721CQnclDakBFy4chnkEu1s5jXEt4XEnMc0a-zBmhMEn5KqLrfyRuF3sB5jzT6iQXA1m9S7BwC6Fu7gjN9KTdhEyfwFL8sqIJO2cv3DEwgn-QmYA";
+        String template = "{\"heat_template_version\":\"2013-05-23\",\"resources\":{\"Master_Instances_Group\":{\"type\":\"OS::Heat::ResourceGroup\",\"properties\":{\"count\":" + masterNum + ",\"resource_def\":{\"type\":\"OS::Nova::Server\",\"properties\":{\"name\":\"Master_Instances_%index%\",\"image\":\"" + masterImage + "\",\"flavor\":\"" + masterFlavor + "\",\"networks\":[{\"network\":\"admin_internal_net\"}]}}}},\"Slave_Instances_Group\":{\"type\":\"OS::Heat::ResourceGroup\",\"properties\":{\"count\":" + slaveNum + ",\"resource_def\":{\"type\":\"OS::Nova::Server\",\"properties\":{\"name\":\"Slave_Instances_%index%\",\"image\":\"" + slaveImage + "\",\"flavor\":\"" + slaveFlavor + "\",\"networks\":[{\"network\":\"admin_internal_net\"}]}}}}},\"outputs\":{\"Master_Instances_Group_Networks\":{\"value\":{\"get_attr\":[\"Master_Instances_Group\",\"networks\"]}},\"Slave_Instances_Group_Networks\":{\"value\":{\"get_attr\":[\"Slave_Instances_Group\",\"networks\"]}}}}";
+        String token = "gAAAAABYpZMZeXfK7pV0FCQ_v8eu5WmkrNleCbXb2Q7sDX4MmzQQQbT6mIgsOMHT9UrNsMEehMB4jqMv7SS_ThyvPCcN3zAB6llTN6kzeXKoZDpsWke83n3kQvE2n3al2FZzRBoqWeZgv4tDYZXnBzvMLA7zydmQM17Yy7MDXX0EMpcHMB0531Y";
         String url = "http://172.17.201.101:8004/v1/e589d645bcac441594aa38e830912cb4" + "/stacks";
-        doCreatStacks(template , stackName , token , url);
+        doCreatStacks(template, stackName, token, url);
     }
 }
