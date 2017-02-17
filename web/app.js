@@ -230,11 +230,11 @@ angular.module("app", [
         service.instancDeatail="/servers/";
         service.securitygroupDetail="/os-security-groups";
         service.imageDetail="/images/";
-        service.requestDetail="/os-instance-actions";
+        service.InstanceOperateLog="/os-instance-actions";
+        service.ConsoleOutput = "/action"
 
         //stack
         service.ListStack = '/stacks';
-
 
         return service;
     })
