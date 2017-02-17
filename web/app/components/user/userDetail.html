@@ -4,14 +4,22 @@
         <h4>基本信息</h4>
         <div ng-if="hasDetail" ng-init="hasDetail = true">
             <hr class="header_rule">
-            <dt>用户名</dt>
-            <dd>{{user.name}}</dd>
-            <dt>ID</dt>
-            <dd>{{user.id}}</dd>
-            <dt>邮箱</dt>
-            <dd>{{user.email}}</dd>
-            <dt>激活</dt>
-            <dd>{{user.enabled}}</dd>
+            <dl>
+                <dt>用户名</dt>
+                <dd>{{user.name}}</dd>
+            </dl>
+            <dl>
+                <dt>ID</dt>
+                <dd>{{user.id}}</dd>
+            </dl>
+            <dl>
+                <dt>邮箱</dt>
+                <dd>{{user.email}}</dd>
+            </dl>
+            <dl>
+                <dt>激活</dt>
+                <dd>{{user.enabled}}</dd>
+            </dl>
         </div>
         <div ng-if="hasError" ng-init="hasError=false">
             <div class="span12">
