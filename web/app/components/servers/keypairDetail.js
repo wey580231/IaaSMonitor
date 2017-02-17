@@ -9,7 +9,6 @@ angular.module('app.keypairDetail', ['ngRoute']).config(['$routeProvider', funct
     var name = $routeParams.name;
     if (name != undefined) {
         var adminUrl = endPointCollection.adminURL("compute");
-        alert(adminUrl);
         if (adminUrl != undefined) {
             adminUrl = adminUrl+serviceListService.KeypairDetail + name;
             console.log(adminUrl);
