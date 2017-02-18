@@ -8,13 +8,15 @@ angular.module('app.resourceDetail', ['ngRoute']).config(['$routeProvider', func
         controller: 'resourceDetailController'
     })
 }]).controller("resourceDetailController", function ($scope, $rootScope, $routeParams, myHttpService, endPointCollection, serviceListService) {
+
     var id = $routeParams.id;
-    var stackName=$routeParams.stackName;
-    var resourceName=$routeParams.resourceName;
+    var stackName = $routeParams.stackName;
+    var resourceName = $routeParams.resourceName;
+
     if (id != undefined) {
         var adminUrl = endPointCollection.adminURL("orchestration");
-        if (adminUrl != undefined){
-            adminUrl =adminUrl+serviceListService.stackDetail+stackName+"/"+ id+serviceListService.resourceDetail+resourceName;
+        if (adminUrl != undefined) {
+            adminUrl = adminUrl + serviceListService.stackDetail + stackName + "/" + id + serviceListService.resourceDetail + resourceName;
             console.log(adminUrl);
             myHttpService.get('/mainController', adminUrl)
                 .then(function (response) {
