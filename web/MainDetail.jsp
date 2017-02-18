@@ -243,6 +243,7 @@
 
 <%--summary--%>
 <script src="app/components/summary/totalSummary.js"></script>
+<script src="app/components/servers/resourceDetail.js"></script>
 
 <script>
     //    $(document).ready(function(){
