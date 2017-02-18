@@ -86,8 +86,8 @@
                                     <tbody>
                                     <tr ng-repeat="resource in list1">
                                         <td><input type="checkbox"></td>
-                                        <td><a href="#/viewResource?id={{stack.id}}&name={{stack.stack_name}}">{{resource.resource_name}}</a></td>
-                                        <td><a force-Href=#viewStack?id={{resource.physical_resource_id}}&stackName={{resource.resource_name}}>{{resource.physical_resource_id}}</a></td>
+                                        <td><a href="#/viewResource?id={{stack.id}}&stackName={{stack.stack_name}}&resourceName={{resource.resource_name}}">{{resource.resource_name}}</a></td>
+                                        <td><a force-Href="#/viewStack?id={{resource.physical_resource_id}}"|| force-Href="#/viewInstance?id={{resource.physical_resource_id}}">{{resource.physical_resource_id}}</a></td>
                                         <td>{{resource.resource_type}}</td>
                                         <td>{{resource.updated_time}}</td>
                                         <td>{{resource.resource_status}}</td>
@@ -116,7 +116,7 @@
                                     <tbody>
                                     <tr ng-repeat="event in list">
                                         <td><input type="checkbox"></td>
-                                        <td><a href="#viewUser?id={{event.id}}">{{event.resource_name}}</a></td>
+                                        <td><a href="#/viewResource?id={{stack.id}}&stackName={{stack.stack_name}}&resourceName={{event.resource_name}}">{{event.resource_name}}</a></td>
                                         <td>{{event.event_time}}</td>
                                         <td>{{event.resource_status}}</td>
                                         <td>{{event.resource_status_reason}}</td>

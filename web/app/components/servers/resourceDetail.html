@@ -5,8 +5,10 @@
         <div ng-if="hasResource" ng-init="hasResource = true">
             <h4>基本信息</h4>
             <hr class="header_rule">
-            <dt>栈资源ID</dt>
-            <dd>{{resource.logical_resource_id}}</dd>
+            <dt>栈资源名称</dt>
+            <dd>{{resource.resource_name}}</dd>
+            <dt>资源ID</dt>
+            <dd><a force-Href="#/viewStack?id={{resource.physical_resource_id}}">{{resource.physical_resource_id}}</a></dd>
             <dt>栈资源类型</dt>
             <dd>{{resource.resource_type}}</dd>
             <dt>描述</dt>

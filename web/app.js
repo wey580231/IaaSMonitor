@@ -238,7 +238,7 @@ angular.module("app", [
         service.stacktemplateDetail="/template";
         service.stackeventDetail="/events";
         service.stackresourceDetail="/resources";
-        service.resourceDetail="/resources/Master_Instances_Group";
+        service.resourceDetail="/resources/";
 
         //stack
         service.ListStack = '/stacks';
