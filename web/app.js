@@ -30,7 +30,8 @@ angular.module("app", [
     //summary
     'app.totalSummary',
 
-    'app.instanceDetail'
+    'app.instanceDetail',
+    'app.resourceDetail'
 ])
 //2017-02-12：初始化获取endpoints
     .run(function ($rootScope, $http, $location, getEndPointService) {
@@ -232,6 +233,12 @@ angular.module("app", [
         service.imageDetail="/images/";
         service.InstanceOperateLog="/os-instance-actions";
         service.ConsoleOutput = "/action"
+        service.requestDetail="/os-instance-actions";
+        service.stackDetail="/stacks/";
+        service.stacktemplateDetail="/template";
+        service.stackeventDetail="/events";
+        service.stackresourceDetail="/resources";
+        service.resourceDetail="/resources/Master_Instances_Group";
 
         //stack
         service.ListStack = '/stacks';
@@ -240,7 +247,6 @@ angular.module("app", [
     })
     .factory("getEndPointService", ['$http', 'endPointCollection', '$rootScope', 'serviceListService', 'myHttpService', '$location', function ($http, endPointCollection, $rootScope, serviceListService, myHttpService, $location) {
         var service = {};
-
         var _flushEndPoint = function () {
             if ($rootScope.isLog == undefined) {
                 myHttpService.get('/login', "getEndPoint")

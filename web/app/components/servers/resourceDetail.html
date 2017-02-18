@@ -1,0 +1,29 @@
+<div>
+    <h3>资源详情:{{resource.resource_name}}</h3>
+    <div class="col-sm-12">
+        <h3>资源概况</h3>
+        <div ng-if="hasResource" ng-init="hasResource = true">
+            <h4>基本信息</h4>
+            <hr class="header_rule">
+            <dt>栈资源ID</dt>
+            <dd>{{resource.logical_resource_id}}</dd>
+            <dt>栈资源类型</dt>
+            <dd>{{resource.resource_type}}</dd>
+            <dt>描述</dt>
+            <dd>{{resource.description}}</dd>
+        </div>
+
+
+            <h4>状态</h4>
+            <hr class="header_rule">
+            <dt>最近更新</dt>
+            <dd>{{resource.updated_time}}</dd>
+            <dt>状态</dt>
+            <dd>{{resource.resource_status}}</dd>
+
+            <h4>资源元数据</h4>
+            <hr class="header_rule">
+            <dd>{{resource.required_by}}</dd>
+
+    </div>
+</div>
