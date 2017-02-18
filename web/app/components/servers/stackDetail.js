@@ -11,9 +11,8 @@ angular.module('app.stacksDetail', ['ngRoute'])
     .controller('stackDetailController', function ($scope, $rootScope, $location, $routeParams, endPointCollection, $rootScope, myHttpService, serviceListService) {
         var id = $routeParams.id;
         alert(id);
-        var stackName = $routeParams.stackName;
         $scope.hasError = false;
-        if (id && stackName) {
+        if (id) {
             var url = endPointCollection.adminURL('orchestration') + serviceListService.stackDetail+ id;
             var templateUrl=url+serviceListService.stacktemplateDetail;
             var eventUrl=url+serviceListService.stackeventDetail;
