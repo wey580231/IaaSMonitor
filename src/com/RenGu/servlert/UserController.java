@@ -23,8 +23,6 @@ public class UserController extends HttpServlet {
         String active = req.getParameter("active");
         String url = req.getParameter("requestUrl");
 
-        System.out.println("active:"+active);
-
         String jsonBody = HttpPostBodyMaker.createUser(userName, password, active, mainProgram);
 
 //        System.out.println("JSON:" + jsonBody);

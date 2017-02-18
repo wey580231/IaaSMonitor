@@ -26,14 +26,42 @@
                         <td>{{stack.updated_time}}</td>
                         <td>{{stack.stack_status}}</td>
                         <td>{{stack.stack_owner}}</td>
-                        <td>-</td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-default dropdown-toggle btn-sm" type="button" id="dropdownMenu1"
+                                        data-toggle="dropdown">操作
+                                    <!-- 下拉箭头-->
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                    <li><a role="menuitem" tabindex="-1" data-target="#">挂起栈</a></li>
+                                    <li><a role="menuitem" tabindex="-1" data-target="#">恢复栈</a></li>
+                                    <li><a role="menuitem" tabindex="-1" data-target="#" style="color:red;">删除栈</a></li>
+                                </ul>
+                            </div>
+                        </td>
                     </tr>
                     <tr ng-if="list.length==0">
                         <td colspan="7" style="text-align:center">没有要显示的条目</td>
                     </tr>
                     </tbody>
                     <tfoot>
-                    <td colspan="6">共{{list.length}}项</td>
+                    <td colspan="5" class="pagination" style="text-align:left">
+                        <select style="width:80px" ng-init="pageShow = pageList[0]" ng-model="pageShow"
+                                ng-options="x for x in pageList" ng-change="changePerPage(pageShow)">
+                        </select>
+                        <ul style="height:25px;">
+                            <li>
+                                <a data-target="#">{{currPage+1}}/{{totalPage}}页</a>
+                            </li>
+                            <li>
+                                <a data-target="#" ng-click="previousPage()">上一页</a>
+                            </li>
+                            <li>
+                                <a data-target="#" ng-click="nextPage()">下一页</a>
+                            </li>
+                        </ul>
+                    </td>
                     </tfoot>
                 </table>
             </div>
