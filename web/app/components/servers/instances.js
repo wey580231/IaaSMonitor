@@ -6,7 +6,7 @@ angular.module("app.instances", ['ngRoute'])
         })
     }])
     .controller("instanceController", function ($scope, $http, $location, endPointCollection, $rootScope, myHttpService, serviceListService){
-        myHttpService.get('/mainController', endPointCollection.adminURL('compute')+ serviceListService.serviceDetail)
+        myHttpService.get('mainController', endPointCollection.adminURL('compute')+ serviceListService.serviceDetail)
             .then(function (response) {
                 $scope.list = response.data.servers;
             }, function (response) {

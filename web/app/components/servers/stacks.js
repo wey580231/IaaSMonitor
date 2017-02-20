@@ -13,7 +13,7 @@ angular.module('app.stacks', ['ngRoute'])
                         var deferred = $q.defer();
                         var promise = deferred.promise;
                         var url = endPointCollection.adminURL('orchestration') + serviceListService.ListStack;
-                        myHttpService.get('/mainController', url)
+                        myHttpService.get('mainController', url)
                             .then(function (response) {
                                 deferred.resolve(response.data);
                             }, function (response) {

@@ -24,7 +24,7 @@ angular.module('app.instanceDetail', ['ngRoute']).config(['$routeProvider', func
         var adminUrl = endPointCollection.adminURL("compute");
         if (adminUrl != undefined) {
             adminUrls = adminUrl + serviceListService.instancDeatail + id;
-            myHttpService.get('/mainController', adminUrls)
+            myHttpService.get('mainController', adminUrls)
                 .then(function (response) {
                     if (response.data.server) {
                         $scope.hasDetail = true;
@@ -40,7 +40,7 @@ angular.module('app.instanceDetail', ['ngRoute']).config(['$routeProvider', func
                         var imageUrl = adminUrl + serviceListService.imageDetail + $scope.server.image.id;
 
                         //flavor
-                        myHttpService.get('/mainController', flavorUrl)
+                        myHttpService.get('mainController', flavorUrl)
                             .then(function (response) {
                                 if (response.data.flavor) {
                                     $scope.hasFlavors = true;
@@ -51,7 +51,7 @@ angular.module('app.instanceDetail', ['ngRoute']).config(['$routeProvider', func
                             });
 
                         //SecurityGroup
-                        myHttpService.get('/mainController', SecurityGroupsUrl)
+                        myHttpService.get('mainController', SecurityGroupsUrl)
                             .then(function (response) {
                                 if (response.data.security_groups.length > 0) {
                                     $scope.hasSafegroup = true;
@@ -60,7 +60,7 @@ angular.module('app.instanceDetail', ['ngRoute']).config(['$routeProvider', func
                             });
 
                         //image
-                        myHttpService.get('/mainController', imageUrl)
+                        myHttpService.get('mainController', imageUrl)
                             .then(function (response) {
                                 $scope.hasImage = true;
                                 $scope.image = response.data.image;
@@ -81,7 +81,7 @@ angular.module('app.instanceDetail', ['ngRoute']).config(['$routeProvider', func
     $scope.showOperateLog = function () {
         if (!hasLoadOperateLog) {
             var requestUrl = adminUrls + serviceListService.InstanceOperateLog;
-            myHttpService.get('/mainController', requestUrl)
+            myHttpService.get('mainController', requestUrl)
                 .then(function (response) {
                     hasLoadOperateLog = true;
                     $scope.request = response.data.instanceActions;
@@ -94,7 +94,7 @@ angular.module('app.instanceDetail', ['ngRoute']).config(['$routeProvider', func
         if (!hasLoadConsoleLog) {
             var requestUrl = adminUrls + serviceListService.ConsoleOutput;
             var body = {'length': 50, 'url': requestUrl};
-            myHttpService.post('/console', body).then(function (response) {
+            myHttpService.post('console', body).then(function (response) {
                 $scope.consoleData = response.data.output;
             }, function (response) {
                 $scope.consoleData = response.data.error;

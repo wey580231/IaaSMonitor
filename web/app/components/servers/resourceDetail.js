@@ -17,7 +17,7 @@ angular.module('app.resourceDetail', ['ngRoute']).config(['$routeProvider', func
         var adminUrl = endPointCollection.adminURL("orchestration");
         if (adminUrl != undefined) {
             adminUrl = adminUrl + serviceListService.stackDetail + stackName + "/" + id + serviceListService.resourceDetail + resourceName;
-            myHttpService.get('/mainController', adminUrl)
+            myHttpService.get('mainController', adminUrl)
                 .then(function (response) {
                     $scope.hasResource = true;
                     $scope.hasError = false;

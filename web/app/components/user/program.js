@@ -7,7 +7,7 @@ angular.module("app.program", ['ngRoute'])
     }])
     .controller("programController", function ($scope, $http, $location, endPointCollection, $rootScope, myHttpService, serviceListService) {
         if (endPointCollection.adminURL('identity') && endPointCollection.adminURL('identity').length > 28) {
-            myHttpService.get('/mainController', endPointCollection.adminURL('identity').substring(0, 27) + serviceListService.ListProjects)
+            myHttpService.get('mainController', endPointCollection.adminURL('identity').substring(0, 27) + serviceListService.ListProjects)
                 .then(function (response) {
                     $scope.list = response.data.projects;
                 }, function (response) {

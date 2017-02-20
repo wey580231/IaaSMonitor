@@ -13,7 +13,7 @@ angular.module('app.stacksDetail', ['ngRoute'])
                     var _getData = function () {
                         var deferred = $q.defer();
                         var promise = deferred.promise;
-                        myHttpService.get('/mainController', endPointCollection.adminURL('orchestration') + serviceListService.stackDetail + id).then(function (response) {
+                        myHttpService.get('mainController', endPointCollection.adminURL('orchestration') + serviceListService.stackDetail + id).then(function (response) {
                             deferred.resolve(response.data);
                         }, function (response) {
                             deferred.reject(response.data);
@@ -62,7 +62,7 @@ angular.module('app.stacksDetail', ['ngRoute'])
             if (!hasLoadEvent) {
                 var eventUrl = url + serviceListService.stackeventDetail;
 
-                myHttpService.get('/mainController', eventUrl)
+                myHttpService.get('mainController', eventUrl)
                     .then(function (response) {
                         $scope.eventList = response.data.events;
                         hasLoadEvent = true;
@@ -78,7 +78,7 @@ angular.module('app.stacksDetail', ['ngRoute'])
             if (!hasLoadResources) {
                 var resourceUrl = url + serviceListService.stackresourceDetail;
 
-                myHttpService.get('/mainController', resourceUrl)
+                myHttpService.get('mainController', resourceUrl)
                     .then(function (response) {
                         $scope.resourceList = response.data.resources;
                         hasLoadResources = true;
@@ -93,7 +93,7 @@ angular.module('app.stacksDetail', ['ngRoute'])
         $scope.loadTemplate = function () {
             if (!hasLoadTemplate) {
                 var templateUrl = url + serviceListService.stacktemplateDetail;
-                myHttpService.get('/mainController', templateUrl)
+                myHttpService.get('mainController', templateUrl)
                     .then(function (response) {
                         $scope.hastemplate = true;
                         $scope.stacktemplate = response.data;
