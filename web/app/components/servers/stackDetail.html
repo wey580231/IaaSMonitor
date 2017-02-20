@@ -42,7 +42,9 @@
                                     <hr class="header_rule">
                                     <dl>
                                         <dt>已创建</dt>
-                                        <dd>{{stack.creation_time}}</dd>
+                                        <dd>
+                                        {{stack.creation_time}}
+                                        </dd>
                                     </dl>
                                     <dl>
                                         <dt>最近更新</dt>
@@ -81,17 +83,44 @@
                                         <dt>OS::stack_name</dt>
                                         <dd>{{stack.parameters["OS::stack_name"]}}</dd>
                                     </dl>
+                                    <dl>
+                                        <dt>key_name</dt>
+                                        <dd>{{stack.parameters.key_name}}</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>image</dt>
+                                        <dd>{{stack.parameters.image}}</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>public_net_id</dt>
+                                        <dd>{{stack.parameters.public_net_id}}</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>private_net_id</dt>
+                                        <dd>{{stack.parameters.private_net_id}}</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>flavor</dt>
+                                        <dd>{{stack.parameters.flavor}}</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>private_subnet_id</dt>
+                                        <dd>{{stack.parameters.private_subnet_id}}</dd>
+                                    </dl>
                                 </div>
                                 <div class="infoGroup">
                                     <h4>启动参数</h4>
                                     <hr class="header_rule">
                                     <dl>
                                         <dt>超时</dt>
-                                        <dd>{{stack.timeout_mins}}</dd>
+                                        <dd>{{stack.timeout_mins}}分钟</dd>
                                     </dl>
                                     <dl>
                                         <dt>回滚</dt>
-                                        <dd>{{stack.disable_rollback}}</dd>
+                                        <dd>
+                                            <dd ng-if="stack.disable_rollback==true">已关闭</dd>
+                                            <dd ng-if="stack.disable_rollback==false">未关闭</dd>
+                                        </dd>
                                     </dl>
                                 </div>
                             </div>
@@ -115,18 +144,21 @@
                                             <a href="#/viewResource?id={{stack.id}}&stackName={{stack.stack_name}}&resourceName={{resource.resource_name}}">{{resource.resource_name}}</a>
                                         </td>
                                         <td>
-                                            <a ng-if="resource.resource_type =='OS::Nova::Server'"
-                                               force-Href="#/viewInstance?id={{resource.physical_resource_id}}">{{resource.physical_resource_id}}</a>
-                                            <a ng-if="resource.resource_type =='OS::Heat::ResourceGroup'"
-                                               force-Href="#/viewStack?id={{resource.physical_resource_id}}">{{resource.physical_resource_id}}</a>
+                                            <a ng-if="resource.resource_type=='OS::Heat::ResourceGroup'" force-Href="#/viewStack?id={{resource.physical_resource_id}}">{{resource.physical_resource_id}}</a>
+                                            <a ng-if="resource.resource_type=='OS::Nova::Server'" force-Href="#/viewInstance?id={{resource.physical_resource_id}}">{{resource.physical_resource_id}}</a>
+                                            <a ng-if="resource.resource_type=='OS::Neutron::Port'" force-Href="#/viewPort?id={{resource.physical_resource_id}}">{{resource.physical_resource_id}}</a>
+                                            <dd ng-if="resource.resource_type=='OS::Neutron::FloatingIP'">{{resource.physical_resource_id}}</dd>
                                         </td>
                                         <td>{{resource.resource_type}}</td>
                                         <td>{{resource.updated_time}}</td>
-                                        <td>{{resource.resource_status}}</td>
-                                        <td>{{resource.resource_status_reason}}</td>
                                         <td>
-                                            <button type="button" class="btn btn-primary btn-sm cellBtn">编辑</button>
-                                        </td>
+                                            <dd ng-if="resource.resource_status=='CREATE_COMPLETE'">创建完成</dd>
+                                            <dd ng-if="resource.resource_status=='CREATE_IN_PROGRESS'">创建中</dd>
+                                            </td>
+                                        <td>{{resource.resource_status_reason}}</td>
+                                        <!--<td>-->
+                                            <!--<button type="button" class="btn btn-primary btn-sm cellBtn">编辑</button>-->
+                                        <!--</td>-->
                                     </tr>
                                     </tbody>
                                 </table>
@@ -147,14 +179,18 @@
                                     <tr ng-repeat="event in eventList">
                                         <td><input type="checkbox"></td>
                                         <td>
-                                            <a href="#viewResource?id={{stack.id}}&stackName={{stack.stack_name}}&resourceName={{event.resource_name}}">{{event.resource_name}}</a>
+                                            <dd ng-if="event.resource_name==stack.stack_name">{{event.resource_name}}</dd>
+                                            <a ng-if="event.resource_name!=stack.stack_name" href="#viewResource?id={{stack.id}}&stackName={{stack.stack_name}}&resourceName={{event.resource_name}}">{{event.resource_name}}</a>
                                         </td>
                                         <td>{{event.event_time}}</td>
-                                        <td>{{event.resource_status}}</td>
-                                        <td>{{event.resource_status_reason}}</td>
                                         <td>
-                                            <button type="button" class="btn btn-primary btn-sm cellBtn">编辑</button>
-                                        </td>
+                                            <dd ng-if="event.resource_status=='CREATE_COMPLETE'">创建完成</dd>
+                                            <dd ng-if="event.resource_status=='CREATE_IN_PROGRESS'">创建中</dd>
+                                           </td>
+                                        <td>{{event.resource_status_reason}}</td>
+                                        <!--<td>-->
+                                            <!--<button type="button" class="btn btn-primary btn-sm cellBtn">编辑</button>-->
+                                        <!--</td>-->
                                     </tr>
                                     </tbody>
                                 </table>

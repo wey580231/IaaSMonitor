@@ -32,7 +32,6 @@ angular.module('app.stacksDetail', ['ngRoute'])
         var hasLoadResources = false;
         var hasLoadTemplate = false;
         $scope.hasError = false;
-
         if (id) {
             var url = endPointCollection.adminURL('orchestration') + serviceListService.stackDetail + id;
 
