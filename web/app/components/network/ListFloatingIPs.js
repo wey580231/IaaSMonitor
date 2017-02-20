@@ -9,7 +9,7 @@ angular.module("app.listFloatingIPs", ['ngRoute'])
         })
     }])
     .controller("listFloatingIPsController", function ($scope, $http, $location , myHttpService , endPointCollection , serviceListService) {
-        myHttpService.get('/mainController', endPointCollection.adminURL('network') + serviceListService.ListFloatingIPs)
+        myHttpService.get('mainController', endPointCollection.adminURL('network') + serviceListService.ListFloatingIPs)
             .then(function (response) {
                 $scope.list = response.data.floatingips;
             }, function (response) {

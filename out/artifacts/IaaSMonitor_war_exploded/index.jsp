@@ -1,10 +1,15 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-
+    <base href="<%=basePath%>">
     <title>登录-OpenStack</title>
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="cache-control" content="no-cache">
@@ -19,7 +24,7 @@
     <div class="row-fluid">
         <div class="span12">
             <div class="center-block" style="width:50%; margin-left:auto; margin-right:auto">
-                <form action="/login" method="post">
+                <form action="login" method="post">
                     <fieldset>
                         <input type="hidden" name="requestUrl" value="http://172.17.203.101:5000/v2.0/tokens">
                         <legend>登录</legend>

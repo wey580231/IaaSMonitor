@@ -12,7 +12,7 @@ angular.module("app.user", ['ngRoute'])
         var operateId;                  //单条删除的id值
         $scope.deleteEnabled = true;    //初始设置删除不可用
 
-        myHttpService.get('/mainController', endPointCollection.adminURL('identity') + serviceListService.ListUsers)
+        myHttpService.get('mainController', endPointCollection.adminURL('identity') + serviceListService.ListUsers)
             .then(function (response) {
                 $scope.list = response.data.users;
                 userList = response.data.users;
@@ -105,7 +105,7 @@ angular.module("app.user", ['ngRoute'])
             var adminUrl = endPointCollection.adminURL("identity");
             if (adminUrl != undefined) {
                 adminUrl = adminUrl.substr(0, adminUrl.length - 5) + serviceListService.DeleteUser + "/" + operateId;
-                myHttpService.delete('/mainController', adminUrl)
+                myHttpService.delete('mainController', adminUrl)
                     .then(function (response) {
                         $('#deleteUser').modal('hide');
                         $route.reload();
