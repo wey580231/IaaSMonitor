@@ -10,7 +10,6 @@ angular.module('app.userDetail', ['ngRoute']).config(['$routeProvider', function
         var adminUrl = endPointCollection.adminURL("identity");
         if (adminUrl != undefined) {
             adminUrl = adminUrl.substr(0, adminUrl.length - 5) + serviceListService.UserDetail + id;
-            console.log(adminUrl);
             myHttpService.get('/mainController', adminUrl)
                 .then(function (response) {
                     $scope.hasDetail = true;

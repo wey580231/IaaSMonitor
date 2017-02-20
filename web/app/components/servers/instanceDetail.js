@@ -53,7 +53,6 @@ angular.module('app.instanceDetail', ['ngRoute']).config(['$routeProvider', func
                         //SecurityGroup
                         myHttpService.get('/mainController', SecurityGroupsUrl)
                             .then(function (response) {
-                                console.log("SecurityLength:" + response.data.security_groups.length);
                                 if (response.data.security_groups.length > 0) {
                                     $scope.hasSafegroup = true;
                                     $scope.safeGroup = response.data.security_groups[0].rules;

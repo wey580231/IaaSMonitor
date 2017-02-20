@@ -11,7 +11,6 @@ angular.module('app.keypairDetail', ['ngRoute']).config(['$routeProvider', funct
         var adminUrl = endPointCollection.adminURL("compute");
         if (adminUrl != undefined) {
             adminUrl = adminUrl+serviceListService.KeypairDetail + name;
-            console.log(adminUrl);
             myHttpService.get('/mainController', adminUrl)
                 .then(function (response) {
                     $scope.hasDetail = true;
