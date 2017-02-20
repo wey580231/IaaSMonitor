@@ -12,10 +12,13 @@
             <dl>
                 <dt>资源ID</dt>
                 <dd>
-                    <a ng-if="resource.resource_type=='OS::Heat::ResourceGroup'" force-Href="#/viewStack?id={{resource.physical_resource_id}}">{{resource.physical_resource_id}}</a>
-                    <a ng-if="resource.resource_type=='OS::Nova::Server'" force-Href="#/viewInstance?id={{resource.physical_resource_id}}">{{resource.physical_resource_id}}</a>
-                    <a ng-if="resource.resource_type=='OS::Neutron::Port'" force-Href="#/viewPort?id={{resource.physical_resource_id}}">{{resource.physical_resource_id}}</a>
-                   <dd ng-if="resource.resource_type=='OS::Neutron::FloatingIP'">{{resource.physical_resource_id}}</dd>
+                    <a ng-if="resource.resource_type=='OS::Heat::ResourceGroup'"
+                       force-Href="#/viewStack?id={{resource.physical_resource_id}}">{{resource.physical_resource_id}}</a>
+                    <a ng-if="resource.resource_type=='OS::Nova::Server'"
+                       force-Href="#/viewInstance?id={{resource.physical_resource_id}}">{{resource.physical_resource_id}}</a>
+                    <a ng-if="resource.resource_type=='OS::Neutron::Port'"
+                       force-Href="#/viewPort?id={{resource.physical_resource_id}}">{{resource.physical_resource_id}}</a>
+                    <label ng-if="resource.resource_type=='OS::Neutron::FloatingIP'">{{resource.physical_resource_id}}</label>
                 </dd>
             </dl>
             <dl>
