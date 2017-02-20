@@ -31,7 +31,8 @@ angular.module("app", [
     'app.totalSummary',
 
     'app.instanceDetail',
-    'app.resourceDetail'
+    'app.resourceDetail',
+    'app.portDetail'
 ])
 //2017-02-12：初始化获取endpoints
     .run(function ($rootScope, $http, $location, getEndPointService) {
@@ -234,12 +235,13 @@ angular.module("app", [
         service.imageDetail = "/images/";
         service.InstanceOperateLog = "/os-instance-actions";
         service.ConsoleOutput = "/action"
-        service.requestDetail = "/os-instance-actions";
-        service.stackDetail = "/stacks/";
-        service.stacktemplateDetail = "/template";
-        service.stackeventDetail = "/events";
-        service.stackresourceDetail = "/resources";
-        service.resourceDetail = "/resources/";
+        service.requestDetail="/os-instance-actions";
+        service.stackDetail="/stacks/";
+        service.stacktemplateDetail="/template";
+        service.stackeventDetail="/events";
+        service.stackresourceDetail="/resources";
+        service.resourceDetail="/resources/";
+        service.portDetail="/v2.0/ports/";
 
         //stack
         service.ListStack = '/stacks';

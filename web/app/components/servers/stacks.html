@@ -13,7 +13,7 @@
                         <th>更新时间</th>
                         <th>状态</th>
                         <th>所有者</th>
-                        <th>操作</th>
+                        <!--<th>操作</th>-->
                     </tr>
                     </thead>
                     <tbody>
@@ -26,20 +26,20 @@
                         <td>{{stack.updated_time}}</td>
                         <td>{{stack.stack_status}}</td>
                         <td>{{stack.stack_owner}}</td>
-                        <td>
-                            <div class="dropdown">
-                                <button class="btn btn-default dropdown-toggle btn-sm" type="button" id="dropdownMenu1"
-                                        data-toggle="dropdown">操作
-                                    <!-- 下拉箭头-->
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                    <li><a role="menuitem" tabindex="-1" data-target="#">挂起栈</a></li>
-                                    <li><a role="menuitem" tabindex="-1" data-target="#">恢复栈</a></li>
-                                    <li><a role="menuitem" tabindex="-1" data-target="#" style="color:red;">删除栈</a></li>
-                                </ul>
-                            </div>
-                        </td>
+                        <!--<td>-->
+                            <!--<div class="dropdown">-->
+                                <!--<button class="btn btn-default dropdown-toggle btn-sm" type="button" id="dropdownMenu1"-->
+                                        <!--data-toggle="dropdown">操作-->
+                                    <!--&lt;!&ndash; 下拉箭头&ndash;&gt;-->
+                                    <!--<span class="caret"></span>-->
+                                <!--</button>-->
+                                <!--<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">-->
+                                    <!--<li><a role="menuitem" tabindex="-1" data-target="#">挂起栈</a></li>-->
+                                    <!--<li><a role="menuitem" tabindex="-1" data-target="#">恢复栈</a></li>-->
+                                    <!--<li><a role="menuitem" tabindex="-1" data-target="#" style="color:red;">删除栈</a></li>-->
+                                <!--</ul>-->
+                            <!--</div>-->
+                        <!--</td>-->
                     </tr>
                     <tr ng-if="list.length==0">
                         <td colspan="7" style="text-align:center">没有要显示的条目</td>

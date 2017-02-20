@@ -114,7 +114,7 @@
                                     <hr class="header_rule">
                                     <dl>
                                         <dt>连接到</dt>
-                                        <dd>{{server["os-extended-volumes:volumes_attached"]}}</dd>
+                                        <dd ng-if="server['os-extended-volumes:volumes_attached']==''">未连接到云硬盘</dd>
                                     </dl>
                                 </div>
 
