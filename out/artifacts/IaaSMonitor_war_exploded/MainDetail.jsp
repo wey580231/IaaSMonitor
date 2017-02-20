@@ -78,6 +78,7 @@
 
         dt, dd {
             float: left;
+            overflow: hidden;
         }
 
         h2, h3, h4, h5 {
@@ -88,8 +89,12 @@
 
         .infoGroup {
             display: block;
-            padding-top:15px;
+            padding-top: 15px;
             margin-bottom: 40px;
+        }
+
+        pre {
+            font-size: 12px;
         }
 
     </style>
@@ -243,6 +248,7 @@
 
 <%--summary--%>
 <script src="app/components/summary/totalSummary.js"></script>
+<script src="app/components/servers/resourceDetail.js"></script>
 
 <script>
     //    $(document).ready(function(){

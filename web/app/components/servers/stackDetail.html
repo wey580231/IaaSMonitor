@@ -5,57 +5,180 @@
             <div class="row-fluid">
                 <div class="span12">
                     <div class="tabbable" id="tabs-829056">
-                        <ul class="nav nav-tabs">
+                        <ul class="nav nav-tabs" style="margin-bottom:5px;">
                             <li class="active" style="width:100px;text-align:center">
                                 <a data-target="#showSummary" data-toggle="tab">概况</a>
                             </li>
                             <li style="width:100px;text-align:center">
-                                <a data-target="#showResources" data-toggle="tab">资源</a>
+                                <a data-target="#showResources" data-toggle="tab" ng-click="loadResource()">资源</a>
                             </li>
                             <li style="width:100px;text-align:center">
-                                <a data-target="#showEvents" data-toggle="tab">事件</a>
+                                <a data-target="#showEvents" data-toggle="tab" ng-click="loadEvent()">事件</a>
                             </li>
                             <li style="width:100px;text-align:center">
-                                <a data-target="#showTemplates" data-toggle="tab">模板</a>
+                                <a data-target="#showTemplates" data-toggle="tab" ng-click="loadTemplate()">模板</a>
                             </li>
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="showSummary">
-                                <p>
-                                    第一部分内容.
-                                </p>
+                                <div ng-if="hasstack" ng-init="hasDetail = true" class="infoGroup">
+                                    <h4>基本信息</h4>
+                                    <hr class="header_rule">
+                                    <dl>
+                                        <dt>名称</dt>
+                                        <dd>{{stack.stack_name}}</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>ID</dt>
+                                        <dd>{{stack.id}}</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>描述</dt>
+                                        <dd>{{stack.description}}</dd>
+                                    </dl>
+                                </div>
+                                <div class="infoGroup">
+                                    <h4>状态</h4>
+                                    <hr class="header_rule">
+                                    <dl>
+                                        <dt>已创建</dt>
+                                        <dd>{{stack.creation_time}}</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>最近更新</dt>
+                                        <dd>{{stack.updated_time}}</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>状态</dt>
+                                        <dd>{{stack.stack_status}} ：{{stack.stack_status_reason}}</dd>
+                                    </dl>
+                                </div>
+                                <div class="infoGroup">
+                                    <h4>输出</h4>
+                                    <hr class="header_rule">
+                                    <div ng-repeat="instance in instancesGroup">
+                                        <dl>
+                                            <dt>{{instance.output_key}}</dt>
+                                            <dd>{{instance.description}}</dd>
+                                        </dl>
+                                        <div style="margin-left:160px;clear:both;margin-top:2px">
+                                            <pre style="">{{instance.output_value|json}}</pre>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="infoGroup">
+                                    <h4>栈参数</h4>
+                                    <hr class="header_rule">
+                                    <dl>
+                                        <dt>OS::project_id</dt>
+                                        <dd>{{stack.parameters["OS::project_id"]}}</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>OS::stack_id</dt>
+                                        <dd>{{stack.parameters["OS::stack_id"]}}</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>OS::stack_name</dt>
+                                        <dd>{{stack.parameters["OS::stack_name"]}}</dd>
+                                    </dl>
+                                </div>
+                                <div class="infoGroup">
+                                    <h4>启动参数</h4>
+                                    <hr class="header_rule">
+                                    <dl>
+                                        <dt>超时</dt>
+                                        <dd>{{stack.timeout_mins}}</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>回滚</dt>
+                                        <dd>{{stack.disable_rollback}}</dd>
+                                    </dl>
+                                </div>
                             </div>
-                            <div class="tab-pane " id="showResources">
-                                <p>
-                                    第二部分内容.
-                                </p>
+                            <div class="tab-pane" id="showResources">
+                                <table class="table table-striped table-bordered table-hover" style="margin:0px;">
+                                    <thead>
+                                    <tr class="success">
+                                        <th><input type="checkbox" id="selectAll"></th>
+                                        <th>栈资源</th>
+                                        <th>资源</th>
+                                        <th>栈资源类型</th>
+                                        <th>日期</th>
+                                        <th>状态</th>
+                                        <th>状态原因</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="resource in resourceList">
+                                        <td><input type="checkbox"></td>
+                                        <td>
+                                            <a href="#/viewResource?id={{stack.id}}&stackName={{stack.stack_name}}&resourceName={{resource.resource_name}}">{{resource.resource_name}}</a>
+                                        </td>
+                                        <td>
+                                            <a ng-if="resource.resource_type =='OS::Nova::Server'"
+                                               force-Href="#/viewInstance?id={{resource.physical_resource_id}}">{{resource.physical_resource_id}}</a>
+                                            <a ng-if="resource.resource_type =='OS::Heat::ResourceGroup'"
+                                               force-Href="#/viewStack?id={{resource.physical_resource_id}}">{{resource.physical_resource_id}}</a>
+                                        </td>
+                                        <td>{{resource.resource_type}}</td>
+                                        <td>{{resource.updated_time}}</td>
+                                        <td>{{resource.resource_status}}</td>
+                                        <td>{{resource.resource_status_reason}}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary btn-sm cellBtn">编辑</button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                             <div class="tab-pane" id="showEvents">
                                 <p>
-                                    第三部分内容.
+                                <table class="table table-striped table-bordered table-hover" style="margin:0px;">
+                                    <thead>
+                                    <tr class="success">
+                                        <th><input type="checkbox" id="selectAll1"></th>
+                                        <th>栈资源</th>
+                                        <th>事件后时间</th>
+                                        <th>状态</th>
+                                        <th>状态原因</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="event in eventList">
+                                        <td><input type="checkbox"></td>
+                                        <td>
+                                            <a href="#viewResource?id={{stack.id}}&stackName={{stack.stack_name}}&resourceName={{event.resource_name}}">{{event.resource_name}}</a>
+                                        </td>
+                                        <td>{{event.event_time}}</td>
+                                        <td>{{event.resource_status}}</td>
+                                        <td>{{event.resource_status_reason}}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary btn-sm cellBtn">编辑</button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                                 </p>
                             </div>
                             <div class="tab-pane" id="showTemplates">
-                                <p>
-                                    第四部分内容.
-                                </p>
+                                <div ng-if="hastemplate" ng-init="hasDetail = true">
+                                    <pre>{{stacktemplate|json}}</pre>
+                                </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div ng-if="hasError" ng-init="hasError=false">
-            <div class="span12">
-                <div class="alert alert-error">
-                    <button type="button" class="close" data-dismiss="alert">×</button>
-                    <h4>
-                        提示!
-                    </h4> <strong>警告!</strong> {{errorMessage}}.
+            <div ng-if="hasError" ng-init="hasError=false">
+                <div class="span12">
+                    <div class="alert alert-error">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <h4>
+                            提示!
+                        </h4> <strong>警告!</strong> {{errorMessage}}.
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
