@@ -5,26 +5,45 @@ angular.module('app.stacks', ['ngRoute'])
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/showStacks', {
             templateUrl: 'app/components/servers/stacks.html',
-            controller: 'stackController'
+            controller: 'stackController',
+            resolve: {
+                'stackService': ['$q', 'myHttpService', 'endPointCollection', 'serviceListService', function ($q, myHttpService, endPointCollection, serviceListService) {
+                    var service = {};
+                    var _getData = function () {
+                        var deferred = $q.defer();
+                        var promise = deferred.promise;
+                        var url = endPointCollection.adminURL('orchestration') + serviceListService.ListStack;
+                        myHttpService.get('/mainController', url)
+                            .then(function (response) {
+                                deferred.resolve(response.data);
+                            }, function (response) {
+                                deferred.reject(response.data);
+                            });
+                        return promise;
+                    }
+                    service.getData = _getData;
+                    return service;
+                }]
+            }
         });
     }])
-    .controller('stackController', function ($scope, $rootScope, $location, endPointCollection, pageSwitch, myHttpService, serviceListService) {
+    .controller('stackController', function ($scope, $rootScope, $location, endPointCollection, pageSwitch, myHttpService, serviceListService, stackService) {
 
         $scope.pageList = pageSwitch.pageList;
 
         var selectedCheckArray = [];    //选中的checkbox的id值集合
         var stackList = [];
 
-        myHttpService.get('/mainController', endPointCollection.adminURL('orchestration') + serviceListService.ListStack)
-            .then(function (response) {
-                $scope.list = response.data.stacks;
-                stackList = response.data.stacks;
+        stackService.getData()
+            .then(function (data) {
+                $scope.list = data.stacks;
+                stackList = data.stacks;
 
                 pageSwitch.initPage(stackList);
                 $scope.totalPage = pageSwitch.totalPage;
                 $scope.currPage = pageSwitch.currPage;
                 $scope.serverList = pageSwitch.showPage(pageSwitch.currPage);
-            }, function (response) {
+            }, function (data) {
             });
 
         var updateSelected = function (action, id) {
