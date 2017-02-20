@@ -15,8 +15,8 @@ angular.module('app.totalSummary', ['ngRoute'])
         var serverUrl = endPointCollection.adminURL('compute') + serviceListService.serviceDetail;
         var flavorUrl = endPointCollection.adminURL('compute') + serviceListService.FlavorsDetail;
 
-        var promise1 = myHttpService.get('/mainController', serverUrl);
-        var promise2 = myHttpService.get('/mainController', flavorUrl);
+        var promise1 = myHttpService.get('mainController', serverUrl);
+        var promise2 = myHttpService.get('mainController', flavorUrl);
 
         $q.all([promise1, promise2]).then(function (response) {
             var servers = response[0].data.servers;

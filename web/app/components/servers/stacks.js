@@ -13,7 +13,7 @@ angular.module('app.stacks', ['ngRoute'])
                         var deferred = $q.defer();
                         var promise = deferred.promise;
                         var url = endPointCollection.adminURL('orchestration') + serviceListService.ListStack;
-                        myHttpService.get('/mainController', url)
+                        myHttpService.get('mainController', url)
                             .then(function (response) {
                                 deferred.resolve(response.data);
                             }, function (response) {
@@ -38,7 +38,6 @@ angular.module('app.stacks', ['ngRoute'])
             .then(function (data) {
                 $scope.list = data.stacks;
                 stackList = data.stacks;
-
                 pageSwitch.initPage(stackList);
                 $scope.totalPage = pageSwitch.totalPage;
                 $scope.currPage = pageSwitch.currPage;

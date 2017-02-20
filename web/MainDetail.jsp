@@ -1,22 +1,24 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8" %>
 <%
     String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+    String pageInfo = request.getRequestURI();
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + pageInfo;
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html ng-app="app">
 <head>
     <title>使用概况</title>
-
+    <base href="<%=basePath%>">
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="cache-control" content="no-cache">
     <meta http-equiv="expires" content="0">
     <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
     <script src="javascript/jquery-3.1.1.min.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>
-    <script src="/javascript/circliful.js"></script>
-    <link href="/css/jquery.circliful.css" rel="stylesheet" type="text/css"/>
+    <script src="javascript/circliful.js"></script>
+    <link href="css/jquery.circliful.css" rel="stylesheet" type="text/css"/>
+    <link href="css/loaders.min.css" rel="stylesheet" type="text/css">
     <style type="text/css">
 
         a, a:hover {
@@ -95,6 +97,33 @@
 
         pre {
             font-size: 12px;
+        }
+
+        #bg {
+            position: absolute;
+            top: 0%;
+            left: 0%;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index: 1001;
+            -moz-opacity: 0.7;
+            opacity: .70;
+            filter: alpha(opacity=50);
+        }
+
+        #show {
+            position: absolute;
+            top: 25%;
+            left: 45%;
+            width: 10%;
+            height: 10%;
+            padding: 8px;
+            z-index: 1002;
+            overflow: auto;
+            -moz-opacity: 0.7;
+            opacity: .70;
+            filter: alpha(opacity=50);
         }
 
     </style>
@@ -203,6 +232,22 @@
         </div>
         <div class="span10">
             <ng-view></ng-view>
+        </div>
+        <div id="bg" ng-show="showContent" style="display:block"></div>
+        <div id="show" ng-show="showContent" style="display:block">
+            <div class="loader" onclick="">
+                <div class="loader-inner ball-grid-pulse">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

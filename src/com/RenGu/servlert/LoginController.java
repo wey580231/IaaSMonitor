@@ -29,7 +29,7 @@ public class LoginController extends HttpServlet {
             if (result.contains("access")) {
                 req.getSession().setAttribute(SaveLogin, result);
                 if (requestMethod == null) {
-                    resp.sendRedirect("/MainDetail.jsp");
+                    resp.sendRedirect("MainDetail.jsp");
                 } else if (requestMethod != null && requestMethod.equals(Reload)) {
                     String res = "{\"result\":\"success\"}";
                     resp.getWriter().write(res);
@@ -37,7 +37,7 @@ public class LoginController extends HttpServlet {
             } else if (result.contains("error")) {
                 if (requestMethod == null) {
                     req.getSession().setAttribute("errorInfo", "Login Error!");
-                    resp.sendRedirect("/index.jsp");
+                    resp.sendRedirect("index.jsp");
                 } else {
                     String res = "{\"result\":\"Login Error!\"}";
                     resp.getWriter().write(res);
@@ -46,7 +46,7 @@ public class LoginController extends HttpServlet {
         } else {
             if (requestMethod == null) {
                 req.getSession().setAttribute("errorInfo", "Empty Parameters!");
-                resp.sendRedirect("/index.jsp");
+                resp.sendRedirect("index.jsp");
             } else if (requestMethod.equals(Reload)) {
                 String res = "{\"result\":\"Empty Parameters!\"}";
                 resp.getWriter().write(res);
@@ -62,7 +62,7 @@ public class LoginController extends HttpServlet {
             resp.getWriter().write(token);
         } else if (url != null && url.equals("reload")) {
             req.getSession().setAttribute(SaveLogin, "");
-            resp.sendRedirect("/index.jsp");
+            resp.sendRedirect("index.jsp");
         } else {
             resp.getWriter().write("Error!!!");
         }
