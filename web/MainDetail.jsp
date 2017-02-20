@@ -17,6 +17,7 @@
     <script src="bootstrap/js/bootstrap.min.js"></script>
     <script src="/javascript/circliful.js"></script>
     <link href="/css/jquery.circliful.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/loaders.min.css" rel="stylesheet" type="text/css">
     <style type="text/css">
 
         a, a:hover {
@@ -95,6 +96,33 @@
 
         pre {
             font-size: 12px;
+        }
+
+        #bg {
+            position: absolute;
+            top: 0%;
+            left: 0%;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index: 1001;
+            -moz-opacity: 0.7;
+            opacity: .70;
+            filter: alpha(opacity=50);
+        }
+
+        #show {
+            position: absolute;
+            top: 25%;
+            left: 45%;
+            width: 10%;
+            height: 10%;
+            padding: 8px;
+            z-index: 1002;
+            overflow: auto;
+            -moz-opacity: 0.7;
+            opacity: .70;
+            filter: alpha(opacity=50);
         }
 
     </style>
@@ -203,6 +231,22 @@
         </div>
         <div class="span10">
             <ng-view></ng-view>
+        </div>
+        <div id="bg" ng-show="showContent" style="display:block"></div>
+        <div id="show" ng-show="showContent" style="display:block">
+            <div class="loader" onclick="">
+                <div class="loader-inner ball-grid-pulse">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

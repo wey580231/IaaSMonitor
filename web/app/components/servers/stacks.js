@@ -38,7 +38,6 @@ angular.module('app.stacks', ['ngRoute'])
             .then(function (data) {
                 $scope.list = data.stacks;
                 stackList = data.stacks;
-
                 pageSwitch.initPage(stackList);
                 $scope.totalPage = pageSwitch.totalPage;
                 $scope.currPage = pageSwitch.currPage;
