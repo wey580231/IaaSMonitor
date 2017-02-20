@@ -155,7 +155,7 @@
                                         <tr ng-repeat="req in request">
                                             <td>{{req.request_id}}</td>
                                             <td>{{req.action}}</td>
-                                            <td>{{req.start_time}}</td>
+                                            <td>{{req.start_time|date:'yyyy-MM-dd hh:mm:ss'}}</td>
                                             <td>{{req.user_id}}</td>
                                             <td>-</td>
                                         </tr>
