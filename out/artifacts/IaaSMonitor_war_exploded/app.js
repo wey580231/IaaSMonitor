@@ -35,6 +35,7 @@ angular.module("app", [
 ])
 //2017-02-12：初始化获取endpoints
     .run(function ($rootScope, $http, $location, getEndPointService) {
+        $rootScope.showContent = false;     //默认不显示遮罩
         $rootScope.orginUrl = "";           //保存上一次点击的链接，当再次登录后，进行页面自动的跳转
         $rootScope.requestUrl = "http://172.17.203.101:5000/v2.0/tokens";
         $rootScope.MaxTokenExpireTime = 60 * 60 * 1000;
@@ -215,7 +216,7 @@ angular.module("app", [
 
         //flavor
         service.FlavorsDetail = "/flavors/detail";
-        service.Flavors="/flavors/";
+        service.Flavors = "/flavors/";
 
         // 对象存储API-Object Storage API
         service.ListContainers = "?format=json";
@@ -233,12 +234,12 @@ angular.module("app", [
         service.imageDetail = "/images/";
         service.InstanceOperateLog = "/os-instance-actions";
         service.ConsoleOutput = "/action"
-        service.requestDetail="/os-instance-actions";
-        service.stackDetail="/stacks/";
-        service.stacktemplateDetail="/template";
-        service.stackeventDetail="/events";
-        service.stackresourceDetail="/resources";
-        service.resourceDetail="/resources/";
+        service.requestDetail = "/os-instance-actions";
+        service.stackDetail = "/stacks/";
+        service.stacktemplateDetail = "/template";
+        service.stackeventDetail = "/events";
+        service.stackresourceDetail = "/resources";
+        service.resourceDetail = "/resources/";
 
         //stack
         service.ListStack = '/stacks';
@@ -311,6 +312,8 @@ angular.module("app", [
 
             config.headers = config.headers || {};
 
+            $rootScope.showContent = true;
+
             var lastTime = localStorage.getItem('lastTime');
 
             //对非错误链接的记录
@@ -342,7 +345,6 @@ angular.module("app", [
             else {
                 $location.path('/loginError');
             }
-
             return config;
         };
 
@@ -351,6 +353,8 @@ angular.module("app", [
             if (response.data.error) {
                 alert(response.data.error.message);
             }
+            var d = new Date();
+            $rootScope.showContent = false;
             return response;
         };
 
@@ -411,7 +415,6 @@ angular.module("app", [
                 service.currPage = pageId;
                 var start = service.currPage * service.perpage;
                 var end = (service.totalNum - start) > service.perpage ? service.perpage : (service.totalNum - start);
-                console.log("start:" + start + "__" + end);
                 return service.arry.slice(start, start + end);
             }
             return [];

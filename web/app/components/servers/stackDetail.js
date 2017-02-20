@@ -14,10 +14,8 @@ angular.module('app.stacksDetail', ['ngRoute'])
                         var deferred = $q.defer();
                         var promise = deferred.promise;
                         myHttpService.get('/mainController', endPointCollection.adminURL('orchestration') + serviceListService.stackDetail + id).then(function (response) {
-                            console.log("success:" + response);
                             deferred.resolve(response.data);
                         }, function (response) {
-                            console.log("error:" + response);
                             deferred.reject(response.data);
                         });
                         return promise;
