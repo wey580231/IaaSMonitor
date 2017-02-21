@@ -6,6 +6,7 @@
 package com.RenGu.util;
 
 import java.io.IOException;
+
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -26,7 +27,7 @@ public class HttpServers {
 
         try {
             Response e = client.newCall(request).execute();
-            System.out.println("请求地址：" + e.request().url() + "--->请求状态：" + e.message());
+            System.out.println("Post请求地址：" + e.request().url() + "--->请求状态：" + e.message());
             loginJsonString = e.body().string();
             return loginJsonString;
         } catch (IOException var10) {
@@ -42,7 +43,7 @@ public class HttpServers {
 
         try {
             Response e = client.newCall(request).execute();
-            System.out.println("请求地址：" + e.request().url() + "--->请求状态：" + e.message());
+            System.out.println("Get请求地址：" + e.request().url() + "--->请求状态：" + e.message());
             jsonString = e.body().string();
             return jsonString;
         } catch (IOException var6) {
@@ -60,7 +61,7 @@ public class HttpServers {
 
         try {
             Response e = client.newCall(request).execute();
-            System.out.println("请求地址：" + e.request().url() + "--->请求状态：" + e.message());
+            System.out.println("Post请求地址：" + e.request().url() + "--->请求状态：" + e.message());
             jsonString = e.body().string();
             return jsonString;
         } catch (IOException var9) {
@@ -72,11 +73,11 @@ public class HttpServers {
     public static String doDelete(String url, String token) {
         OkHttpClient client = new OkHttpClient();
         String jsonString = "";
-        Request request = (new Builder()).url(url).delete((RequestBody)null).addHeader("x-auth-token", token).build();
+        Request request = (new Builder()).url(url).delete((RequestBody) null).addHeader("x-auth-token", token).build();
 
         try {
             Response e = client.newCall(request).execute();
-            System.out.println("请求地址：" + e.request().url() + "--->请求状态：" + e.message());
+            System.out.println("Delete请求地址：" + e.request().url() + "--->请求状态：" + e.message());
             jsonString = e.body().string();
             return jsonString;
         } catch (IOException var6) {
@@ -89,7 +90,7 @@ public class HttpServers {
         String jsonString = "";
         OkHttpClient client = new OkHttpClient();
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\n  \"files\": {},\n  \"disable_rollback\": true,\n  \"stack_name\": \""+stackName+"\",\n  \"template\": "+template+",\n  \"timeout_mins\": 60\n}");
+        RequestBody body = RequestBody.create(mediaType, "{\n  \"files\": {},\n  \"disable_rollback\": true,\n  \"stack_name\": \"" + stackName + "\",\n  \"template\": " + template + ",\n  \"timeout_mins\": 60\n}");
         Request request = new Request.Builder()
                 .url(url)
                 .post(body)
@@ -98,12 +99,32 @@ public class HttpServers {
                 .build();
         try {
             Response e = client.newCall(request).execute();
-            System.out.println("请求地址：" + e.request().url() + "--->请求状态：" + e.message());
+            System.out.println("Post请求地址：" + e.request().url() + "--->请求状态：" + e.message());
             jsonString = e.body().string();
             return jsonString;
         } catch (IOException var10) {
             var10.printStackTrace();
             return jsonString;
+        }
+    }
+
+    public static void doPut(String url, String token) {
+        String jsonString = "";
+        OkHttpClient client = new OkHttpClient();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "");
+        Request request = new Request.Builder()
+                .url(url)
+                .put(body)
+                .addHeader("x-auth-token", token)
+                .addHeader("content-type", "application/json")
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            System.out.println("Put请求地址：" + response.request().url() + "--->请求状态：" + response.message());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
