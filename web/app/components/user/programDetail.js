@@ -9,7 +9,7 @@ angular.module('app.programDetail', ['ngRoute']).config(['$routeProvider', funct
         var adminUrl = endPointCollection.adminURL("identity");
         if (adminUrl != undefined) {
             adminUrl = adminUrl.substr(0, adminUrl.length - 5) + serviceListService.ProgramDetail + id;
-            myHttpService.get('/mainController', adminUrl)
+            myHttpService.get('mainController', adminUrl)
                 .then(function (response) {
                     $scope.hasDetail = true;
                     $scope.hasError = false;

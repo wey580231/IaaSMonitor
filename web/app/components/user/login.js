@@ -24,7 +24,7 @@ angular.module('app.login', ['ngRoute']).config(['$routeProvider', function ($ro
                     "tenantName": $scope.tenantName,
                     "method": "Reload"
                 };
-                myHttpService.post('/login', data)
+                myHttpService.post('login', data)
                     .then(function (response) {
                         if (response.data.result == "success") {
                             getEndPointService.flushPoint();

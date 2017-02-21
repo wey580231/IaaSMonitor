@@ -9,7 +9,7 @@ angular.module("app.listSubnets", ['ngRoute'])
         })
     }])
     .controller("listSubnetsController", function ($scope, $http, $location, myHttpService, endPointCollection, serviceListService) {
-        myHttpService.get('/mainController', endPointCollection.adminURL('network') + serviceListService.ListSubnets)
+        myHttpService.get('mainController', endPointCollection.adminURL('network') + serviceListService.ListSubnets)
             .then(function (response) {
                 $scope.list = response.data.subnets;
             }, function (response) {

@@ -31,7 +31,8 @@ angular.module("app", [
     'app.totalSummary',
 
     'app.instanceDetail',
-    'app.resourceDetail'
+    'app.resourceDetail',
+    'app.portDetail'
 ])
 //2017-02-12：初始化获取endpoints
     .run(function ($rootScope, $http, $location, getEndPointService) {
@@ -234,12 +235,13 @@ angular.module("app", [
         service.imageDetail = "/images/";
         service.InstanceOperateLog = "/os-instance-actions";
         service.ConsoleOutput = "/action"
-        service.requestDetail = "/os-instance-actions";
-        service.stackDetail = "/stacks/";
-        service.stacktemplateDetail = "/template";
-        service.stackeventDetail = "/events";
-        service.stackresourceDetail = "/resources";
-        service.resourceDetail = "/resources/";
+        service.requestDetail="/os-instance-actions";
+        service.stackDetail="/stacks/";
+        service.stacktemplateDetail="/template";
+        service.stackeventDetail="/events";
+        service.stackresourceDetail="/resources";
+        service.resourceDetail="/resources/";
+        service.portDetail="/v2.0/ports/";
 
         //stack
         service.ListStack = '/stacks';
@@ -250,7 +252,7 @@ angular.module("app", [
         var service = {};
         var _flushEndPoint = function () {
             if ($rootScope.isLog == undefined) {
-                myHttpService.get('/login', "getEndPoint")
+                myHttpService.get('login', "getEndPoint")
                     .then(function (response) {
                         //保存token和获得token的时间，在每次请求的时候，检测token是否过期；如果过期则自动跳转至登录页面；否则需要将token加入当前的header中一并发送
                         localStorage.setItem("token", response.data.access.token.id);
@@ -274,6 +276,7 @@ angular.module("app", [
                             endPointCollection.isLog = true;
                         }
                         $rootScope.isLog = true;
+                        console.log("Url:" + $rootScope.orginUrl);
                         if ($rootScope.orginUrl.length > 0) {
                             $location.url($rootScope.orginUrl);
                         }

@@ -9,7 +9,7 @@ angular.module("app.securityGroups", ['ngRoute'])
         })
     }])
     .controller("securityGroups", function ($scope, $http, $location, myHttpService, endPointCollection, serviceListService) {
-        myHttpService.get('/mainController', endPointCollection.adminURL('network') + serviceListService.ListSecurityGroups)
+        myHttpService.get('mainController', endPointCollection.adminURL('network') + serviceListService.ListSecurityGroups)
             .then(function (response) {
                 $scope.list = response.data.security_groups;
             }, function (response) {

@@ -1,0 +1,76 @@
+<div>
+    <h3>端口详情</h3>
+    <div class="infoGroup">
+        <dl>
+            <dt>名称</dt>
+            <dd>{{port.name}}</dd>
+        </dl>
+        <dl>
+            <dt>ID</dt>
+            <dd>{{port.id}}</dd>
+        </dl>
+        <dl>
+            <dt>网络ID</dt>
+            <dd>{{port.network_id}}</dd>
+        </dl>
+        <dl>
+            <dt>项目ID</dt>
+            <dd>{{port.tenant_id}}</dd>
+        </dl>
+        <dl>
+            <dt>MAC地址</dt>
+            <dd>{{port.mac_address}}</dd>
+        </dl>
+        <dl>
+            <dt>状态</dt>
+            <dd ng-if="port.status=='ACTIVE'">运行中</dd>
+            <dd ng-if="port.status!='ACTIVE'">停止</dd>
+        </dl>
+        <dl>
+            <dt>管理员状态</dt>
+            <dd ng-if="port.admin_state_up==true">
+                上
+            </dd>
+            <dd ng-if="port.admin_state_up!=true">
+                下
+            </dd>
+        </dl>
+    </div>
+
+    <div class="infoGroup">
+        <h4>固定IP</h4>
+        <hr class="header_rule">
+        <dl ng-repeat="ip in port.fixed_ips" ng-if="port.fixed_ips.length>0">
+            <dt>Ip</dt>
+            <dd>{{ip.ip_address}}</dd>
+        </dl>
+        <dl ng-if="port.fixed_ips.length==0">
+            <dd>无</dd>
+        </dl>
+    </div>
+
+    <div class="infoGroup">
+        <h4>连接设备</h4>
+        <hr class="header_rule">
+        <dl>
+            <dt>设备属主</dt>
+            <dd>{{port.device_owner}}</dd>
+        </dl>
+        <dl>
+            <dt>设备ID</dt>
+            <dd>{{port.device_id}}</dd>
+        </dl>
+    </div>
+
+    <div class="infoGroup">
+        <h4>绑定</h4>
+        <hr class="header_rule">
+        <dl>
+            <dt>VNIC类型</dt>
+            <dd>{{port["binding:vnic_type"]}}</dd>
+        </dl>
+    </div>
+
+</div>
+
+

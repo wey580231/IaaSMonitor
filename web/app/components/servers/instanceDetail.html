@@ -114,7 +114,7 @@
                                     <hr class="header_rule">
                                     <dl>
                                         <dt>连接到</dt>
-                                        <dd>{{server["os-extended-volumes:volumes_attached"]}}</dd>
+                                        <dd ng-if="server['os-extended-volumes:volumes_attached']==''">未连接到云硬盘</dd>
                                     </dl>
                                 </div>
 
@@ -155,7 +155,7 @@
                                         <tr ng-repeat="req in request">
                                             <td>{{req.request_id}}</td>
                                             <td>{{req.action}}</td>
-                                            <td>{{req.start_time}}</td>
+                                            <td>{{req.start_time|date:'yyyy-MM-dd hh:mm:ss'}}</td>
                                             <td>{{req.user_id}}</td>
                                             <td>-</td>
                                         </tr>
