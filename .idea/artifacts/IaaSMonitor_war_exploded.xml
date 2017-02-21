@@ -11,6 +11,7 @@
           <element id="library" level="project" name="okhttp-3.6.0" />
           <element id="library" level="project" name="json" />
           <element id="library" level="project" name="jstl" />
+          <element id="library" level="project" name="postgresql-9.4.1212" />
         </element>
       </element>
     </root>

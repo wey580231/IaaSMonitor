@@ -23,6 +23,7 @@
     <orderEntry type="library" name="okhttp-3.6.0" level="project" />
     <orderEntry type="library" name="json" level="project" />
     <orderEntry type="library" name="jstl" level="project" />
+    <orderEntry type="library" name="postgresql-9.4.1212" level="project" />
     <orderEntry type="library" name="Java EE 6-Java EE 6" level="project" />
   </component>
 </module>
