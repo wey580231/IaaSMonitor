@@ -23,6 +23,10 @@
         <servlet-name>ConsoleController</servlet-name>
         <servlet-class>com.RenGu.servlert.ConsoleController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SyncUsersController</servlet-name>
+        <servlet-class>com.RenGu.servlert.SyncUsersController</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
@@ -43,6 +47,10 @@
     <servlet-mapping>
         <servlet-name>ConsoleController</servlet-name>
         <url-pattern>/console</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SyncUsersController</servlet-name>
+        <url-pattern>/syncusers</url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>
