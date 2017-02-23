@@ -7,6 +7,10 @@ angular.module('app.resourceDetail', ['ngRoute']).config(['$routeProvider', func
         templateUrl: 'app/components/servers/resourceDetail.html',
         controller: 'resourceDetailController'
     })
+    $routeProvider.when('/viewResource_en', {
+        templateUrl: 'app/components/servers/resourceDetail_en.html',
+        controller: 'resourceDetailController'
+    })
 }]).controller("resourceDetailController", function ($scope, $rootScope, $routeParams, myHttpService, endPointCollection, serviceListService) {
 
     var id = $routeParams.id;

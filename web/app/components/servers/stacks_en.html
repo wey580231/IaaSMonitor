@@ -1,0 +1,55 @@
+<div>
+    <h3>Stacks</h3>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr class="success">
+                        <th style="text-align:center"><input type="checkbox" id="selectAll" ng-checked="isSelectedAll()"
+                                                             ng-click="selectAll($event)"></th>
+                        <th>Stack Name</th>
+                        <th>Creation Time</th>
+                        <th>Updated Time</th>
+                        <th>Stack Status</th>
+                        <th>Stack Owner</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="stack in list">
+                        <td style="text-align:center"><input type="checkbox" ng-checked="isSelected(stack.id)"
+                                                             ng-click="updateSelection($event,stack.id)"></td>
+                        <td><a href="#viewStack_en?id={{stack.id}}&stackName={{stack.stack_name}}">{{stack.stack_name}}</a>
+                        </td>
+                        <td>{{stack.creation_time|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                        <td>{{stack.updated_time}}</td>
+                        <td>{{stack.stack_status}}</td>
+                        <td>{{stack.stack_owner}}</td>
+                    </tr>
+                    <tr ng-if="list.length==0">
+                        <td colspan="7" style="text-align:center">No item</td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <td colspan="5" class="pagination" style="text-align:left">
+                        <select style="width:80px" ng-init="pageShow = pageList[0]" ng-model="pageShow"
+                                ng-options="x for x in pageList" ng-change="changePerPage(pageShow)">
+                        </select>
+                        <ul style="height:25px;">
+                            <li>
+                                <a data-target="#">{{currPage+1}}/{{totalPage}}Page</a>
+                            </li>
+                            <li>
+                                <a data-target="#" ng-click="previousPage()">Next</a>
+                            </li>
+                            <li>
+                                <a data-target="#" ng-click="nextPage()">Previous</a>
+                            </li>
+                        </ul>
+                    </td>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -4,7 +4,7 @@
 angular.module('app.stacksDetail', ['ngRoute'])
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/viewStack', {
-            templateUrl: 'app/components/servers/stackDetail.html',
+            templateUrl: 'app/components/servers/stackDetail_en.html',
             controller: 'stackDetailController',
             resolve: {
                 'stackDetailService': ['$q', '$route', 'myHttpService', 'endPointCollection', 'serviceListService', function ($q, $route, myHttpService, endPointCollection, serviceListService) {
@@ -25,6 +25,29 @@ angular.module('app.stacksDetail', ['ngRoute'])
                 }]
             }
         });
+        $routeProvider.when('/viewStack_en', {
+            templateUrl: 'app/components/servers/stackDetail_en.html',
+            controller: 'stackDetailController',
+            resolve: {
+                'stackDetailService': ['$q', '$route', 'myHttpService', 'endPointCollection', 'serviceListService', function ($q, $route, myHttpService, endPointCollection, serviceListService) {
+                    var service = {};
+                    var id = $route.current.params['id'];
+                    var _getData = function () {
+                        var deferred = $q.defer();
+                        var promise = deferred.promise;
+                        myHttpService.get('mainController', endPointCollection.adminURL('orchestration') + serviceListService.stackDetail + id).then(function (response) {
+                            deferred.resolve(response.data);
+                        }, function (response) {
+                            deferred.reject(response.data);
+                        });
+                        return promise;
+                    }
+                    service.getData = _getData;
+                    return service;
+                }]
+            }
+        });
+
     }])
     .controller('stackDetailController', function ($scope, $rootScope, $location, $routeParams, endPointCollection, myHttpService, serviceListService, JsonParse, stackDetailService) {
         var id = $routeParams.id;

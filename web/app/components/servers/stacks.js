@@ -26,6 +26,29 @@ angular.module('app.stacks', ['ngRoute'])
                 }]
             }
         });
+        $routeProvider.when('/showStacks_en', {
+            templateUrl: 'app/components/servers/stacks_en.html',
+            controller: 'stackController',
+            resolve: {
+                'stackService': ['$q', 'myHttpService', 'endPointCollection', 'serviceListService', function ($q, myHttpService, endPointCollection, serviceListService) {
+                    var service = {};
+                    var _getData = function () {
+                        var deferred = $q.defer();
+                        var promise = deferred.promise;
+                        var url = endPointCollection.adminURL('orchestration') + serviceListService.ListStack;
+                        myHttpService.get('mainController', url)
+                            .then(function (response) {
+                                deferred.resolve(response.data);
+                            }, function (response) {
+                                deferred.reject(response.data);
+                            });
+                        return promise;
+                    }
+                    service.getData = _getData;
+                    return service;
+                }]
+            }
+        });
     }])
     .controller('stackController', function ($scope, $rootScope, $location, endPointCollection, pageSwitch, myHttpService, serviceListService, stackService) {
 

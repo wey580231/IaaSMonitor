@@ -7,6 +7,10 @@ angular.module('app.totalSummary', ['ngRoute'])
             templateUrl: 'app/components/summary/totalSummary.html',
             controller: 'totalSummaryController'
         })
+        $routeProvider.when('/showSummary_en', {
+            templateUrl: 'app/components/summary/totalSummary_en.html',
+            controller: 'totalSummaryController'
+        })
     }])
     .controller('totalSummaryController', function ($q, $scope, $rootScope, endPointCollection, myHttpService, serviceListService, pageSwitch) {
 
