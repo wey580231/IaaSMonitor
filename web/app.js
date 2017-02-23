@@ -214,6 +214,7 @@ angular.module("app", [
         service.ListSecurityGroups = "/v2.0/security-groups";
         service.ListSubnets = "/v2.0/subnets";
         service.ListFloatingIPs = "/v2.0/floatingips";
+        service.volume="/os-volumes";
 
         //flavor
         service.FlavorsDetail = "/flavors/detail";

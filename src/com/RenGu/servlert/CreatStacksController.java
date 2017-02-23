@@ -1,5 +1,6 @@
 package com.RenGu.servlert;
 
+import com.RenGu.util.HttpServers;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import static com.RenGu.util.HttpServers.doCreatStacks;
 import static com.RenGu.util.HttpServers.doLogin;
@@ -39,7 +42,7 @@ public class CreatStacksController extends HttpServlet {
         String slaveInstancesNode3Image = "hdp-template4";
         String masterFlavor = "ubuntu";
         String slaveFlavor = "ubuntu";
-        String template = "{\"heat_template_version\":\"2013-05-23\",\"resources\":{\"Master_Instances\":{\"type\":\"OS::Nova::Server\",\"properties\":{\"name\":\"Master_Instances\",\"image\":\""+masterImage+"\",\"flavor\":\""+masterFlavor+"\",\"networks\":[{\"port\":{\"get_resource\":\"Master_Instances_Port\"}}]}},\"Slave_InstancesNode_1\":{\"type\":\"OS::Nova::Server\",\"properties\":{\"name\":\"Slave_InstancesNode_1\",\"image\":\""+slaveInstancesNode1Image+"\",\"flavor\":\""+slaveFlavor+"\",\"networks\":[{\"network\":\"admin_internal_net\"}]}},\"Slave_InstancesNode_2\":{\"type\":\"OS::Nova::Server\",\"properties\":{\"name\":\"Slave_InstancesNode_2\",\"image\":\""+slaveInstancesNode2Image+"\",\"flavor\":\""+slaveFlavor+"\",\"networks\":[{\"network\":\"admin_internal_net\"}]}},\"Slave_InstancesNode_3_Group\":{\"type\":\"OS::Heat::ResourceGroup\",\"properties\":{\"count\":"+slaveInstancesNode3Num+",\"resource_def\":{\"type\":\"OS::Nova::Server\",\"properties\":{\"name\":\"Slave_InstancesNode_3_%index%\",\"image\":\""+slaveInstancesNode3Image+"\",\"flavor\":\""+slaveFlavor+"\",\"networks\":[{\"network\":\"admin_internal_net\"}]}}}},\"Master_Instances_Port\":{\"type\":\"OS::Neutron::Port\",\"properties\":{\"network_id\":\"020750ef-14c7-4a40-902b-5fef3099e933\",\"fixed_ips\":[{\"subnet_id\":\"1e627c7f-7e34-4fd8-80f1-a1bb045333ac\"}]}},\"Master_Instances_Floating_IP\":{\"type\":\"OS::Neutron::FloatingIP\",\"properties\":{\"floating_network_id\":\"cce5d8e5-0bc0-49db-bdc6-278a79f8b5bc\",\"port_id\":{\"get_resource\":\"Master_Instances_Port\"}}}},\"outputs\":{\"Master_Instances_private_ip\":{\"description\":\"IP address of Master_Instances in private network\",\"value\":{\"get_attr\":[\"Master_Instances\",\"first_address\"]}},\"Master_Instances_public_ip\":{\"description\":\"Floating IP address of Master_Instances in public network\",\"value\":{\"get_attr\":[\"Master_Instances_Floating_IP\",\"floating_ip_address\"]}},\"Slave_InstancesNode_1_private_ip\":{\"description\":\"IP address of Slave_InstancesNode_1 in private network\",\"value\":{\"get_attr\":[\"Slave_InstancesNode_1\",\"first_address\"]}},\"Slave_InstancesNode_2_private_ip\":{\"description\":\"IP address of Slave_InstancesNode_2 in private network\",\"value\":{\"get_attr\":[\"Slave_InstancesNode_2\",\"first_address\"]}},\"Slave_Instances_Group_Networks\":{\"value\":{\"get_attr\":[\"Slave_InstancesNode_3_Group\",\"first_address\"]}}}}";
+        String template = "{\"heat_template_version\":\"2013-05-23\",\"resources\":{\"Master_Instances\":{\"type\":\"OS::Nova::Server\",\"properties\":{\"name\":\"Master_Instances\",\"image\":\"" + masterImage + "\",\"flavor\":\"" + masterFlavor + "\",\"networks\":[{\"port\":{\"get_resource\":\"Master_Instances_Port\"}}]}},\"Slave_InstancesNode_1\":{\"type\":\"OS::Nova::Server\",\"properties\":{\"name\":\"Slave_InstancesNode_1\",\"image\":\"" + slaveInstancesNode1Image + "\",\"flavor\":\"" + slaveFlavor + "\",\"networks\":[{\"network\":\"admin_internal_net\"}]}},\"Slave_InstancesNode_2\":{\"type\":\"OS::Nova::Server\",\"properties\":{\"name\":\"Slave_InstancesNode_2\",\"image\":\"" + slaveInstancesNode2Image + "\",\"flavor\":\"" + slaveFlavor + "\",\"networks\":[{\"network\":\"admin_internal_net\"}]}},\"Slave_InstancesNode_3_Group\":{\"type\":\"OS::Heat::ResourceGroup\",\"properties\":{\"count\":" + slaveInstancesNode3Num + ",\"resource_def\":{\"type\":\"OS::Nova::Server\",\"properties\":{\"name\":\"Slave_InstancesNode_3_%index%\",\"image\":\"" + slaveInstancesNode3Image + "\",\"flavor\":\"" + slaveFlavor + "\",\"networks\":[{\"network\":\"admin_internal_net\"}]}}}},\"Master_Instances_Port\":{\"type\":\"OS::Neutron::Port\",\"properties\":{\"network_id\":\"020750ef-14c7-4a40-902b-5fef3099e933\",\"fixed_ips\":[{\"subnet_id\":\"1e627c7f-7e34-4fd8-80f1-a1bb045333ac\"}]}},\"Master_Instances_Floating_IP\":{\"type\":\"OS::Neutron::FloatingIP\",\"properties\":{\"floating_network_id\":\"cce5d8e5-0bc0-49db-bdc6-278a79f8b5bc\",\"port_id\":{\"get_resource\":\"Master_Instances_Port\"}}}},\"outputs\":{\"Master_Instances_private_ip\":{\"description\":\"IP address of Master_Instances in private network\",\"value\":{\"get_attr\":[\"Master_Instances\",\"first_address\"]}},\"Master_Instances_public_ip\":{\"description\":\"Floating IP address of Master_Instances in public network\",\"value\":{\"get_attr\":[\"Master_Instances_Floating_IP\",\"floating_ip_address\"]}},\"Slave_InstancesNode_1_private_ip\":{\"description\":\"IP address of Slave_InstancesNode_1 in private network\",\"value\":{\"get_attr\":[\"Slave_InstancesNode_1\",\"first_address\"]}},\"Slave_InstancesNode_2_private_ip\":{\"description\":\"IP address of Slave_InstancesNode_2 in private network\",\"value\":{\"get_attr\":[\"Slave_InstancesNode_2\",\"first_address\"]}},\"Slave_Instances_Group_Networks\":{\"value\":{\"get_attr\":[\"Slave_InstancesNode_3_Group\",\"first_address\"]}}}}";
         try {
             JSONObject jsonObject = new JSONObject(loginBody);
             token = jsonObject.getJSONObject("access").getJSONObject("token").getString("id");
@@ -54,10 +57,44 @@ public class CreatStacksController extends HttpServlet {
             }
         } catch (JSONException e) {
             e.printStackTrace();
-            resp.setStatus(405);
         }
         String resultString = doCreatStacks(template, stackName, token, creatStacksUrl);
-        resp.setStatus(200);
-        resp.getWriter().write(resultString);
+        String stackInfoUrl = "";
+        try {
+            JSONObject jsonObject = new JSONObject(resultString);
+            stackInfoUrl = jsonObject.getJSONObject("stack").getJSONArray("links").getJSONObject(0).getString("href");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<HashMap<String, String>> stackIPInfo = new ArrayList<>();
+        String stackStaue = "";
+
+        int k = 0;
+        while (!stackStaue.equals("CREATE_COMPLETE")) {
+            k = k + 1;
+            String stackReaultInfo = HttpServers.doGet(stackInfoUrl, token);
+            try {
+                JSONObject stackReaultInfoJsonObject = new JSONObject(stackReaultInfo);
+                JSONObject stackJsonObject = stackReaultInfoJsonObject.getJSONObject("stack");
+                stackStaue = stackJsonObject.getString("stack_status");
+                if (stackJsonObject.has("outputs")) {
+                    JSONArray outpuJsonArray = stackJsonObject.getJSONArray("outputs");
+                    for (int i = 0; i < outpuJsonArray.length(); i++) {
+                        HashMap<String, String> tempHashMap = new HashMap<>();
+                        String NodeName = outpuJsonArray.getJSONObject(i).getString("output_key");
+                        String NodeIP = outpuJsonArray.getJSONObject(i).getString("output_value");
+                        tempHashMap.put("name", NodeName);
+                        tempHashMap.put("IP", NodeIP);
+                        stackIPInfo.add(tempHashMap);
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("总计执行：" + k + "次");
+        resp.getWriter().write(stackIPInfo.toString());
+
     }
 }
