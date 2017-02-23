@@ -236,13 +236,13 @@ angular.module("app", [
         service.imageDetail = "/images/";
         service.InstanceOperateLog = "/os-instance-actions";
         service.ConsoleOutput = "/action"
-        service.requestDetail="/os-instance-actions";
-        service.stackDetail="/stacks/";
-        service.stacktemplateDetail="/template";
-        service.stackeventDetail="/events";
-        service.stackresourceDetail="/resources";
-        service.resourceDetail="/resources/";
-        service.portDetail="/v2.0/ports/";
+        service.requestDetail = "/os-instance-actions";
+        service.stackDetail = "/stacks/";
+        service.stacktemplateDetail = "/template";
+        service.stackeventDetail = "/events";
+        service.stackresourceDetail = "/resources";
+        service.resourceDetail = "/resources/";
+        service.portDetail = "/v2.0/ports/";
 
         //stack
         service.ListStack = '/stacks';
@@ -256,10 +256,10 @@ angular.module("app", [
                 myHttpService.get('login', "getEndPoint")
                     .then(function (response) {
                         //保存token和获得token的时间，在每次请求的时候，检测token是否过期；如果过期则自动跳转至登录页面；否则需要将token加入当前的header中一并发送
-                        localStorage.setItem("token", response.data.access.token.id);
-                        localStorage.setItem("currTime", Date.now());
-                        localStorage.setItem("lastTime", Date.now());
-                        localStorage.setItem("userName", response.data.access.token.tenant.name);
+                        localStorage.setItem("iaasToken", response.data.access.token.id);
+                        localStorage.setItem("iaasCurrTime", Date.now());
+                        localStorage.setItem("iaasLastTime", Date.now());
+                        localStorage.setItem("iaasUserName", response.data.access.token.tenant.name);
                         if (!endPointCollection.isLog) {
                             //获取所有的endpoints，保存至对象中
                             var catalog = response.data.access.serviceCatalog;
@@ -277,9 +277,12 @@ angular.module("app", [
                             endPointCollection.isLog = true;
                         }
                         $rootScope.isLog = true;
-                        console.log("Url:" + $rootScope.orginUrl);
                         if ($rootScope.orginUrl.length > 0) {
-                            $location.url($rootScope.orginUrl);
+                            if ($rootScope.orginUrl.indexOf('loginError') > 0) {
+                                $location.url('/showSummary');
+                            } else {
+                                $location.url($rootScope.orginUrl);
+                            }
                         }
                     }, function (response) {
                     });
@@ -295,12 +298,13 @@ angular.module("app", [
         var _logOut = function () {
             $rootScope.isLog = undefined;
             endPointCollection.isLog = false;
+            $rootScope.firstRequest = true;
             endPointCollection.clear();
 
-            localStorage.removeItem("token");
-            localStorage.removeItem("currTime");
-            localStorage.removeItem("lastTime");
-            localStorage.removeItem("userName");
+            localStorage.removeItem("iaasToken");
+            localStorage.removeItem("iaasCurrTime");
+            localStorage.removeItem("iaasLastTime");
+            localStorage.removeItem("iaasUserName");
         };
 
         service.logOut = _logOut;
@@ -318,10 +322,10 @@ angular.module("app", [
 
             $rootScope.showContent = true;
 
-            var lastTime = localStorage.getItem('lastTime');
+            var lastTime = localStorage.getItem('iaasLastTime');
 
             //对非错误链接的记录
-            if ($location.url() != "/loginError") {
+            if ($location.url().indexOf('loginError') == -1) {
                 $rootScope.orginUrl = $location.url();
             }
 
@@ -333,14 +337,15 @@ angular.module("app", [
             // 待对token过期时间的验证)若过期则向服务器端请求重定向
             if (lastTime != null) {
                 var timeOut = Date.now() - lastTime;
-                localStorage.setItem('lastTime', Date.now());
+                localStorage.setItem('iaasLastTime', Date.now());
                 //超时，需要重新登录获取token
                 if (timeOut > $rootScope.MaxTokenExpireTime) {
                     logService.logOut();
+                    $location.path('/loginError');
                 }
                 else {
-                    var accessToken = localStorage.getItem('token');
-                    var userName = localStorage.getItem('userName');
+                    var accessToken = localStorage.getItem('iaasToken');
+                    var userName = localStorage.getItem('iaasUserName');
                     if (accessToken != null && userName != null) {
                         config.headers['X-Auth-Token'] = accessToken;
                     }
@@ -355,7 +360,7 @@ angular.module("app", [
         //对响应头进行拦截
         var _response = function (response) {
             if (response.data.error) {
-                alert(response.data.error.message);
+                // alert(response.data.error.message);
             }
             var d = new Date();
             $rootScope.showContent = false;
@@ -363,7 +368,7 @@ angular.module("app", [
         };
 
         var _responseError = function (rejection) {
-            alert("Code:" + rejection.status);
+            // alert("Code:" + rejection.status);
             return $q.reject(rejection);
         };
 
@@ -486,14 +491,14 @@ angular.module("app", [
         var _format = function format(txt, compress/*是否为压缩模式*/) {/* 格式化JSON源码(对象转换为JSON文本) */
             var indentChar = '    ';
             if (/^\s*$/.test(txt)) {
-                alert('数据为空,无法格式化! ');
+                // alert('数据为空,无法格式化! ');
                 return;
             }
             try {
                 var data = eval('(' + txt + ')');
             }
             catch (e) {
-                alert('数据源语法错误,格式化失败! 错误信息: ' + e.description, 'err');
+                // alert('数据源语法错误,格式化失败! 错误信息: ' + e.description, 'err');
                 return;
             }
             ;
