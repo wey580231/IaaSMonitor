@@ -18,6 +18,8 @@ public class DispatcherController extends HttpServlet {
     private final String SaveLogin = "LoginToken";
 
     @Override
+    //http://iaasmonitor.paas.casicloud.com/pageDispatcher?userName=admin&passWord=admin&pageType=showSummary
+    //http://iaasmonitor.paas.casicloud.com/pageDispatcher?userName=admin&passWord=admin&pageType=showStacks
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("userName");
         String passWord = req.getParameter("passWord");
