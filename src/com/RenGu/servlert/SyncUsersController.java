@@ -33,13 +33,7 @@ public class SyncUsersController extends HttpServlet {
         ArrayList<String> userNames = getUserNames(loginToken);
         ArrayList<HashMap<String, String>> postgreSQLUserInfo = getPostgreSQLUserInfo();
 
-        int i = 0;
-
         for (HashMap<String, String> tempHashMap : postgreSQLUserInfo) {
-            i = i + 1;
-            if (i >= 6) {
-                break;
-            }
             String userName = tempHashMap.get("userName");
             String passWord = tempHashMap.get("passWord");
 

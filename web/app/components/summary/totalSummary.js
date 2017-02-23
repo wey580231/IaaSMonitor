@@ -12,9 +12,9 @@ angular.module('app.totalSummary', ['ngRoute'])
 
         $scope.pageList = pageSwitch.pageList;
         var adminUrl = endPointCollection.adminURL("compute");
-        var volume=adminUrl+serviceListService.volume;
-        var SecurityGroups=adminUrl+serviceListService.securitygroupDetail;
-        var FloatingIP=adminUrl+serviceListService.ListFloatingIpAddresses;
+        var volume = adminUrl + serviceListService.volume;
+        var SecurityGroups = adminUrl + serviceListService.securitygroupDetail;
+        var FloatingIP = adminUrl + serviceListService.ListFloatingIpAddresses;
 
         var serverUrl = endPointCollection.adminURL('compute') + serviceListService.serviceDetail;
         var flavorUrl = endPointCollection.adminURL('compute') + serviceListService.FlavorsDetail;
@@ -63,32 +63,48 @@ angular.module('app.totalSummary', ['ngRoute'])
             $scope.serverList = pageSwitch.showPage(pageSwitch.currPage);
         });
 
+        //云硬盘和卷存储
         myHttpService.get('mainController', volume)
             .then(function (response) {
                 $scope.volume = response.data.volumes;
-                var volumes=$scope.volume.length;
-                var volumeStorage=0;
-                for(var i=0;i<volumes;i++){
-                 volumeStorage=volumeStorage+$scope.volume[i].size;
+                var volumes = $scope.volume.length;
+                var volumeStorage = 0;
+                for (var i = 0; i < volumes; i++) {
+                    volumeStorage = volumeStorage + $scope.volume[i].size;
                 }
-                alert(volumes);
-                alert(volumeStorage);
+                tt = Math.floor((volumes / 100) * 100);
+                $('#volumes').attr("data-percent", tt);
+                $('#volumes').attr('data-text', tt + "%");
+                $('#volumes').circliful();
+
+                tt = Math.floor((volumeStorage / 1000) * 100);
+                $('#volumeStorage').attr("data-percent", tt);
+                $('#volumeStorage').attr('data-text', tt + "%");
+                $('#volumeStorage').circliful();
             }, function (response) {
             });
 
-        myHttpService.get('mainController',SecurityGroups)
+        //安全组
+        myHttpService.get('mainController', SecurityGroups)
             .then(function (response) {
                 $scope.security_groups = response.data.security_groups;
-                var Securitygroups=$scope.security_groups.length;
-                alert(Securitygroups);
+                var Securitygroups = $scope.security_groups.length;
+                tt = Math.floor((Securitygroups / 100) * 100);
+                $('#securityGroups').attr("data-percent", tt);
+                $('#securityGroups').attr('data-text', tt + "%");
+                $('#securityGroups').circliful();
             }, function (response) {
             });
 
-        myHttpService.get('mainController',FloatingIP)
+        //浮动ip
+        myHttpService.get('mainController', FloatingIP)
             .then(function (response) {
                 $scope.FloatingIP = response.data.floating_ips;
-                var FloatingIPs=$scope.FloatingIP.length;
-                alert(FloatingIPs);
+                var FloatingIPs = $scope.FloatingIP.length;
+                tt = Math.floor((FloatingIPs / 50) * 100);
+                $('#floatingip').attr("data-percent", tt);
+                $('#floatingip').attr('data-text', tt + "%");
+                $('#floatingip').circliful();
             }, function (response) {
             });
 
