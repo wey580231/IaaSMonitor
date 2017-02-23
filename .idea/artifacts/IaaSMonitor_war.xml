@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="war" name="IaaSMonitor:war">
-    <output-path>$PROJECT_DIR$/out/artifacts/IaaSMonitor_war</output-path>
+    <output-path>$PROJECT_DIR$/out/artifacts/IaaSMonitor</output-path>
     <root id="archive" name="IaaSMonitor_war.war">
       <element id="artifact" artifact-name="IaaSMonitor:war exploded" />
     </root>
