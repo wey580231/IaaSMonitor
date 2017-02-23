@@ -6,6 +6,10 @@ angular.module('app.portDetail', ['ngRoute']).config(['$routeProvider', function
         templateUrl: 'app/components/servers/portDetail.html',
         controller: 'portDetailController'
     })
+    $routeProvider.when('/viewPort_en', {
+        templateUrl: 'app/components/servers/portDetail_en.html',
+        controller: 'portDetailController'
+    })
 }]).controller("portDetailController", function ($scope, $rootScope, $routeParams, myHttpService, endPointCollection, serviceListService) {
     var id = $routeParams.id;
     var adminUrls;

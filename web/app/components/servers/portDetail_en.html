@@ -1,0 +1,72 @@
+<div>
+    <h3>Port Details</h3>
+    <div class="infoGroup">
+        <dl>
+            <dt>Name</dt>
+            <dd>{{port.name}}</dd>
+        </dl>
+        <dl>
+            <dt>ID</dt>
+            <dd>{{port.id}}</dd>
+        </dl>
+        <dl>
+            <dt>Network ID</dt>
+            <dd>{{port.network_id}}</dd>
+        </dl>
+        <dl>
+            <dt>Project ID</dt>
+            <dd>{{port.tenant_id}}</dd>
+        </dl>
+        <dl>
+            <dt>MAC Address</dt>
+            <dd>{{port.mac_address}}</dd>
+        </dl>
+        <dl>
+            <dt>Status</dt>
+            <dd ng-if="port.status=='ACTIVE'">运行中</dd>
+            <dd ng-if="port.status!='ACTIVE'">停止</dd>
+        </dl>
+        <dl>
+            <dt>Admin State</dt>
+            <dd ng-if="port.admin_state_up==true">UP</dd>
+            <dd ng-if="port.admin_state_up!=true">Down</dd>
+        </dl>
+    </div>
+
+    <div class="infoGroup">
+        <h4>Fixed IP</h4>
+        <hr class="header_rule">
+        <dl ng-repeat="ip in port.fixed_ips" ng-if="port.fixed_ips.length>0">
+            <dt>IP</dt>
+            <dd>{{ip.ip_address}}</dd>
+        </dl>
+        <dl ng-if="port.fixed_ips.length==0">
+            <dd>None</dd>
+        </dl>
+    </div>
+
+    <div class="infoGroup">
+        <h4>Attached Device</h4>
+        <hr class="header_rule">
+        <dl>
+            <dt>Device Owner</dt>
+            <dd>{{port.device_owner}}</dd>
+        </dl>
+        <dl>
+            <dt>Device ID</dt>
+            <dd>{{port.device_id}}</dd>
+        </dl>
+    </div>
+
+    <div class="infoGroup">
+        <h4>Binding</h4>
+        <hr class="header_rule">
+        <dl>
+            <dt>VIF Type</dt>
+            <dd>{{port["binding:vnic_type"]}}</dd>
+        </dl>
+    </div>
+
+</div>
+
+

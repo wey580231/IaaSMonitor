@@ -301,29 +301,5 @@
 <script src="app/components/servers/resourceDetail.js"></script>
 <script src="app/components/servers/portDetail.js"></script>
 
-<script>
-    //    $(document).ready(function(){
-    //
-    //        loadData();
-    //
-    //        function loadData() {
-    //            var returnvalue;
-    //            var options = {
-    //                type: 'GET',
-    //                url: "/mainController",
-    //                async:false,
-    //                success: function (data) {
-    //                    alert("success");
-    //                },
-    //                dataType: "json",
-    //                error: function (data) {
-    //                    alert("error");
-    //                }
-    //            };
-    //            $.ajax(options);
-    //            return returnvalue;
-    //        }
-    //    });
-
-</script>
+<script src="javascript/ng-i18next.min.js"></script>
 </html>
