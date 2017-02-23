@@ -27,23 +27,37 @@ angular.module('app.stacks', ['ngRoute'])
             }
         });
     }])
-    .controller('stackController', function ($scope, $rootScope, $location, endPointCollection, pageSwitch, myHttpService, serviceListService, stackService) {
+    .controller('stackController', function ($scope, $rootScope, $location, endPointCollection, pageSwitch, myHttpService, serviceListService, stackService, endpointService) {
 
         $scope.pageList = pageSwitch.pageList;
 
         var selectedCheckArray = [];    //选中的checkbox的id值集合
         var stackList = [];
 
-        stackService.getData()
-            .then(function (data) {
-                $scope.list = data.stacks;
-                stackList = data.stacks;
-                pageSwitch.initPage(stackList);
-                $scope.totalPage = pageSwitch.totalPage;
-                $scope.currPage = pageSwitch.currPage;
-                $scope.serverList = pageSwitch.showPage(pageSwitch.currPage);
+        if ($rootScope.isLog == undefined) {
+            endpointService.getEndPoints().then(function (data) {
+                initPage();
             }, function (data) {
+
             });
+        }
+        else {
+            initPage();
+        }
+
+        function initPage() {
+            stackService.getData()
+                .then(function (data) {
+                    $scope.list = data.stacks;
+                    stackList = data.stacks;
+                    pageSwitch.initPage(stackList);
+                    $scope.totalPage = pageSwitch.totalPage;
+                    $scope.currPage = pageSwitch.currPage;
+                    $scope.serverList = pageSwitch.showPage(pageSwitch.currPage);
+                }, function (data) {
+                });
+        }
+
 
         var updateSelected = function (action, id) {
             if (action == 'add' & selectedCheckArray.indexOf(id) == -1) {

@@ -214,7 +214,7 @@ angular.module("app", [
         service.ListSecurityGroups = "/v2.0/security-groups";
         service.ListSubnets = "/v2.0/subnets";
         service.ListFloatingIPs = "/v2.0/floatingips";
-        service.volume="/os-volumes";
+        service.volume = "/os-volumes";
 
         //flavor
         service.FlavorsDetail = "/flavors/detail";
@@ -290,7 +290,48 @@ angular.module("app", [
         };
 
         service.flushPoint = _flushEndPoint;
+        return service;
+    }])
+    .factory('endpointService', ['$q', '$rootScope', 'endPointCollection', 'myHttpService', function ($q, $rootScope, endPointCollection, myHttpService) {
+        var service = {};
+        var _getEndPoints = function () {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
 
+            if ($rootScope.isLog == undefined) {
+                myHttpService.get('login', "getEndPoint")
+                    .then(function (response) {
+                        //保存token和获得token的时间，在每次请求的时候，检测token是否过期；如果过期则自动跳转至登录页面；否则需要将token加入当前的header中一并发送
+                        localStorage.setItem("iaasToken", response.data.access.token.id);
+                        localStorage.setItem("iaasCurrTime", Date.now());
+                        localStorage.setItem("iaasLastTime", Date.now());
+                        localStorage.setItem("iaasUserName", response.data.access.token.tenant.name);
+                        if (!endPointCollection.isLog) {
+                            //获取所有的endpoints，保存至对象中
+                            var catalog = response.data.access.serviceCatalog;
+                            for (var i = 0; i < catalog.length; i++) {
+                                var obj = {};
+                                obj.name = catalog[i].name;
+                                obj.type = catalog[i].type;
+                                obj.adminURL = catalog[i].endpoints[0].adminURL;
+                                obj.region = catalog[i].endpoints[0].region;
+                                obj.internalURL = catalog[i].endpoints[0].internalURL;
+                                obj.id = catalog[i].endpoints[0].id;
+                                obj.publicURL = catalog[i].endpoints[0].publicURL;
+                                endPointCollection.add(obj);
+                            }
+                            endPointCollection.isLog = true;
+                        }
+                        $rootScope.isLog = true;
+
+                        deferred.resolve(response.data);
+                    }, function (response) {
+                        deferred.reject(response.data);
+                    });
+            }
+            return promise;
+        }
+        service.getEndPoints = _getEndPoints;
         return service;
     }])
     .factory("logService", ['$rootScope', 'endPointCollection', function ($rootScope, endPointCollection) {
