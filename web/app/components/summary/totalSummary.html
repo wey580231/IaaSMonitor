@@ -2,43 +2,43 @@
     <h3>总体概览</h3>
     <div style="width:100%;">
         <div clss="subContainer" style="float: left;width: 20%;margin-bottom:10px">
-            <div id="myStat1" data-dimension="150" data-text="35%" data-info="实例" data-width="15"
+            <div id="instance" data-dimension="150" data-text="无限制" data-info="实例数" data-width="15"
+                 data-fontsize="17"
+                 data-percent="0" data-fgcolor="#61a9dc" data-bgcolor="#eee"></div>
+        </div>
+
+        <div clss="subContainer" style="float: left;width: 20%;margin-bottom:10px">
+            <div id="vcpu" data-dimension="150" data-text="无限制" data-info="虚拟内核" data-width="15"
+                 data-fontsize="17"
+                 data-percent="0" data-fgcolor="#61a9dc" data-bgcolor="#eee"></div>
+        </div>
+
+        <div clss="subContainer" style="float: left;width: 20%;margin-bottom:10px">
+            <div id="ram" data-dimension="150" data-text="无限制" data-info="内存" data-width="15"
+                 data-fontsize="17"
+                 data-percent="0" data-fgcolor="#61a9dc" data-bgcolor="#eee"></div>
+        </div>
+
+        <div clss="subContainer" style="float: left;width: 20%;margin-bottom:10px">
+            <div id="floatingip" data-dimension="150" data-text="15%" data-info="浮动Ip" data-width="15"
                  data-fontsize="17"
                  data-percent="35" data-fgcolor="#61a9dc" data-bgcolor="#eee"></div>
         </div>
 
         <div clss="subContainer" style="float: left;width: 20%;margin-bottom:10px">
-            <div id="myStat2" data-dimension="150" data-text="80%" data-info="虚拟内核" data-width="15"
+            <div id="securityGroups" data-dimension="150" data-text="0%" data-info="安全组" data-width="15"
                  data-fontsize="17"
                  data-percent="35" data-fgcolor="#61a9dc" data-bgcolor="#eee"></div>
         </div>
 
         <div clss="subContainer" style="float: left;width: 20%;margin-bottom:10px">
-            <div id="myStat3" data-dimension="150" data-text="45%" data-info="内存" data-width="15"
+            <div id="volumes" data-dimension="150" data-text="20%" data-info="云硬盘" data-width="15"
                  data-fontsize="17"
                  data-percent="35" data-fgcolor="#61a9dc" data-bgcolor="#eee"></div>
         </div>
 
         <div clss="subContainer" style="float: left;width: 20%;margin-bottom:10px">
-            <div id="myStat4" data-dimension="150" data-text="15%" data-info="Floating IPs" data-width="15"
-                 data-fontsize="17"
-                 data-percent="35" data-fgcolor="#61a9dc" data-bgcolor="#eee"></div>
-        </div>
-
-        <div clss="subContainer" style="float: left;width: 20%;margin-bottom:10px">
-            <div id="myStat5" data-dimension="150" data-text="0%" data-info="安全组" data-width="15"
-                 data-fontsize="17"
-                 data-percent="35" data-fgcolor="#61a9dc" data-bgcolor="#eee"></div>
-        </div>
-
-        <div clss="subContainer" style="float: left;width: 20%;margin-bottom:10px">
-            <div id="myStat6" data-dimension="150" data-text="20%" data-info="云硬盘" data-width="15"
-                 data-fontsize="17"
-                 data-percent="35" data-fgcolor="#61a9dc" data-bgcolor="#eee"></div>
-        </div>
-
-        <div clss="subContainer" style="float: left;width: 20%;margin-bottom:10px">
-            <div id="myStat7" data-dimension="150" data-text="5%" data-info="卷存储" data-width="15"
+            <div id="volumeStorage" data-dimension="150" data-text="5%" data-info="卷存储" data-width="15"
                  data-fontsize="17"
                  data-percent="35" data-fgcolor="#61a9dc" data-bgcolor="#eee"></div>
         </div>
@@ -92,12 +92,8 @@
 
 <script>
     $(document).ready(function () {
-        $('#myStat1').circliful();
-        $('#myStat2').circliful();
-        $('#myStat3').circliful();
-        $('#myStat4').circliful();
-        $('#myStat5').circliful();
-        $('#myStat6').circliful();
-        $('#myStat7').circliful();
+        $('#instance').circliful();
+        $('#vcpu').circliful();
+        $('#ram').circliful();
     });
 </script>

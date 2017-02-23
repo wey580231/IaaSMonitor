@@ -11,10 +11,13 @@ angular.module('app.totalSummary', ['ngRoute'])
     .controller('totalSummaryController', function ($q, $scope, $rootScope, endPointCollection, myHttpService, serviceListService, pageSwitch) {
 
         $scope.pageList = pageSwitch.pageList;
+        var adminUrl = endPointCollection.adminURL("compute");
+        var volume = adminUrl + serviceListService.volume;
+        var SecurityGroups = adminUrl + serviceListService.securitygroupDetail;
+        var FloatingIP = adminUrl + serviceListService.ListFloatingIpAddresses;
 
         var serverUrl = endPointCollection.adminURL('compute') + serviceListService.serviceDetail;
         var flavorUrl = endPointCollection.adminURL('compute') + serviceListService.FlavorsDetail;
-
         var promise1 = myHttpService.get('mainController', serverUrl);
         var promise2 = myHttpService.get('mainController', flavorUrl);
 
@@ -53,11 +56,57 @@ angular.module('app.totalSummary', ['ngRoute'])
                 }
                 serverList.push(obj);
             }
+
             pageSwitch.initPage(serverList);
             $scope.totalPage = pageSwitch.totalPage;
             $scope.currPage = pageSwitch.currPage;
             $scope.serverList = pageSwitch.showPage(pageSwitch.currPage);
         });
+
+        //云硬盘和卷存储
+        myHttpService.get('mainController', volume)
+            .then(function (response) {
+                $scope.volume = response.data.volumes;
+                var volumes = $scope.volume.length;
+                var volumeStorage = 0;
+                for (var i = 0; i < volumes; i++) {
+                    volumeStorage = volumeStorage + $scope.volume[i].size;
+                }
+                tt = Math.floor((volumes / 100) * 100);
+                $('#volumes').attr("data-percent", tt);
+                $('#volumes').attr('data-text', tt + "%");
+                $('#volumes').circliful();
+
+                tt = Math.floor((volumeStorage / 1000) * 100);
+                $('#volumeStorage').attr("data-percent", tt);
+                $('#volumeStorage').attr('data-text', tt + "%");
+                $('#volumeStorage').circliful();
+            }, function (response) {
+            });
+
+        //安全组
+        myHttpService.get('mainController', SecurityGroups)
+            .then(function (response) {
+                $scope.security_groups = response.data.security_groups;
+                var Securitygroups = $scope.security_groups.length;
+                tt = Math.floor((Securitygroups / 100) * 100);
+                $('#securityGroups').attr("data-percent", tt);
+                $('#securityGroups').attr('data-text', tt + "%");
+                $('#securityGroups').circliful();
+            }, function (response) {
+            });
+
+        //浮动ip
+        myHttpService.get('mainController', FloatingIP)
+            .then(function (response) {
+                $scope.FloatingIP = response.data.floating_ips;
+                var FloatingIPs = $scope.FloatingIP.length;
+                tt = Math.floor((FloatingIPs / 50) * 100);
+                $('#floatingip').attr("data-percent", tt);
+                $('#floatingip').attr('data-text', tt + "%");
+                $('#floatingip').circliful();
+            }, function (response) {
+            });
 
         //切换每页显示的条目
         $scope.changePerPage = function (perPageShow) {
@@ -74,7 +123,6 @@ angular.module('app.totalSummary', ['ngRoute'])
                 $scope.currPage = pageSwitch.currPage;
             }
         };
-
         //下一页
         $scope.nextPage = function () {
             if (pageSwitch.pageIsCorrect($scope.currPage + 1)) {
