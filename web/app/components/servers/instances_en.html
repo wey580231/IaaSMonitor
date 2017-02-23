@@ -1,0 +1,68 @@
+<div>
+    <h3>Instances</h3>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12" style="text-align:right">
+                <button type="button" class="btn btn-info btn-lg" ng-click="addUser()" data-target="#addUser"
+                        data-target="#modal-container-553362" role="button" data-toggle="modal">Launching Instance
+                </button>
+                <button type="button" class="btn btn-danger btn-lg" ng-click="deleteUser()">Terminate Instance</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr class="success">
+                        <th style="text-align:center"><input type="checkbox" id="selectAll"></th>
+                        <th>Instance Name</th>
+                        <th>IP Address</th>
+                        <th>Key Pair</th>
+                        <th>Status</th>
+                        <th>Availability Zone</th>
+                        <th>Task</th>
+                        <th>Power State</th>
+                        <th>Time since created</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="server in list">
+                        <td style="text-align:center"><input type="checkbox"></td>
+                        <td><a href="#viewInstance_en?id={{server.id}}">{{server.name}}</a></td>
+                        <td>{{server.addresses.admin_internal_net[0].addr}}</td>
+                        <td>{{server.key_name}}</td>
+                        <td>{{server["OS-EXT-STS:vm_state"]}}</td>
+                        <td>{{server["OS-EXT-AZ:availability_zone"]}}</td>
+                        <td>{{server["OS-EXT-STS:task_state"]}}</td>
+                        <td>{{server["OS-EXT-STS:power_state"]}}</td>
+                        <td>{{server.created|date:"yyyy-MM-dd hh:mm:ss"}}</td>
+                        <td>
+                            <!--<button type="button" class="btn btn-primary btn-sm cellBtn">编 辑</button>-->
+                            <div class="dropdown">
+                                <button class="btn btn-default dropdown-toggle btn-sm" type="button" id="dropdownMenu1"
+                                        data-toggle="dropdown">Edits
+                                    <!-- 下拉箭头-->
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                    <li><a role="menuitem" tabindex="-1" data-target="#" ng-click="">Suspend Instance</a></li>
+                                    <li><a role="menuitem" tabindex="-1" data-target="#" ng-click="">Lock Instance</a></li>
+                                    <li><a role="menuitem" tabindex="-1" data-target="#" ng-click="">UnLock Instance</a></li>
+                                    <li><a role="menuitem" tabindex="-1" data-target="#" ng-click="" style="color:red;">Soft Renboot Instance</a></li>
+                                    <li><a role="menuitem" tabindex="-1" data-target="#" ng-click="" style="color:red;">Hard Renboot Instance</a></li>
+                                    <li><a role="menuitem" tabindex="-1" data-target="#" ng-click="" style="color:red;">Terminate Instance</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>

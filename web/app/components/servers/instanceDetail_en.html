@@ -1,0 +1,174 @@
+<div>
+    <h3>Instance Details:{{server.name}}</h3>
+    <div class="col-sm-12" style="margin-top:20px;">
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="tabbable" id="tabs-829056">
+                        <ul class="nav nav-tabs" style="margin-bottom:5px;">
+                            <li class="active" style="width:100px;text-align:center">
+                                <a data-target="#viewSummary" data-toggle="tab">Overview</a>
+                            </li>
+                            <li style="width:100px;text-align:center">
+                            <a data-target="#viewLog" data-toggle="tab" ng-click="showConsoleLog()">Log</a>
+                            </li>
+                            <li style="width:100px;text-align:center">
+                                <a data-target="#viewOperateLog" data-toggle="tab" ng-click="showOperateLog()">Action Log</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="viewSummary">
+                                <div ng-if="hasDetail" ng-init="hasDetail = true" class="infoGroup">
+                                    <h4>Information</h4>
+                                    <hr class="header_rule">
+                                    <dl>
+                                        <dt>Name</dt>
+                                        <dd>{{server.name}}</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>ID</dt>
+                                        <dd>{{server.id}}</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>Status</dt>
+                                        <dd>{{server.status}}</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>Availability Zone</dt>
+                                        <dd>{{server["OS-EXT-AZ:availability_zone"]}}</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>Created</dt>
+                                        <dd>{{server.created | date:"yyyy-MM-dd hh:mm:ss"}}</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>Host</dt>
+                                        <dd>{{server["OS-EXT-SRV-ATTR:hypervisor_hostname"]}}</dd>
+                                    </dl>
+                                </div>
+
+                                <div ng-if="hasFlavors" ng-init="hasFlavors = true" class="infoGroup">
+                                    <h4>Specs</h4>
+                                    <hr class="header_rule">
+                                    <dl>
+                                        <dt>Flavor</dt>
+                                        <dd>{{flavor.name}}</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>Flavor ID</dt>
+                                        <dd>{{flavor.id}}</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>RAM</dt>
+                                        <dd>{{flavor.ram}} GB</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>VCPUs</dt>
+                                        <dd>{{flavor.vcpus}} VCPU</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>Disk</dt>
+                                        <dd>{{flavor.disk}}GB</dd>
+                                    </dl>
+                                </div>
+
+                                <div ng-if="hasIP" ng-init="hasIP = true" class="infoGroup">
+                                    <h4>IP Addresses</h4>
+                                    <hr class="header_rule">
+                                    <dl>
+                                        <dt>Admin_Internal_Net</dt>
+                                        <dd>{{server.addresses.admin_internal_net[0].addr}}</dd>
+                                    </dl>
+                                </div>
+
+                                <div class="infoGroup">
+                                    <h4>Security Groups</h4>
+                                    <hr class="header_rule">
+                                    <dl>
+                                        <dt>default</dt>
+                                        <dd>
+                                            <ul ng-if="hasSafegroup" ng-init="hasSafegroup = true"
+                                                ng-repeat="service in safeGroup">
+                                                <li>ALLOW {{service.from_port}}/tcp from {{service.ip_range.cidr}}</li>
+                                            </ul>
+                                        </dd>
+                                    </dl>
+                                </div>
+
+                                <div ng-if="hasImage" ng-init="hasImage = true" class="infoGroup">
+                                    <h4>Metadata</h4>
+                                    <hr class="header_rule">
+                                    <dl>
+                                        <dt>Key Name</dt>
+                                        <dd>{{server.key_name}}</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>Image Name</dt>
+                                        <dd>{{image.name}}</dd>
+                                    </dl>
+                                </div>
+
+                                <div ng-if="haslink" ng-init="haslink = true" class="infoGroup">
+                                    <h4>Volumes Attached</h4>
+                                    <hr class="header_rule">
+                                    <dl>
+                                        <dt>Connected</dt>
+                                        <dd ng-if="server['os-extended-volumes:volumes_attached']==''">disconnected</dd>
+                                    </dl>
+                                </div>
+
+                                <div ng-if="hasError" ng-init="hasError=false">
+                                    <div class="span12">
+                                        <div class="alert alert-error">
+                                            <button type="button" class="close" data-dismiss="alert">×</button>
+                                            <h4>
+                                                Tips!
+                                            </h4> <strong>Warnning!</strong> {{errorMessage}}.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="viewLog">
+                                <div>
+                                    <div class="col-sm-12">
+                                        <h4>Instance Console Log</h4>
+                                        <pre>
+                                            {{consoleData}}
+                                        </pre>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="viewOperateLog">
+                                <div class="col-sm-12">
+                                    <table class="table table-striped table-bordered table-hover" style="margin:0px;">
+                                        <thead>
+                                        <tr class="success">
+                                            <th>Request ID</th>
+                                            <th>Action</th>
+                                            <th>Start Time</th>
+                                            <th>User ID</th>
+                                            <th>Message</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="req in request">
+                                            <td>{{req.request_id}}</td>
+                                            <td>{{req.action}}</td>
+                                            <td>{{req.start_time|date:'yyyy-MM-dd hh:mm:ss'}}</td>
+                                            <td>{{req.user_id}}</td>
+                                            <td>-</td>
+                                        </tr>
+                                        </tbody>
+                                        <tfoot>
+                                        <td colspan="5">Total{{request.length}}Items</td>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

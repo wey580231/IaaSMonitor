@@ -1,0 +1,51 @@
+<div>
+    <h3>Resource Details:{{resource.resource_name}}</h3>
+    <div class="col-sm-12">
+        <h3>Resource Overview</h3>
+        <div ng-if="hasResource" ng-init="hasResource = true" class="infoGroup">
+            <h4>Information</h4>
+            <hr class="header_rule">
+            <dl>
+                <dt>Stack Resource Name</dt>
+                <dd>{{resource.resource_name}}</dd>
+            </dl>
+            <dl>
+                <dt>Resource ID</dt>
+                <dd>
+                    <a ng-if="resource.resource_type=='OS::Heat::ResourceGroup'"
+                       force-Href="#/viewStack_en?id={{resource.physical_resource_id}}">{{resource.physical_resource_id}}</a>
+                    <a ng-if="resource.resource_type=='OS::Nova::Server'"
+                       force-Href="#/viewInstance_en?id={{resource.physical_resource_id}}">{{resource.physical_resource_id}}</a>
+                    <a ng-if="resource.resource_type=='OS::Neutron::Port'"
+                       force-Href="#/viewPort_en?id={{resource.physical_resource_id}}">{{resource.physical_resource_id}}</a>
+                    <label ng-if="resource.resource_type=='OS::Neutron::FloatingIP'">{{resource.physical_resource_id}}</label>
+                </dd>
+            </dl>
+            <dl>
+                <dt>Stack Resource Type</dt>
+                <dd>{{resource.resource_type}}</dd>
+            </dl>
+            <dl>
+                <dt>Description</dt>
+                <dd>{{resource.description}}</dd>
+            </dl>
+        </div>
+        <div class="infoGroup">
+            <h4>Status</h4>
+            <hr class="header_rule">
+            <dl>
+                <dt>Last Updated</dt>
+                <dd>{{resource.updated_time}}</dd>
+            </dl>
+            <dl>
+                <dt>Status</dt>
+                <dd>{{resource.resource_status}}</dd>
+            </dl>
+        </div>
+        <div class="infoGroup">
+            <h4>Resource Metadata</h4>
+            <hr class="header_rule">
+            <pre>{{resource.required_by}}</pre>
+        </div>
+    </div>
+</div>
