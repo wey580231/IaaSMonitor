@@ -39,7 +39,7 @@ angular.module("app", [
         $rootScope.showContent = false;     //默认不显示遮罩
         $rootScope.orginUrl = "";           //保存上一次点击的链接，当再次登录后，进行页面自动的跳转
         $rootScope.requestUrl = "http://172.17.203.101:5000/v2.0/tokens";
-        $rootScope.MaxTokenExpireTime = 5 * 1000;
+        $rootScope.MaxTokenExpireTime = 60 * 60 * 1000;
         $rootScope.firstRequest = true;    //在第一次请求时，因此时token还未获取，所以不要让拦截器拦截请求，以至于跳转至登录页面
         $location.replace();               //禁止浏览器返回
         getEndPointService.flushPoint();
@@ -277,9 +277,7 @@ angular.module("app", [
                             endPointCollection.isLog = true;
                         }
                         $rootScope.isLog = true;
-                        console.log("Url:" + $rootScope.orginUrl);
                         if ($rootScope.orginUrl.length > 0) {
-                            console.log("index:" + $rootScope.orginUrl.indexOf('loginError'));
                             if ($rootScope.orginUrl.indexOf('loginError') > 0) {
                                 $location.url('/showSummary');
                             } else {
