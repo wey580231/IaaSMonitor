@@ -11,10 +11,13 @@ angular.module('app.totalSummary', ['ngRoute'])
     .controller('totalSummaryController', function ($q, $scope, $rootScope, endPointCollection, myHttpService, serviceListService, pageSwitch) {
 
         $scope.pageList = pageSwitch.pageList;
+        var adminUrl = endPointCollection.adminURL("compute");
+        var volume=adminUrl+serviceListService.volume;
+        var SecurityGroups=adminUrl+serviceListService.securitygroupDetail;
+        var FloatingIP=adminUrl+serviceListService.ListFloatingIpAddresses;
 
         var serverUrl = endPointCollection.adminURL('compute') + serviceListService.serviceDetail;
         var flavorUrl = endPointCollection.adminURL('compute') + serviceListService.FlavorsDetail;
-
         var promise1 = myHttpService.get('mainController', serverUrl);
         var promise2 = myHttpService.get('mainController', flavorUrl);
 
@@ -53,11 +56,41 @@ angular.module('app.totalSummary', ['ngRoute'])
                 }
                 serverList.push(obj);
             }
+
             pageSwitch.initPage(serverList);
             $scope.totalPage = pageSwitch.totalPage;
             $scope.currPage = pageSwitch.currPage;
             $scope.serverList = pageSwitch.showPage(pageSwitch.currPage);
         });
+
+        myHttpService.get('mainController', volume)
+            .then(function (response) {
+                $scope.volume = response.data.volumes;
+                var volumes=$scope.volume.length;
+                var volumeStorage=0;
+                for(var i=0;i<volumes;i++){
+                 volumeStorage=volumeStorage+$scope.volume[i].size;
+                }
+                alert(volumes);
+                alert(volumeStorage);
+            }, function (response) {
+            });
+
+        myHttpService.get('mainController',SecurityGroups)
+            .then(function (response) {
+                $scope.security_groups = response.data.security_groups;
+                var Securitygroups=$scope.security_groups.length;
+                alert(Securitygroups);
+            }, function (response) {
+            });
+
+        myHttpService.get('mainController',FloatingIP)
+            .then(function (response) {
+                $scope.FloatingIP = response.data.floating_ips;
+                var FloatingIPs=$scope.FloatingIP.length;
+                alert(FloatingIPs);
+            }, function (response) {
+            });
 
         //切换每页显示的条目
         $scope.changePerPage = function (perPageShow) {
@@ -74,7 +107,6 @@ angular.module('app.totalSummary', ['ngRoute'])
                 $scope.currPage = pageSwitch.currPage;
             }
         };
-
         //下一页
         $scope.nextPage = function () {
             if (pageSwitch.pageIsCorrect($scope.currPage + 1)) {
