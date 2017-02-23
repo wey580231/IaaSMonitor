@@ -7,6 +7,10 @@ angular.module('app.instanceDetail', ['ngRoute']).config(['$routeProvider', func
         templateUrl: 'app/components/servers/instanceDetail.html',
         controller: 'instanceDetailController'
     })
+    $routeProvider.when('/viewInstance_en', {
+        templateUrl: 'app/components/servers/instanceDetail_en.html',
+        controller: 'instanceDetailController'
+    })
 }]).controller("instanceDetailController", function ($scope, $rootScope, $routeParams, myHttpService, endPointCollection, serviceListService) {
     var id = $routeParams.id;
     var adminUrls;

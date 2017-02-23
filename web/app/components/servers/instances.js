@@ -4,6 +4,11 @@ angular.module("app.instances", ['ngRoute'])
             templateUrl: 'app/components/servers/instances.html',
             controller: 'instanceController'
         })
+        $routeProvider.when('/showInstances_en', {
+            templateUrl: 'app/components/servers/instances_en.html',
+            controller: 'instanceController'
+        })
+
     }])
     .controller("instanceController", function ($scope, $http, $location, endPointCollection, $rootScope, myHttpService, serviceListService){
         myHttpService.get('mainController', endPointCollection.adminURL('compute')+ serviceListService.serviceDetail)
