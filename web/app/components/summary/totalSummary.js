@@ -74,12 +74,12 @@ angular.module('app.totalSummary', ['ngRoute'])
                 }
                 tt = Math.floor((volumes / 100) * 100);
                 $('#volumes').attr("data-percent", tt);
-                $('#volumes').attr('data-text', tt + "%");
+                $('#volumes').attr('data-text', volumes + "/100");
                 $('#volumes').circliful();
 
                 tt = Math.floor((volumeStorage / 1000) * 100);
                 $('#volumeStorage').attr("data-percent", tt);
-                $('#volumeStorage').attr('data-text', tt + "%");
+                $('#volumeStorage').attr('data-text', volumeStorage + "/1000");
                 $('#volumeStorage').circliful();
             }, function (response) {
             });
@@ -91,7 +91,7 @@ angular.module('app.totalSummary', ['ngRoute'])
                 var Securitygroups = $scope.security_groups.length;
                 tt = Math.floor((Securitygroups / 100) * 100);
                 $('#securityGroups').attr("data-percent", tt);
-                $('#securityGroups').attr('data-text', tt + "%");
+                $('#securityGroups').attr('data-text', Securitygroups + "/100");
                 $('#securityGroups').circliful();
             }, function (response) {
             });
@@ -103,7 +103,7 @@ angular.module('app.totalSummary', ['ngRoute'])
                 var FloatingIPs = $scope.FloatingIP.length;
                 tt = Math.floor((FloatingIPs / 50) * 100);
                 $('#floatingip').attr("data-percent", tt);
-                $('#floatingip').attr('data-text', tt + "%");
+                $('#floatingip').attr('data-text', FloatingIPs + "/50");
                 $('#floatingip').circliful();
             }, function (response) {
             });
