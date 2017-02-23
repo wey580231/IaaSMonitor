@@ -1,10 +1,6 @@
 /**
  * Created by Fanan on 2017/2/20.
  */
-/**
- * Created by Fanan on 2017/2/15.
- */
-
 angular.module('app.portDetail', ['ngRoute']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/viewPort', {
         templateUrl: 'app/components/servers/portDetail.html',
@@ -27,12 +23,11 @@ angular.module('app.portDetail', ['ngRoute']).config(['$routeProvider', function
         var adminUrl = endPointCollection.adminURL("network");
         if (adminUrl != undefined) {
             adminUrls = adminUrl + serviceListService.portDetail + id;
-            myHttpService.get('/mainController', adminUrls)
+            myHttpService.get('mainController', adminUrls)
                 .then(function (response) {
                     if (response.data.port) {
                         $scope.hasError = false;
                         $scope.port = response.data.port;
-
                     }
                     else if (response.data.error) {
                         $scope.hasError = true;
