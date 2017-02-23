@@ -4,7 +4,7 @@
 angular.module('app.stacksDetail', ['ngRoute'])
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/viewStack', {
-            templateUrl: 'app/components/servers/stackDetail_en.html',
+            templateUrl: 'app/components/servers/stackDetail.html',
             controller: 'stackDetailController',
             resolve: {
                 'stackDetailService': ['$q', '$route', 'myHttpService', 'endPointCollection', 'serviceListService', function ($q, $route, myHttpService, endPointCollection, serviceListService) {
