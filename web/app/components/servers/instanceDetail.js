@@ -96,6 +96,7 @@ angular.module('app.instanceDetail', ['ngRoute']).config(['$routeProvider', func
             var body = {'length': 50, 'url': requestUrl};
             myHttpService.post('console', body).then(function (response) {
                 $scope.consoleData = response.data.output;
+                hasLoadConsoleLog = true;
             }, function (response) {
                 $scope.consoleData = response.data.error;
             });

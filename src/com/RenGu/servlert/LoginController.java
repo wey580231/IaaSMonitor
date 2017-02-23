@@ -8,6 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * post请求用于处理页面登录
+ * get请求用于在angularJs初始化时获取该用户登录时所返回的信息(endPoints)
+ */
+
 public class LoginController extends HttpServlet {
 
     private final String SaveLogin = "LoginToken";
@@ -25,7 +30,6 @@ public class LoginController extends HttpServlet {
 
         if (name != null && passWord != null && tenantName != null && name.length() > 0 && passWord.length() > 0 && tenantName.length() > 0) {
             String result = HttpServers.doLogin(name, passWord, tenantName, requestUrl);
-
             if (result.contains("access")) {
                 req.getSession().setAttribute(SaveLogin, result);
                 if (requestMethod == null) {
