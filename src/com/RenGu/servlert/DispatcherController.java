@@ -18,8 +18,8 @@ public class DispatcherController extends HttpServlet {
     private final String SaveLogin = "LoginToken";
 
     @Override
-    //http://iaasmonitor.paas.casicloud.com/pageDispatcher?userName=admin&passWord=admin&pageType=showSummary
-    //http://iaasmonitor.paas.casicloud.com/pageDispatcher?userName=admin&passWord=admin&pageType=showStacks
+    //http://iaasmonitor.paas.casicloud.com/pageDispatcher?userName=admin&passWord=admin&pageType=showSummary_zh
+    //http://iaasmonitor.paas.casicloud.com/pageDispatcher?userName=admin&passWord=admin&pageType=showStacks_zh
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("userName");
         String passWord = req.getParameter("passWord");
@@ -37,7 +37,7 @@ public class DispatcherController extends HttpServlet {
                         resp.sendRedirect("MainDetail.jsp#/showStacks_zh");
                     } else if (page.equals("showSummary_en")) {
                         resp.sendRedirect("MainDetail.jsp#/showSummary_en");
-                    } else if (page.equals("showStacks_zh")) {
+                    } else if (page.equals("showStacks_en")) {
                         resp.sendRedirect("MainDetail.jsp#/showStacks_en");
                     }
                 } else {

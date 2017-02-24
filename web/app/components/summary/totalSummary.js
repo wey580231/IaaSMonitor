@@ -159,4 +159,9 @@ angular.module('app.totalSummary', ['ngRoute'])
             tableSortService.filterData($scope,pageSwitch);
             tableSortService.clearClass($('#mainTable'));
         }
+
+        //导出文件
+        $scope.exportData = function(){
+            tableSortService.exportCSV("test.csv",$scope.serverList);
+        }
     });

@@ -13,14 +13,15 @@
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="cache-control" content="no-cache">
     <meta http-equiv="expires" content="0">
-    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="awesome/font-awesome.min.css" rel="stylesheet">
+    <%--<link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">--%>
     <script src="javascript/jquery-3.1.1.min.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>
     <script src="javascript/circliful.js"></script>
     <link href="css/jquery.circliful.css" rel="stylesheet" type="text/css"/>
     <link href="css/loaders.min.css" rel="stylesheet" type="text/css">
     <style type="text/css">
-
         body {
             margin-left: 50px;
         }
@@ -130,19 +131,19 @@
             filter: alpha(opacity=50);
         }
 
-        #mainTable thead tr{
+        #mainTable thead tr {
             cursor: pointer;
         }
 
-        .headAsc{
-            background-image:url('image/arrow_drop_up.png');
-            background-repeat:no-repeat;
+        .headAsc {
+            background-image: url('image/arrow_drop_up.png');
+            background-repeat: no-repeat;
             background-position: right 5px center;
         }
 
-        .headDesc{
-            background-image:url('image/arrow_drop_down.png');
-            background-repeat:no-repeat;
+        .headDesc {
+            background-image: url('image/arrow_drop_down.png');
+            background-repeat: no-repeat;
             background-position: right 5px center;
         }
 
