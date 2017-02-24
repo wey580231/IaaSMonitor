@@ -61,3 +61,4 @@ IaaSMonitor project
 * 2017-02-23:增加_en结尾的英文版网页，修正创建多个集群时虚拟机重名的问题。
 * 2017-02-23:修复因getEndPointService.flushPoint请求延迟，导致页面获取endpoint为null问题。
 * 2017-02-23:增加表格排序功能
+* 2017-02-24:增加表格表头排序时样式提示

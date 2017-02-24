@@ -3,16 +3,16 @@
  */
 angular.module('app.totalSummary', ['ngRoute'])
     .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/showSummary', {
+        $routeProvider.when('/showSummary_zh', {
             templateUrl: 'app/components/summary/totalSummary.html',
             controller: 'totalSummaryController'
-        })
+        });
         $routeProvider.when('/showSummary_en', {
             templateUrl: 'app/components/summary/totalSummary_en.html',
             controller: 'totalSummaryController'
         })
     }])
-    .controller('totalSummaryController', function ($q, $scope, $rootScope, endPointCollection, myHttpService, serviceListService, pageSwitch, endpointService) {
+    .controller('totalSummaryController', function ($q, $scope, $rootScope, endPointCollection, myHttpService, serviceListService, pageSwitch, endpointService, tableSortService) {
         $scope.pageList = pageSwitch.pageList;
 
         if ($rootScope.isLog == undefined) {
@@ -77,7 +77,8 @@ angular.module('app.totalSummary', ['ngRoute'])
                 $scope.totalPage = pageSwitch.totalPage;
                 $scope.currPage = pageSwitch.currPage;
                 $scope.serverList = pageSwitch.showPage(pageSwitch.currPage);
-                tableSort($('#mainTable'));
+
+                tableSortService.sortTable($('#mainTable'));
             });
 
             //云硬盘和卷存储
@@ -131,7 +132,7 @@ angular.module('app.totalSummary', ['ngRoute'])
             $scope.serverList = pageSwitch.changePerPage(perPageShow);
             $scope.totalPage = pageSwitch.totalPage;
             $scope.currPage = pageSwitch.currPage;
-            $('#mainTable').find('thead th').removeClass('current');
+            tableSortService.clearClass($('#mainTable'));
         };
 
         //上一页
@@ -140,7 +141,7 @@ angular.module('app.totalSummary', ['ngRoute'])
                 $scope.serverList = pageSwitch.showPage($scope.currPage - 1);
                 $scope.totalPage = pageSwitch.totalPage;
                 $scope.currPage = pageSwitch.currPage;
-                $('#mainTable').find('thead th').removeClass('current');
+                tableSortService.clearClass($('#mainTable'));
             }
         };
         //下一页
@@ -149,82 +150,7 @@ angular.module('app.totalSummary', ['ngRoute'])
                 $scope.serverList = pageSwitch.showPage($scope.currPage + 1);
                 $scope.totalPage = pageSwitch.totalPage;
                 $scope.currPage = pageSwitch.currPage;
-                $('#mainTable').find('thead th').removeClass('current');
+                tableSortService.clearClass($('#mainTable'));
             }
         };
-
-        function tableSort(jqTableObj) {
-            jqTableObj.find('thead th').click(
-                function () {
-                    var dataType = $(this).attr('dataType');
-                    var tableObj = $(this).closest('table');
-                    var index = tableObj.find('thead th').index(this) + 1;
-                    var arr = [];
-                    var row = tableObj.find('tbody tr');
-
-                    console.log("index:"+index);
-
-                    $.each(row, function (i) {
-                        arr[i] = row[i]
-                    });
-
-                    if ($(this).hasClass('current')) {
-                        arr.reverse();
-                    } else {
-                        arr.sort(Utils.sortStr(index, dataType))
-
-                        tableObj.find('thead th').removeClass('current');
-                        $(this).addClass('current');
-                    }
-
-                    var fragment = document.createDocumentFragment();
-
-                    $.each(arr, function (i) {
-                        fragment.appendChild(arr[i]);
-                    });
-
-                    tableObj.find('tbody').append(fragment);
-                }
-            );
-
-            var Utils = (function () {
-                function sortStr(index, dataType) {
-                    return function (a, b) {
-                        var aText = $(a).find('td:nth-child(' + index + ')').attr('_order') || $(a).find('td:nth-child(' + index + ')').text();
-                        var bText = $(b).find('td:nth-child(' + index + ')').attr('_order') || $(b).find('td:nth-child(' + index + ')').text();
-
-                        if (dataType != 'text') {
-                            aText = parseNonText(aText, dataType);
-                            bText = parseNonText(bText, dataType);
-
-                            return aText > bText ? -1 : bText > aText ? 1 : 0;
-                        } else {
-                            return aText.localeCompare(bText)
-                        }
-                    }
-                }
-
-                function parseNonText(data, dataType) {
-                    switch (dataType) {
-                        case 'int':
-                            return parseInt(data) || 0
-                        case 'float':
-                            return parseFloat(data) || 0
-                        case 'date':
-                            return new Date(Date.parse(data));
-                        default :
-                            return filterStr(data)
-                    }
-                }
-
-                //过滤中文字符和$
-                function filterStr(data) {
-                    if (!data) {
-                        return 0;
-                    }
-                    return parseFloat(data.replace(/^[\$a-zA-z\u4e00-\u9fa5 ]*(.*?)[a-zA-z\u4e00-\u9fa5 ]*$/, '$1'));
-                }
-                return {'sortStr': sortStr};
-            })();
-        }
     });

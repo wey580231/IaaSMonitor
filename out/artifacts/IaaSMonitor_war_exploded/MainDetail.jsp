@@ -130,6 +130,22 @@
             filter: alpha(opacity=50);
         }
 
+        #mainTable thead tr{
+            cursor: pointer;
+        }
+
+        .headAsc{
+            background-image:url('image/arrow_drop_up.png');
+            background-repeat:no-repeat;
+            background-position: right 5px center;
+        }
+
+        .headDesc{
+            background-image:url('image/arrow_drop_down.png');
+            background-repeat:no-repeat;
+            background-position: right 5px center;
+        }
+
     </style>
 </head>
 

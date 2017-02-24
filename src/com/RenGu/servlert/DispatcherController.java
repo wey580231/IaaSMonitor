@@ -31,10 +31,14 @@ public class DispatcherController extends HttpServlet {
             if (result.contains("access")) {
                 req.getSession().setAttribute(SaveLogin, result);
                 if (page != null) {
-                    if (page.equals("showSummary")) {
-                        resp.sendRedirect("MainDetail.jsp#/showSummary");
-                    } else if (page.equals("showStacks")) {
-                        resp.sendRedirect("MainDetail.jsp#/showStacks");
+                    if (page.equals("showSummary_zh")) {
+                        resp.sendRedirect("MainDetail.jsp#/showSummary_zh");
+                    } else if (page.equals("showStacks_zh")) {
+                        resp.sendRedirect("MainDetail.jsp#/showStacks_zh");
+                    } else if (page.equals("showSummary_en")) {
+                        resp.sendRedirect("MainDetail.jsp#/showSummary_en");
+                    } else if (page.equals("showStacks_zh")) {
+                        resp.sendRedirect("MainDetail.jsp#/showStacks_en");
                     }
                 } else {
                     resp.sendRedirect("index.jsp");

@@ -45,7 +45,7 @@ angular.module("app", [
         getEndPointService.flushPoint();
     })
     .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.otherwise({redirectTo: '/showSummary'});
+        $routeProvider.otherwise({redirectTo: '/showSummary_zh'});
     }])
     .config(function ($httpProvider) {
         $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -279,7 +279,7 @@ angular.module("app", [
                         $rootScope.isLog = true;
                         if ($rootScope.orginUrl.length > 0) {
                             if ($rootScope.orginUrl.indexOf('loginError') > 0) {
-                                $location.url('/showSummary');
+                                $location.url('/showSummary_zh');
                             } else {
                                 $location.url($rootScope.orginUrl);
                             }
@@ -583,4 +583,121 @@ angular.module("app", [
         service.format = _format;
 
         return service;
+    })
+    .service("tableSortService", function () {
+
+        this.clearClass = function (table) {
+            table.find('thead th').removeClass('current');
+            table.find('thead th').removeClass('headDesc');
+            table.find('thead th').removeClass('headAsc');
+        }
+
+        this.sortTable = function (table) {
+            table.find('thead th').click(
+                function () {
+                    var currTh = $(this);
+                    var dataType = $(this).attr('dataType');
+                    var tableObj = $(this).closest('table');
+                    var index = tableObj.find('thead th').index(this) + 1;
+                    var arr = [];
+                    var row = tableObj.find('tbody tr');
+
+                    console.log("index:" + index);
+
+                    $.each(row, function (i) {
+                        arr[i] = row[i]
+                    });
+
+                    //默认升序
+                    if ($(this).hasClass('current')) {
+                        arr.reverse();
+
+                        if ($(this).hasClass('headDesc')) {
+                            $(this).removeClass('headDesc');
+                            $(this).addClass('headAsc');
+
+                            tableObj.find('thead th').each(function () {
+                                if (currTh.text() != $(this).text()) {
+                                    $(this).removeClass('headDesc');
+                                    $(this).removeClass('headAsc');
+                                }
+                            });
+                        } else if ($(this).hasClass('headAsc')) {
+                            $(this).removeClass('headAsc');
+                            $(this).addClass('headDesc');
+
+                            tableObj.find('thead th').each(function () {
+                                if (currTh.text() != $(this).text()) {
+                                    $(this).removeClass('headDesc');
+                                    $(this).removeClass('headAsc');
+                                }
+                            });
+                        }
+                    } else {
+                        arr.sort(Utils.sortStr(index, dataType))
+                        tableObj.find('thead th').removeClass('current');
+                        tableObj.find('thead th').removeClass('headAsc');
+                        tableObj.find('thead th').removeClass('headDesc');
+
+                        $(this).addClass('current');
+
+                        // if (dataType == 'text') {
+                        //     $(this).addClass('headAsc');
+                        // }
+                        // else {
+                            $(this).addClass('headAsc');
+                        // }
+                    }
+
+                    var fragment = document.createDocumentFragment();
+
+                    $.each(arr, function (i) {
+                        fragment.appendChild(arr[i]);
+                    });
+
+                    tableObj.find('tbody').append(fragment);
+                }
+            );
+
+            var Utils = (function () {
+                function sortStr(index, dataType) {
+                    return function (a, b) {
+                        var aText = $(a).find('td:nth-child(' + index + ')').attr('_order') || $(a).find('td:nth-child(' + index + ')').text();
+                        var bText = $(b).find('td:nth-child(' + index + ')').attr('_order') || $(b).find('td:nth-child(' + index + ')').text();
+
+                        if (dataType != 'text') {
+                            aText = parseNonText(aText, dataType);
+                            bText = parseNonText(bText, dataType);
+
+                            return aText > bText ? 1 : bText > aText ? -1 : 0;
+                        } else {
+                            return aText.localeCompare(bText)
+                        }
+                    }
+                }
+
+                function parseNonText(data, dataType) {
+                    switch (dataType) {
+                        case 'int':
+                            return parseInt(data) || 0
+                        case 'float':
+                            return parseFloat(data) || 0
+                        case 'date':
+                            return new Date(Date.parse(data));
+                        default :
+                            return filterStr(data)
+                    }
+                }
+
+                //过滤中文字符和$
+                function filterStr(data) {
+                    if (!data) {
+                        return 0;
+                    }
+                    return parseFloat(data.replace(/^[\$a-zA-z\u4e00-\u9fa5 ]*(.*?)[a-zA-z\u4e00-\u9fa5 ]*$/, '$1'));
+                }
+
+                return {'sortStr': sortStr};
+            })();
+        }
     });
