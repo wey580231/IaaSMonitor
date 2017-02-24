@@ -83,9 +83,7 @@ public class CreatStacksController extends HttpServlet {
                     System.out.println(stackName + "创建失败");
                     resp.getWriter().write(stackName + "create Failed");
                     return;
-                }
-
-                if (stackJsonObject.has("outputs")) {
+                }                if (stackJsonObject.has("outputs")) {
                     JSONArray outpuJsonArray = stackJsonObject.getJSONArray("outputs");
                     for (int i = 0; i < outpuJsonArray.length(); i++) {
                         HashMap<String, String> tempHashMap = new HashMap<>();
