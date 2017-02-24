@@ -62,3 +62,4 @@ IaaSMonitor project
 * 2017-02-23:修复因getEndPointService.flushPoint请求延迟，导致页面获取endpoint为null问题。
 * 2017-02-23:增加表格排序功能
 * 2017-02-24:增加表格表头排序时样式提示
+* 2017-02-24:添加表格条件筛选功能(根据输入的条件自动筛选,属于前台筛选)

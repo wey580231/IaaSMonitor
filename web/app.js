@@ -480,6 +480,11 @@ angular.module("app", [
             service.showPage(service.currPage + 1);
         };
 
+        //条目
+        var _count = function () {
+            return service.arry.length;
+        }
+
         service.reset = _reset;
         service.showPage = _showPage;
         service.previousPage = _previousPage;
@@ -487,6 +492,7 @@ angular.module("app", [
         service.initPage = _initPage;
         service.changePerPage = _changePerPage;
         service.pageIsCorrect = _pageIsCorrect;
+        service.count = _count;
 
         return service;
     })
@@ -584,6 +590,7 @@ angular.module("app", [
 
         return service;
     })
+    //表格排序
     .service("tableSortService", function () {
 
         this.clearClass = function (table) {
@@ -693,5 +700,28 @@ angular.module("app", [
 
                 return {'sortStr': sortStr};
             })();
+        }
+
+        this.filterData = function (obj, pageSwitch) {
+            var searchText = obj.searchText;
+            if (searchText.length > 0) {
+                var soureData = pageSwitch.showPage(obj.currPage);
+                var arry = [];
+                for (var i = 0; i < soureData.length; i++) {
+                    if (soureData[i].name.indexOf(obj.searchText) >= 0) {
+                        arry.push(soureData[i]);
+                    }
+                }
+                obj.hasFilter = true;
+                obj.serverList = arry;
+                obj.totalCount = arry.length;
+            }
+            else if (searchText == null || searchText.length == 0) {
+                obj.hasFilter = false;
+                obj.totalPage = pageSwitch.totalPage;
+                obj.currPage = pageSwitch.currPage;
+                obj.serverList = pageSwitch.showPage(pageSwitch.currPage);
+                obj.totalCount = pageSwitch.count();
+            }
         }
     });

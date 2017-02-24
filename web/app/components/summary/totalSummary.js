@@ -77,7 +77,7 @@ angular.module('app.totalSummary', ['ngRoute'])
                 $scope.totalPage = pageSwitch.totalPage;
                 $scope.currPage = pageSwitch.currPage;
                 $scope.serverList = pageSwitch.showPage(pageSwitch.currPage);
-
+                $scope.totalCount = pageSwitch.count();
                 tableSortService.sortTable($('#mainTable'));
             });
 
@@ -153,4 +153,10 @@ angular.module('app.totalSummary', ['ngRoute'])
                 tableSortService.clearClass($('#mainTable'));
             }
         };
+
+        //条件过滤
+        $scope.search = function () {
+            tableSortService.filterData($scope,pageSwitch);
+            tableSortService.clearClass($('#mainTable'));
+        }
     });

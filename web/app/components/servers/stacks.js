@@ -50,7 +50,7 @@ angular.module('app.stacks', ['ngRoute'])
             }
         });
     }])
-    .controller('stackController', function ($scope, $rootScope, $location, endPointCollection, pageSwitch, myHttpService, serviceListService, stackService, endpointService,tableSortService) {
+    .controller('stackController', function ($scope, $rootScope, $location, endPointCollection, pageSwitch, myHttpService, serviceListService, stackService, endpointService, tableSortService) {
 
         $scope.pageList = pageSwitch.pageList;
 
@@ -77,6 +77,7 @@ angular.module('app.stacks', ['ngRoute'])
                     $scope.totalPage = pageSwitch.totalPage;
                     $scope.currPage = pageSwitch.currPage;
                     $scope.serverList = pageSwitch.showPage(pageSwitch.currPage);
+                    $scope.totalCount = pageSwitch.count();
                     tableSortService.sortTable($('#mainTable'));
                 }, function (data) {
                 });
@@ -149,4 +150,10 @@ angular.module('app.stacks', ['ngRoute'])
                 tableSortService.clearClass($('#mainTable'));
             }
         };
+
+        //条件过滤
+        $scope.search = function () {
+            tableSortService.filterData($scope,pageSwitch);
+            tableSortService.clearClass($('#mainTable'));
+        }
     });
