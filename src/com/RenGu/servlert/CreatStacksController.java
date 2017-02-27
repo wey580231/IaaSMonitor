@@ -79,13 +79,11 @@ public class CreatStacksController extends HttpServlet {
                 JSONObject stackJsonObject = stackReaultInfoJsonObject.getJSONObject("stack");
                 stackStaue = stackJsonObject.getString("stack_status");
 
-                if (stackStaue.equals("CREATE_COMPLETE")){
+                if (stackStaue.equals("CREATE_FAILED")){
                     System.out.println(stackName + "创建失败");
-                    resp.getWriter().write(stackName + "创建失败");
+                    resp.getWriter().write(stackName + "create Failed");
                     return;
-                }
-
-                if (stackJsonObject.has("outputs")) {
+                }                if (stackJsonObject.has("outputs")) {
                     JSONArray outpuJsonArray = stackJsonObject.getJSONArray("outputs");
                     for (int i = 0; i < outpuJsonArray.length(); i++) {
                         HashMap<String, String> tempHashMap = new HashMap<>();
@@ -102,6 +100,5 @@ public class CreatStacksController extends HttpServlet {
         }
         System.out.println("总计执行：" + k + "次");
         resp.getWriter().write(stackIPInfo.toString());
-
     }
 }

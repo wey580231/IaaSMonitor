@@ -3,7 +3,7 @@
  */
 angular.module('app.stacks', ['ngRoute'])
     .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/showStacks', {
+        $routeProvider.when('/showStacks_zh', {
             templateUrl: 'app/components/servers/stacks.html',
             controller: 'stackController',
             resolve: {
@@ -50,7 +50,7 @@ angular.module('app.stacks', ['ngRoute'])
             }
         });
     }])
-    .controller('stackController', function ($scope, $rootScope, $location, endPointCollection, pageSwitch, myHttpService, serviceListService, stackService, endpointService) {
+    .controller('stackController', function ($scope, $rootScope, $location, endPointCollection, pageSwitch, myHttpService, serviceListService, stackService, endpointService, tableSortService) {
 
         $scope.pageList = pageSwitch.pageList;
 
@@ -77,6 +77,8 @@ angular.module('app.stacks', ['ngRoute'])
                     $scope.totalPage = pageSwitch.totalPage;
                     $scope.currPage = pageSwitch.currPage;
                     $scope.serverList = pageSwitch.showPage(pageSwitch.currPage);
+                    $scope.totalCount = pageSwitch.count();
+                    tableSortService.sortTable($('#mainTable'));
                 }, function (data) {
                 });
         }
@@ -126,6 +128,7 @@ angular.module('app.stacks', ['ngRoute'])
             $scope.list = pageSwitch.changePerPage(perPageShow);
             $scope.totalPage = pageSwitch.totalPage;
             $scope.currPage = pageSwitch.currPage;
+            tableSortService.clearClass($('#mainTable'));
         };
 
         //上一页
@@ -134,6 +137,7 @@ angular.module('app.stacks', ['ngRoute'])
                 $scope.list = pageSwitch.showPage($scope.currPage - 1);
                 $scope.totalPage = pageSwitch.totalPage;
                 $scope.currPage = pageSwitch.currPage;
+                tableSortService.clearClass($('#mainTable'));
             }
         };
 
@@ -143,6 +147,13 @@ angular.module('app.stacks', ['ngRoute'])
                 $scope.list = pageSwitch.showPage($scope.currPage + 1);
                 $scope.totalPage = pageSwitch.totalPage;
                 $scope.currPage = pageSwitch.currPage;
+                tableSortService.clearClass($('#mainTable'));
             }
         };
+
+        //条件过滤
+        $scope.search = function () {
+            tableSortService.filterData($scope,pageSwitch);
+            tableSortService.clearClass($('#mainTable'));
+        }
     });
