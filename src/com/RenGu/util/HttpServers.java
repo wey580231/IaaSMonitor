@@ -90,6 +90,8 @@ public class HttpServers {
         String jsonString = "";
         OkHttpClient client = new OkHttpClient();
         MediaType mediaType = MediaType.parse("application/json");
+        String fullRequest = ("{\n  \"files\": {},\n  \"disable_rollback\": true,\n  \"stack_name\": \"" + stackName + "\",\n  \"template\": " + template + ",\n  \"timeout_mins\": 60\n}");
+        System.out.println(fullRequest);
         RequestBody body = RequestBody.create(mediaType, "{\n  \"files\": {},\n  \"disable_rollback\": true,\n  \"stack_name\": \"" + stackName + "\",\n  \"template\": " + template + ",\n  \"timeout_mins\": 60\n}");
         Request request = new Request.Builder()
                 .url(url)

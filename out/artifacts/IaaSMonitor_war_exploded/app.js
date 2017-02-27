@@ -45,7 +45,7 @@ angular.module("app", [
         getEndPointService.flushPoint();
     })
     .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.otherwise({redirectTo: '/showSummary'});
+        $routeProvider.otherwise({redirectTo: '/showSummary_zh'});
     }])
     .config(function ($httpProvider) {
         $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -279,7 +279,7 @@ angular.module("app", [
                         $rootScope.isLog = true;
                         if ($rootScope.orginUrl.length > 0) {
                             if ($rootScope.orginUrl.indexOf('loginError') > 0) {
-                                $location.url('/showSummary');
+                                $location.url('/showSummary_zh');
                             } else {
                                 $location.url($rootScope.orginUrl);
                             }
@@ -480,6 +480,11 @@ angular.module("app", [
             service.showPage(service.currPage + 1);
         };
 
+        //条目
+        var _count = function () {
+            return service.arry.length;
+        }
+
         service.reset = _reset;
         service.showPage = _showPage;
         service.previousPage = _previousPage;
@@ -487,6 +492,7 @@ angular.module("app", [
         service.initPage = _initPage;
         service.changePerPage = _changePerPage;
         service.pageIsCorrect = _pageIsCorrect;
+        service.count = _count;
 
         return service;
     })
@@ -583,4 +589,193 @@ angular.module("app", [
         service.format = _format;
 
         return service;
+    })
+    //表格排序
+    .service("tableSortService", function () {
+
+        this.clearClass = function (table) {
+            table.find('thead th').removeClass('current');
+            table.find('thead th').removeClass('headDesc');
+            table.find('thead th').removeClass('headAsc');
+        }
+
+        this.sortTable = function (table) {
+            table.find('thead th').click(
+                function () {
+                    var currTh = $(this);
+                    var dataType = $(this).attr('dataType');
+                    var tableObj = $(this).closest('table');
+                    var index = tableObj.find('thead th').index(this) + 1;
+                    var arr = [];
+                    var row = tableObj.find('tbody tr');
+
+                    console.log("index:" + index);
+
+                    $.each(row, function (i) {
+                        arr[i] = row[i]
+                    });
+
+                    //默认升序
+                    if ($(this).hasClass('current')) {
+                        arr.reverse();
+
+                        if ($(this).hasClass('headDesc')) {
+                            $(this).removeClass('headDesc');
+                            $(this).addClass('headAsc');
+
+                            tableObj.find('thead th').each(function () {
+                                if (currTh.text() != $(this).text()) {
+                                    $(this).removeClass('headDesc');
+                                    $(this).removeClass('headAsc');
+                                }
+                            });
+                        } else if ($(this).hasClass('headAsc')) {
+                            $(this).removeClass('headAsc');
+                            $(this).addClass('headDesc');
+
+                            tableObj.find('thead th').each(function () {
+                                if (currTh.text() != $(this).text()) {
+                                    $(this).removeClass('headDesc');
+                                    $(this).removeClass('headAsc');
+                                }
+                            });
+                        }
+                    } else {
+                        arr.sort(Utils.sortStr(index, dataType))
+                        tableObj.find('thead th').removeClass('current');
+                        tableObj.find('thead th').removeClass('headAsc');
+                        tableObj.find('thead th').removeClass('headDesc');
+
+                        $(this).addClass('current');
+                        $(this).addClass('headAsc');
+                    }
+
+                    var fragment = document.createDocumentFragment();
+
+                    $.each(arr, function (i) {
+                        fragment.appendChild(arr[i]);
+                    });
+
+                    tableObj.find('tbody').append(fragment);
+                }
+            );
+
+            var Utils = (function () {
+                function sortStr(index, dataType) {
+                    return function (a, b) {
+                        var aText = $(a).find('td:nth-child(' + index + ')').attr('_order') || $(a).find('td:nth-child(' + index + ')').text();
+                        var bText = $(b).find('td:nth-child(' + index + ')').attr('_order') || $(b).find('td:nth-child(' + index + ')').text();
+
+                        if (dataType != 'text') {
+                            aText = parseNonText(aText, dataType);
+                            bText = parseNonText(bText, dataType);
+
+                            return aText > bText ? 1 : bText > aText ? -1 : 0;
+                        } else {
+                            return aText.localeCompare(bText)
+                        }
+                    }
+                }
+
+                function parseNonText(data, dataType) {
+                    switch (dataType) {
+                        case 'int':
+                            return parseInt(data) || 0
+                        case 'float':
+                            return parseFloat(data) || 0
+                        case 'date':
+                            return new Date(Date.parse(data));
+                        default :
+                            return filterStr(data)
+                    }
+                }
+
+                //过滤中文字符和$
+                function filterStr(data) {
+                    if (!data) {
+                        return 0;
+                    }
+                    return parseFloat(data.replace(/^[\$a-zA-z\u4e00-\u9fa5 ]*(.*?)[a-zA-z\u4e00-\u9fa5 ]*$/, '$1'));
+                }
+
+                return {'sortStr': sortStr};
+            })();
+        }
+
+        this.filterData = function (obj, pageSwitch) {
+            var searchText = obj.searchText;
+            if (searchText.length > 0) {
+                var soureData = pageSwitch.showPage(obj.currPage);
+                var arry = [];
+                for (var i = 0; i < soureData.length; i++) {
+                    if (soureData[i].name.indexOf(obj.searchText) >= 0) {
+                        arry.push(soureData[i]);
+                    }
+                }
+                obj.hasFilter = true;
+                obj.serverList = arry;
+                obj.totalCount = arry.length;
+            }
+            else if (searchText == null || searchText.length == 0) {
+                obj.hasFilter = false;
+                obj.totalPage = pageSwitch.totalPage;
+                obj.currPage = pageSwitch.currPage;
+                obj.serverList = pageSwitch.showPage(pageSwitch.currPage);
+                obj.totalCount = pageSwitch.count();
+            }
+        }
+        //csv文件导出
+        this.exportCSV = function exportToCsv(filename, rows) {
+            var processRow = function (row) {
+                var finalVal = '';
+
+                finalVal += row.name;
+                finalVal += ",";
+                finalVal += row.vcpus;
+                finalVal += ",";
+                finalVal += row.disk;
+                finalVal += ",";
+                finalVal += row.ram;
+                finalVal += ",";
+                finalVal += row.created;
+                finalVal += ",";
+
+                // for (var j = 0; j < row.length; j++) {
+                //     var innerValue = row[j] === null ? '' : row[j].toString();
+                //     if (row[j] instanceof Date) {
+                //         innerValue = row[j].toLocaleString();
+                //     }
+                //     ;
+                //     var result = innerValue.replace(/"/g, '""');
+                //     if (result.search(/("|,|\n)/g) >= 0)
+                //         result = '"' + result + '"';
+                //     if (j > 0)
+                //         finalVal += ',';
+                //     finalVal += result;
+                // }
+                return finalVal + '\n';
+            };
+
+            var csvFile = 'Name,VCpu,Disk,Ram,Created Time\n';
+            for (var i = 0; i < rows.length; i++) {
+                csvFile += processRow(rows[i]);
+            }
+
+            var blob = new Blob([csvFile], {type: 'text/csv;charset=utf-8;'});
+            if (navigator.msSaveBlob) { // IE 10+
+                navigator.msSaveBlob(blob, filename);
+            } else {
+                var link = document.createElement("a");
+                if (link.download !== undefined) { // feature detection
+                    // Browsers that support HTML5 download attribute
+                    var url = URL.createObjectURL(blob);
+                    link.setAttribute("href", url);
+                    link.setAttribute("download", filename);
+                    link.style.visibility = 'hidden';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+            }
+        }
     });
