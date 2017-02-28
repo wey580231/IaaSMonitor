@@ -12,6 +12,14 @@
           <element id="library" level="project" name="json" />
           <element id="library" level="project" name="jstl" />
           <element id="library" level="project" name="postgresql-9.4.1212" />
+          <element id="file-copy" path="$USER_HOME$/Desktop/json-lib-2.4-jdk15.jar" />
+          <element id="library" level="project" name="json-lib-2.4-jdk15" />
+          <element id="library" level="project" name="commons-collections-3.2.1" />
+          <element id="library" level="project" name="commons-lang-2.5" />
+          <element id="library" level="project" name="commons-logging-1.0.4" />
+          <element id="library" level="project" name="log4j-1.2.15" />
+          <element id="library" level="project" name="ezmorph-1.0.6" />
+          <element id="library" level="project" name="commons-beanutils-1.8.0" />
         </element>
       </element>
     </root>
