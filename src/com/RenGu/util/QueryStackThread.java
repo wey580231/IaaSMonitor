@@ -14,15 +14,16 @@ public class QueryStackThread implements Runnable {
 
     private String token;
     private String requestUrl;
+    private String frontId;
 
-    public QueryStackThread(String token, String stackInfoUrl) {
+    public QueryStackThread(String token, String stackInfoUrl,String id) {
         this.token = token;
         this.requestUrl = stackInfoUrl;
+        this.frontId = id;
     }
 
     @Override
     public void run() {
-
         String stackStaue = "";
         HashMap<String, String> hashMap = new HashMap<>();
         int k = 0;
@@ -37,7 +38,7 @@ public class QueryStackThread implements Runnable {
                 if (stackStaue.equals("CREATE_FAILED")) {
                     System.out.println("创建失败");
                     String errorMessage = stackJsonObject.getString("stack_status_reason");
-                    System.out.println(CommonUtil.getWrappMessge("000001", errorMessage));
+                    System.out.println(CommonUtil.getWrappMessge("000001", errorMessage,frontId));
                     return;
                 }
                 if (stackJsonObject.has("outputs")) {
@@ -93,10 +94,13 @@ public class QueryStackThread implements Runnable {
 
             String splitFlag = "|";
 
-            String result = CommonUtil.getRightMessage("000000", CommonUtil.arryToString(ips, splitFlag), CommonUtil.arryToString(nameArray, splitFlag), CommonUtil.arryToString(passArray, splitFlag));
+            String result = CommonUtil.getRightMessage("000000", CommonUtil.arryToString(ips, splitFlag), CommonUtil.arryToString(nameArray, splitFlag), CommonUtil.arryToString(passArray, splitFlag),frontId);
+            String sendResutl = HttpServers.sendBackStackInfo("http://172.17.70.202:9090/create_return.action", result);
+
             System.out.println(result);
+            System.out.println("+++++" + sendResutl);
         } else {
-            System.out.println(CommonUtil.getWrappMessge("000001", "Create Failed!"));
+            System.out.println(CommonUtil.getWrappMessge("000001", "Create Failed!",frontId));
         }
     }
 }

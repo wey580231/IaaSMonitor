@@ -53,6 +53,8 @@ public class CreatStacksController extends HttpServlet {
         //【1】验证请求参数是否正确
         Map<String, String> map = new HashMap<String, String>();
         map = requestToMap(req);
+        //前端ID，向前端写结果时，加入此标志
+        String frontId = map.get("id");
 
 //        Enumeration enum1 = req.getParameterNames();
 //        while (enum1.hasMoreElements()) {
@@ -66,13 +68,13 @@ public class CreatStacksController extends HttpServlet {
         try {
             sign = DesUtil.encryptBasedDes(DesUtil.getSignStr(map), CommonUtil.KEY);
             if (!back_sign.equals(sign)) {
-                String errorMessage = CommonUtil.getWrappMessge("000001", "Request parameters parse failed!");
+                String errorMessage = CommonUtil.getWrappMessge("000001", "Request parameters parse failed!",frontId);
                 resp.getWriter().write(errorMessage);
                 return;
             }
         } catch (Exception e) {
             ////报文解析失败，需要在返回结果中加入当前请求参数的签名，用于前端验证
-            String errorMessage = CommonUtil.getWrappMessge("000001", "Request parameters parse failed!");
+            String errorMessage = CommonUtil.getWrappMessge("000001", "Request parameters parse failed!",frontId);
             resp.getWriter().write(errorMessage);
             return;
         }
@@ -133,17 +135,17 @@ public class CreatStacksController extends HttpServlet {
 
             if (jsonObject.has("error")) {
                 String errorMessage = jsonObject.getJSONObject("error").getString("message");
-                resp.getWriter().write(CommonUtil.getWrappMessge("000001", errorMessage));
+                resp.getWriter().write(CommonUtil.getWrappMessge("000001", errorMessage,frontId));
                 return;
             }
             stackInfoUrl = jsonObject.getJSONObject("stack").getJSONArray("links").getJSONObject(0).getString("href");
 
             //启动子线程用于监控当前创建的进度
-            QueryStackThread queryThrad = new QueryStackThread(token, stackInfoUrl);
+            QueryStackThread queryThrad = new QueryStackThread(token, stackInfoUrl,frontId);
             Thread thread = new Thread(queryThrad);
             thread.start();
 
-            resp.getWriter().write(CommonUtil.getWrappMessge("000000", "Create in process!"));
+            resp.getWriter().write(CommonUtil.getWrappMessge("000000", "Create in process!",frontId));
         } catch (JSONException e) {
             e.printStackTrace();
         }

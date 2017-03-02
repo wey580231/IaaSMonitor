@@ -10,20 +10,21 @@ import java.util.Map;
  */
 public class CommonUtil {
 
-    public static String KEY = "nanjingrengu";
+    public static String KEY = "20170228";
 
     //获取封装的结果信息，正确信息返回200，错误信息返回400
-    public static String getWrappMessge(String status, String message) {
+    public static String getWrappMessge(String status, String message, String id) {
         Map<String, String> res_map = new HashMap<String, String>();
         res_map.put("code", status);
         res_map.put("message", message);
+        res_map.put("id", id);
         String send_sign = "";
         try {
             send_sign = DesUtil.encryptBasedDes(DesUtil.getSignStr(res_map), KEY);//根据返回的参数生成的sign
         } catch (Exception e) {
             e.printStackTrace();
         }
-        res_map.put("SIGN", send_sign);
+        res_map.put("sign", send_sign);
 
         String errorMessag = new JSONObject(res_map).toString();
         System.out.println(errorMessag);
@@ -31,7 +32,7 @@ public class CommonUtil {
     }
 
     //获取正确结果信息
-    public static String getRightMessage(String status, String ip, String name, String pass) {
+    public static String getRightMessage(String status, String ip, String name, String pass, String id) {
         Map<String, String> map = new HashMap<String, String>();
 
         map.put("code", status);
@@ -39,6 +40,7 @@ public class CommonUtil {
         map.put("ip", ip);
         map.put("name", name);
         map.put("password", pass);
+        map.put("id", id);
 
         String send_sign = "";
         try {
@@ -46,6 +48,8 @@ public class CommonUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        map.put("sign", send_sign);
 
         String finalResult = new JSONObject(map).toString();
         System.out.println(finalResult);
