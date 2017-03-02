@@ -6,6 +6,7 @@
 package com.RenGu.util;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -127,6 +128,31 @@ public class HttpServers {
             System.out.println("Put请求地址：" + response.request().url() + "--->请求状态：" + response.message());
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    //发回创建虚拟机的信息，增加请求超时
+    public static String sendBackStackInfo(String url, String data) {
+        String jsonString = "";
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, data);
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .build();
+
+        Request request = (new Builder()).url(url).post(body).addHeader("content-type", "application/json").build();
+
+        try {
+            Response e = client.newCall(request).execute();
+            System.out.println("sendBackStackInfo ：" + e.request().url() + "--->请求状态：" + e.message());
+            jsonString = e.body().string();
+            return jsonString;
+        } catch (IOException var9) {
+            var9.printStackTrace();
+            return jsonString;
         }
     }
 }
