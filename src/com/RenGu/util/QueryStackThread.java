@@ -96,9 +96,6 @@ public class QueryStackThread implements Runnable {
 
             String result = CommonUtil.getRightMessage("000000", CommonUtil.arryToString(ips, splitFlag), CommonUtil.arryToString(nameArray, splitFlag), CommonUtil.arryToString(passArray, splitFlag),frontId);
             String sendResutl = HttpServers.sendBackStackInfo("http://172.17.70.202:9090/create_return.action", result);
-
-            System.out.println(result);
-            System.out.println("+++++" + sendResutl);
         } else {
             System.out.println(CommonUtil.getWrappMessge("000001", "Create Failed!",frontId));
         }
