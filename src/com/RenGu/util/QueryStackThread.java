@@ -88,7 +88,7 @@ public class QueryStackThread implements Runnable {
 
             for (int i = 0; i < hashMap.size(); i++) {
                 nameArray[i] = "root";
-                passArray[i] = "1234";
+                passArray[i] = "123456";
             }
 
             String splitFlag = "|";

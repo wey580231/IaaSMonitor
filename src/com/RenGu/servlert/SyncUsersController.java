@@ -103,7 +103,7 @@ public class SyncUsersController extends HttpServlet {
 
         try {
             Class.forName("org.postgresql.Driver");
-            Connection connection = DriverManager.getConnection(databaseUrl, databaseUserName, databasePassWord);
+                Connection connection = DriverManager.getConnection(databaseUrl, databaseUserName, databasePassWord);
             String SQL = "select * from users";
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(SQL);
