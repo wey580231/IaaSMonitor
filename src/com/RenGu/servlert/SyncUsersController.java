@@ -97,7 +97,7 @@ public class SyncUsersController extends HttpServlet {
 
     private ArrayList<HashMap<String, String>> getPostgreSQLUserInfo() {
         ArrayList<HashMap<String, String>> postgreSQLUserInfo = new ArrayList();
-        String databaseUrl = "jdbc:postgresql://172.17.203.158:5524/uaadb";
+        String databaseUrl = "jdbc:postgresql://172.17.203.162:5524/uaadb";
         String databaseUserName = "uaaadmin";
         String databasePassWord = "c1oudc0w";
 
