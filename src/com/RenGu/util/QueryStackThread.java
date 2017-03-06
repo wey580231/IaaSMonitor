@@ -88,8 +88,8 @@ public class QueryStackThread implements Runnable {
             String[] passArray = new String[hashMap.size()];
 
             for (int i = 0; i < hashMap.size(); i++) {
-                nameArray[i] = "admin";
-                passArray[i] = "admin";
+                nameArray[i] = "root";
+                passArray[i] = "1234";
             }
 
             String splitFlag = "|";
