@@ -98,7 +98,7 @@ public class CreatStacksController extends HttpServlet {
         }
 
         String loginUrl = "http://172.17.203.101:5000/v2.0/tokens";
-        String loginBody = doLogin(userName, passWord, tenantName, loginUrl);
+        String loginBody = doLogin("admin", "admin", tenantName, loginUrl);
 
         String masterImage = "hdp-template1";
         String slaveInstancesNode1Image = "hdp-template2";
