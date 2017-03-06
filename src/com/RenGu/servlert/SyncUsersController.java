@@ -20,7 +20,9 @@ import java.util.HashMap;
  */
 public class SyncUsersController extends HttpServlet {
     private String keystoneEndpoints = "http://172.17.201.101:35357/v3";
-    private String _member_ID = "9fe2ff9ee4384b1894a90878d3e92bab";
+    private String _member_RoleID = "9fe2ff9ee4384b1894a90878d3e92bab";
+    private String adminUserID = "5de810ca20ef4a42a8b6712da94ad3d0";
+    private String adminRoleID = "90024088340f4630961dbb7ce177b924";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -83,8 +85,12 @@ public class SyncUsersController extends HttpServlet {
                         e1.printStackTrace();
                     }
                 }
-                String putUrl = keystoneEndpoints + "/projects/" + projectID + "/users/" + userID + "/roles/" + _member_ID + "";
-                HttpServers.doPut(putUrl,loginToken);
+                //以admin角色添加admin用户
+                String putAdminUrl = keystoneEndpoints + "/projects/" + projectID + "/users/" + adminUserID + "/roles/" + adminRoleID + "";
+                HttpServers.doPut(putAdminUrl,loginToken);
+                //以_Member_角色添加用户
+                String putUserUrl = keystoneEndpoints + "/projects/" + projectID + "/users/" + userID + "/roles/" + _member_RoleID + "";
+                HttpServers.doPut(putUserUrl,loginToken);
             }
         }
     }
