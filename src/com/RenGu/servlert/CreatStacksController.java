@@ -40,7 +40,6 @@ public class CreatStacksController extends HttpServlet {
             outSteam.close();
             inStream.close();
             String resultStr = new String(outSteam.toByteArray(), "utf-8");
-            System.out.println(resultStr);
             requestMap = net.sf.json.JSONObject.fromObject(resultStr);
         } catch (Exception e) {
             e.printStackTrace();
@@ -53,6 +52,7 @@ public class CreatStacksController extends HttpServlet {
         //【1】验证请求参数是否正确
         Map<String, String> map = new HashMap<String, String>();
         map = requestToMap(req);
+        System.out.println(map.toString());
         //前端ID，向前端写结果时，加入此标志
         String frontId = map.get("id");
 

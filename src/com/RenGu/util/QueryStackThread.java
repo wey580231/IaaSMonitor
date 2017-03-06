@@ -36,7 +36,6 @@ public class QueryStackThread implements Runnable {
                 stackStaue = stackJsonObject.getString("stack_status");
 
                 if (stackStaue.equals("CREATE_FAILED")) {
-                    System.out.println("创建失败");
                     String errorMessage = stackJsonObject.getString("stack_status_reason");
                     System.out.println(CommonUtil.getWrappMessge("000001", errorMessage,frontId));
                     return;
