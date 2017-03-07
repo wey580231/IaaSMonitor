@@ -21,7 +21,7 @@ public class DeleteStacksController extends HttpServlet {
     private String stackID = "";
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String projectName = "admin";
         String stackName = "han";
         loginOpenStack(projectName);
@@ -37,7 +37,7 @@ public class DeleteStacksController extends HttpServlet {
             for (int i = 0; i < serviceCatalogJsonArray.length(); i++) {
                 JSONObject jsonObject1 = serviceCatalogJsonArray.getJSONObject(i);
                 if (jsonObject1.getString("name").equals("heat")){
-                    JSONArray endpointsJsonArray = jsonObject.getJSONArray("endpoints");
+                    JSONArray endpointsJsonArray = jsonObject1.getJSONArray("endpoints");
                     for (int j = 0; j < endpointsJsonArray.length(); j++) {
                         JSONObject jsonObject2 = endpointsJsonArray.getJSONObject(j);
                         if (jsonObject2.has("adminURL")){
