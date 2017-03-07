@@ -26,6 +26,7 @@ public class DeleteStacksController extends HttpServlet {
         String stackName = "han";
         loginOpenStack(projectName);
         stackID = getStackID(stackName, loginToken, orchestrationEndpoint);
+        deleteStack(stackName,stackID,loginToken,orchestrationEndpoint);
     }
 
     private String getStackID(String stacksName, String loginToken, String orchestrationEndpoint) {
