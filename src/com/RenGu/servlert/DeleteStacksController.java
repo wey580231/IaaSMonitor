@@ -81,5 +81,6 @@ public class DeleteStacksController extends HttpServlet {
         if (stacksName.equals("") || loginToken.equals("") || orchestrationEndpoint.equals("") || stackID.equals("")) {
             return;
         }
+        HttpServers.doDelete(orchestrationEndpoint + "/stacks/" + stacksName + "/" + stackID, loginToken);
     }
 }
