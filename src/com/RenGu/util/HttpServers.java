@@ -71,19 +71,14 @@ public class HttpServers {
         }
     }
 
-    public static String doDelete(String url, String token) {
+    public static void doDelete(String url, String token) {
         OkHttpClient client = new OkHttpClient();
-        String jsonString = "";
         Request request = (new Builder()).url(url).delete((RequestBody) null).addHeader("x-auth-token", token).build();
-
         try {
             Response e = client.newCall(request).execute();
             System.out.println("Delete请求地址：" + e.request().url() + "--->请求状态：" + e.message());
-            jsonString = e.body().string();
-            return jsonString;
         } catch (IOException var6) {
             var6.printStackTrace();
-            return jsonString;
         }
     }
 

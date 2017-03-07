@@ -26,7 +26,6 @@ public class DeleteStacksController extends HttpServlet {
         String stackName = "han";
         loginOpenStack(projectName);
         stackID = getStackID(stackName, loginToken, orchestrationEndpoint);
-        System.out.println(stackID);
     }
 
     private String getStackID(String stacksName, String loginToken, String orchestrationEndpoint) {
@@ -75,6 +74,12 @@ public class DeleteStacksController extends HttpServlet {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void deleteStack(String stacksName, String stackID, String loginToken, String orchestrationEndpoint) {
+        if (stacksName.equals("") || loginToken.equals("") || orchestrationEndpoint.equals("") || stackID.equals("")) {
+            return;
         }
     }
 }
