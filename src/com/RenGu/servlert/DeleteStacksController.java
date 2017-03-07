@@ -25,10 +25,36 @@ public class DeleteStacksController extends HttpServlet {
         String projectName = "admin";
         String stackName = "han";
         loginOpenStack(projectName);
-        System.out.println(loginToken + "|" + orchestrationEndpoint);
+        stackID = getStackID(stackName, loginToken, orchestrationEndpoint);
+        System.out.println(stackID);
+    }
+
+    private String getStackID(String stacksName, String loginToken, String orchestrationEndpoint) {
+        String stackID = "";
+        if (stacksName.equals("") || loginToken.equals("") || orchestrationEndpoint.equals("")) {
+            return stackID;
+        }
+        try {
+            String stacksListJsonBody = HttpServers.doGet(orchestrationEndpoint + "/stacks", loginToken);
+            JSONObject stacksList = new JSONObject(stacksListJsonBody);
+            JSONArray stacksArrayList = stacksList.getJSONArray("stacks");
+            for (int i = 0; i < stacksArrayList.length(); i++) {
+                JSONObject tempJsonObject = stacksArrayList.getJSONObject(i);
+                if (tempJsonObject.getString("stack_name").equals(stacksName)) {
+                    stackID = tempJsonObject.getString("id");
+                }
+            }
+            return stackID;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return stackID;
+        }
     }
 
     private void loginOpenStack(String projectName) {
+        if (projectName.equals("")) {
+            return;
+        }
         try {
             String loginJsonBody = HttpServers.doLogin("admin", "admin", projectName, "http://172.17.203.101:5000/v2.0/tokens");
             JSONObject jsonObject = new JSONObject(loginJsonBody);
@@ -36,11 +62,11 @@ public class DeleteStacksController extends HttpServlet {
             JSONArray serviceCatalogJsonArray = jsonObject.getJSONObject("access").getJSONArray("serviceCatalog");
             for (int i = 0; i < serviceCatalogJsonArray.length(); i++) {
                 JSONObject jsonObject1 = serviceCatalogJsonArray.getJSONObject(i);
-                if (jsonObject1.getString("name").equals("heat")){
+                if (jsonObject1.getString("name").equals("heat")) {
                     JSONArray endpointsJsonArray = jsonObject1.getJSONArray("endpoints");
                     for (int j = 0; j < endpointsJsonArray.length(); j++) {
                         JSONObject jsonObject2 = endpointsJsonArray.getJSONObject(j);
-                        if (jsonObject2.has("adminURL")){
+                        if (jsonObject2.has("adminURL")) {
                             orchestrationEndpoint = jsonObject2.getString("adminURL");
                         }
                     }
