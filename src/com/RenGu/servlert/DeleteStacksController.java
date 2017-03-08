@@ -27,26 +27,30 @@ public class DeleteStacksController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String, String> requestMap;
         requestMap = CommonUtil.requestToMap(req);
-        System.out.println(requestMap.toString());
         String requestSign = requestMap.get("sign");
+        String requestID = requestMap.get("id");
         String ourSign = DesUtil.encryptBasedDes(DesUtil.getSignStr(requestMap), CommonUtil.KEY);
         if (!requestSign.equals(ourSign)) {
-            String errorMessage = CommonUtil.getWrappMessge("000001", "Request parameters parse failed!", requestMap.get("id"));
-            resp.getWriter().write(errorMessage);
+            resp.getWriter().write(CommonUtil.getWrappMessge("000001", "Request parameters parse failed!", requestID));
             return;
         }
         String projectName = requestMap.get("projectName");
         String stackName = requestMap.get("stackName");
 //        String projectName = "admin";
 //        String stackName = "han";
-        loginOpenStack(projectName);
-        stackID = getStackID(stackName, loginToken, orchestrationEndpoint);
-        deleteStack(stackName, stackID, loginToken, orchestrationEndpoint);
+        loginOpenStack(projectName, requestID, resp);
+        stackID = getStackID(stackName, loginToken, orchestrationEndpoint, requestID, resp);
+        deleteStack(stackName, stackID, loginToken, orchestrationEndpoint, requestID, resp);
     }
 
-    private String getStackID(String stacksName, String loginToken, String orchestrationEndpoint) {
+    private String getStackID(String stacksName, String loginToken, String orchestrationEndpoint, String requestID, HttpServletResponse resp) {
         String stackID = "";
-        if (stacksName.equals("") || loginToken.equals("") || orchestrationEndpoint.equals("")) {
+        if (stacksName.equals("") || loginToken.equals("") || orchestrationEndpoint.equals("") || requestID.equals("")) {
+            try {
+                resp.getWriter().write(CommonUtil.getWrappMessge("000001", "Request parameters parse failed!", requestID));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return stackID;
         }
         try {
@@ -61,13 +65,23 @@ public class DeleteStacksController extends HttpServlet {
             }
             return stackID;
         } catch (JSONException e) {
+            try {
+                resp.getWriter().write(CommonUtil.getWrappMessge("000001", "Request parameters parse failed!", requestID));
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
             e.printStackTrace();
             return stackID;
         }
     }
 
-    private void loginOpenStack(String projectName) {
-        if (projectName.equals("")) {
+    private void loginOpenStack(String projectName, String requestID, HttpServletResponse resp) {
+        if (projectName.equals("") || requestID.equals("")) {
+            try {
+                resp.getWriter().write(CommonUtil.getWrappMessge("000001", "Request parameters parse failed!", requestID));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return;
         }
         try {
@@ -89,14 +103,25 @@ public class DeleteStacksController extends HttpServlet {
                 }
             }
         } catch (JSONException e) {
+            try {
+                resp.getWriter().write(CommonUtil.getWrappMessge("000001", "Request parameters parse failed!", requestID));
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
             e.printStackTrace();
         }
     }
 
-    private void deleteStack(String stacksName, String stackID, String loginToken, String orchestrationEndpoint) {
-        if (stacksName.equals("") || loginToken.equals("") || orchestrationEndpoint.equals("") || stackID.equals("")) {
-            return;
+    private void deleteStack(String stacksName, String stackID, String loginToken, String orchestrationEndpoint, String requestID, HttpServletResponse resp) {
+        try {
+            if (stacksName.equals("") || loginToken.equals("") || orchestrationEndpoint.equals("") || stackID.equals("") || requestID.equals("")) {
+                resp.getWriter().write(CommonUtil.getWrappMessge("000001", "Request parameters parse failed!", requestID));
+                return;
+            }
+            HttpServers.doDelete(orchestrationEndpoint + "/stacks/" + stacksName + "/" + stackID, loginToken);
+            resp.getWriter().write(CommonUtil.getWrappMessge("000000", "removed", requestID));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        HttpServers.doDelete(orchestrationEndpoint + "/stacks/" + stacksName + "/" + stackID, loginToken);
     }
 }
