@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static com.RenGu.util.CommonUtil.requestToMap;
 import static com.RenGu.util.HttpServers.doCreatStacks;
 import static com.RenGu.util.HttpServers.doLogin;
 
@@ -27,32 +28,11 @@ import static com.RenGu.util.HttpServers.doLogin;
  */
 public class CreatStacksController extends HttpServlet {
 
-    public Map<String, String> requestToMap(HttpServletRequest request) {
-        Map<String, String> requestMap = new HashMap<String, String>();
-        try {
-            InputStream inStream = request.getInputStream();
-            ByteArrayOutputStream outSteam = new ByteArrayOutputStream();
-            byte[] buffer = new byte[1024];
-            int len = 0;
-            while ((len = inStream.read(buffer)) != -1) {
-                outSteam.write(buffer, 0, len);
-            }
-            outSteam.close();
-            inStream.close();
-            String resultStr = new String(outSteam.toByteArray(), "utf-8");
-            requestMap = net.sf.json.JSONObject.fromObject(resultStr);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return requestMap;
-    }
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //【1】验证请求参数是否正确
         Map<String, String> map = new HashMap<String, String>();
-        map = requestToMap(req);
-        System.out.println(map.toString());
+        map = CommonUtil.requestToMap(req);
         //前端ID，向前端写结果时，加入此标志
         String frontId = map.get("id");
 

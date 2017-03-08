@@ -1,5 +1,7 @@
 package com.RenGu.servlert;
 
+import com.RenGu.util.CommonUtil;
+import com.RenGu.util.DesUtil;
 import com.RenGu.util.HttpServers;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by hanch on 2017/3/7.
@@ -21,12 +25,23 @@ public class DeleteStacksController extends HttpServlet {
     private String stackID = "";
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String projectName = "admin";
-        String stackName = "han";
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Map<String, String> requestMap = new HashMap<>();
+        requestMap = CommonUtil.requestToMap(req);
+        String requestSign = requestMap.get("sign");
+        String ourSign = DesUtil.encryptBasedDes(DesUtil.getSignStr(requestMap), CommonUtil.KEY);
+        if (!requestSign.equals(ourSign)) {
+            String errorMessage = CommonUtil.getWrappMessge("000001", "Request parameters parse failed!", requestMap.get("id"));
+            resp.getWriter().write(errorMessage);
+            return;
+        }
+        String projectName = requestMap.get("projectName");
+        String stackName = requestMap.get("stackName");
+//        String projectName = "admin";
+//        String stackName = "han";
         loginOpenStack(projectName);
         stackID = getStackID(stackName, loginToken, orchestrationEndpoint);
-        deleteStack(stackName,stackID,loginToken,orchestrationEndpoint);
+        deleteStack(stackName, stackID, loginToken, orchestrationEndpoint);
     }
 
     private String getStackID(String stacksName, String loginToken, String orchestrationEndpoint) {
