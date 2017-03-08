@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -26,8 +25,9 @@ public class DeleteStacksController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Map<String, String> requestMap = new HashMap<>();
+        Map<String, String> requestMap;
         requestMap = CommonUtil.requestToMap(req);
+        System.out.println(requestMap.toString());
         String requestSign = requestMap.get("sign");
         String ourSign = DesUtil.encryptBasedDes(DesUtil.getSignStr(requestMap), CommonUtil.KEY);
         if (!requestSign.equals(ourSign)) {

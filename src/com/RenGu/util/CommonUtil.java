@@ -30,7 +30,6 @@ public class CommonUtil {
         res_map.put("sign", send_sign);
 
         String errorMessag = new JSONObject(res_map).toString();
-        System.out.println(errorMessag);
         return errorMessag;
     }
 
@@ -55,7 +54,6 @@ public class CommonUtil {
         map.put("sign", send_sign);
 
         String finalResult = new JSONObject(map).toString();
-        System.out.println(finalResult);
         return finalResult;
     }
 
