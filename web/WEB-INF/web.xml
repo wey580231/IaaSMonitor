@@ -31,6 +31,10 @@
         <servlet-name>TestServlet</servlet-name>
         <servlet-class>com.RenGu.servlert.DispatcherController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteStacksController</servlet-name>
+        <servlet-class>com.RenGu.servlert.DeleteStacksController</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
@@ -59,6 +63,10 @@
     <servlet-mapping>
         <servlet-name>TestServlet</servlet-name>
         <url-pattern>/pageDispatcher</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteStacksController</servlet-name>
+        <url-pattern>/deleteStacks</url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>

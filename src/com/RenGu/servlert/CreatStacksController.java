@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static com.RenGu.util.CommonUtil.requestToMap;
 import static com.RenGu.util.HttpServers.doCreatStacks;
 import static com.RenGu.util.HttpServers.doLogin;
 
@@ -27,32 +28,11 @@ import static com.RenGu.util.HttpServers.doLogin;
  */
 public class CreatStacksController extends HttpServlet {
 
-    public Map<String, String> requestToMap(HttpServletRequest request) {
-        Map<String, String> requestMap = new HashMap<String, String>();
-        try {
-            InputStream inStream = request.getInputStream();
-            ByteArrayOutputStream outSteam = new ByteArrayOutputStream();
-            byte[] buffer = new byte[1024];
-            int len = 0;
-            while ((len = inStream.read(buffer)) != -1) {
-                outSteam.write(buffer, 0, len);
-            }
-            outSteam.close();
-            inStream.close();
-            String resultStr = new String(outSteam.toByteArray(), "utf-8");
-            System.out.println(resultStr);
-            requestMap = net.sf.json.JSONObject.fromObject(resultStr);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return requestMap;
-    }
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //【1】验证请求参数是否正确
         Map<String, String> map = new HashMap<String, String>();
-        map = requestToMap(req);
+        map = CommonUtil.requestToMap(req);
         //前端ID，向前端写结果时，加入此标志
         String frontId = map.get("id");
 
@@ -68,13 +48,13 @@ public class CreatStacksController extends HttpServlet {
         try {
             sign = DesUtil.encryptBasedDes(DesUtil.getSignStr(map), CommonUtil.KEY);
             if (!back_sign.equals(sign)) {
-                String errorMessage = CommonUtil.getWrappMessge("000001", "Request parameters parse failed!",frontId);
+                String errorMessage = CommonUtil.getWrappMessge("000001", "Request parameters parse failed!", frontId);
                 resp.getWriter().write(errorMessage);
                 return;
             }
         } catch (Exception e) {
             ////报文解析失败，需要在返回结果中加入当前请求参数的签名，用于前端验证
-            String errorMessage = CommonUtil.getWrappMessge("000001", "Request parameters parse failed!",frontId);
+            String errorMessage = CommonUtil.getWrappMessge("000001", "Request parameters parse failed!", frontId);
             resp.getWriter().write(errorMessage);
             return;
         }
@@ -98,7 +78,7 @@ public class CreatStacksController extends HttpServlet {
         }
 
         String loginUrl = "http://172.17.203.101:5000/v2.0/tokens";
-        String loginBody = doLogin(userName, passWord, tenantName, loginUrl);
+        String loginBody = doLogin("admin", "admin", tenantName, loginUrl);
 
         String masterImage = "hdp-template1";
         String slaveInstancesNode1Image = "hdp-template2";
@@ -135,17 +115,17 @@ public class CreatStacksController extends HttpServlet {
 
             if (jsonObject.has("error")) {
                 String errorMessage = jsonObject.getJSONObject("error").getString("message");
-                resp.getWriter().write(CommonUtil.getWrappMessge("000001", errorMessage,frontId));
+                resp.getWriter().write(CommonUtil.getWrappMessge("000001", errorMessage, frontId));
                 return;
             }
             stackInfoUrl = jsonObject.getJSONObject("stack").getJSONArray("links").getJSONObject(0).getString("href");
 
             //启动子线程用于监控当前创建的进度
-            QueryStackThread queryThrad = new QueryStackThread(token, stackInfoUrl,frontId);
+            QueryStackThread queryThrad = new QueryStackThread(token, stackInfoUrl, frontId);
             Thread thread = new Thread(queryThrad);
             thread.start();
 
-            resp.getWriter().write(CommonUtil.getWrappMessge("000000", "Create in process!",frontId));
+            resp.getWriter().write(CommonUtil.getWrappMessge("000000", "Create in process!", frontId));
         } catch (JSONException e) {
             e.printStackTrace();
         }

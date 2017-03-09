@@ -71,19 +71,14 @@ public class HttpServers {
         }
     }
 
-    public static String doDelete(String url, String token) {
+    public static void doDelete(String url, String token) {
         OkHttpClient client = new OkHttpClient();
-        String jsonString = "";
         Request request = (new Builder()).url(url).delete((RequestBody) null).addHeader("x-auth-token", token).build();
-
         try {
             Response e = client.newCall(request).execute();
             System.out.println("Delete请求地址：" + e.request().url() + "--->请求状态：" + e.message());
-            jsonString = e.body().string();
-            return jsonString;
         } catch (IOException var6) {
             var6.printStackTrace();
-            return jsonString;
         }
     }
 
@@ -91,8 +86,6 @@ public class HttpServers {
         String jsonString = "";
         OkHttpClient client = new OkHttpClient();
         MediaType mediaType = MediaType.parse("application/json");
-        String fullRequest = ("{\n  \"files\": {},\n  \"disable_rollback\": true,\n  \"stack_name\": \"" + stackName + "\",\n  \"template\": " + template + ",\n  \"timeout_mins\": 60\n}");
-        System.out.println(fullRequest);
         RequestBody body = RequestBody.create(mediaType, "{\n  \"files\": {},\n  \"disable_rollback\": true,\n  \"stack_name\": \"" + stackName + "\",\n  \"template\": " + template + ",\n  \"timeout_mins\": 60\n}");
         Request request = new Request.Builder()
                 .url(url)

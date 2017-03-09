@@ -2,6 +2,9 @@ package com.RenGu.util;
 
 import org.json.JSONObject;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +30,6 @@ public class CommonUtil {
         res_map.put("sign", send_sign);
 
         String errorMessag = new JSONObject(res_map).toString();
-        System.out.println(errorMessag);
         return errorMessag;
     }
 
@@ -52,8 +54,27 @@ public class CommonUtil {
         map.put("sign", send_sign);
 
         String finalResult = new JSONObject(map).toString();
-        System.out.println(finalResult);
         return finalResult;
+    }
+
+    public static Map<String, String> requestToMap(HttpServletRequest request) {
+        Map<String, String> requestMap = new HashMap<String, String>();
+        try {
+            InputStream inStream = request.getInputStream();
+            ByteArrayOutputStream outSteam = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int len = 0;
+            while ((len = inStream.read(buffer)) != -1) {
+                outSteam.write(buffer, 0, len);
+            }
+            outSteam.close();
+            inStream.close();
+            String resultStr = new String(outSteam.toByteArray(), "utf-8");
+            requestMap = net.sf.json.JSONObject.fromObject(resultStr);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return requestMap;
     }
 
     //将数组转换成字符串
