@@ -36,7 +36,6 @@ public class QueryStackThread implements Runnable {
                 stackStaue = stackJsonObject.getString("stack_status");
 
                 if (stackStaue.equals("CREATE_FAILED")) {
-                    System.out.println("创建失败");
                     String errorMessage = stackJsonObject.getString("stack_status_reason");
                     System.out.println(CommonUtil.getWrappMessge("000001", errorMessage,frontId));
                     return;
@@ -88,17 +87,14 @@ public class QueryStackThread implements Runnable {
             String[] passArray = new String[hashMap.size()];
 
             for (int i = 0; i < hashMap.size(); i++) {
-                nameArray[i] = "admin";
-                passArray[i] = "admin";
+                nameArray[i] = "root";
+                passArray[i] = "123456";
             }
 
             String splitFlag = "|";
 
             String result = CommonUtil.getRightMessage("000000", CommonUtil.arryToString(ips, splitFlag), CommonUtil.arryToString(nameArray, splitFlag), CommonUtil.arryToString(passArray, splitFlag),frontId);
             String sendResutl = HttpServers.sendBackStackInfo("http://172.17.70.202:9090/create_return.action", result);
-
-            System.out.println(result);
-            System.out.println("+++++" + sendResutl);
         } else {
             System.out.println(CommonUtil.getWrappMessge("000001", "Create Failed!",frontId));
         }
